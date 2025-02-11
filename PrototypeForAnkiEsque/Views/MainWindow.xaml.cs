@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media.Animation;
 using Microsoft.Extensions.DependencyInjection;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;

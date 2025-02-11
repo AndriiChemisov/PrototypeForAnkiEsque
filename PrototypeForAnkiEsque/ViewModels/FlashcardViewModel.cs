@@ -83,11 +83,20 @@ namespace PrototypeForAnkiEsque.ViewModels
             IsRatingClicked = false;
             IsAnswerVisible = false;
 
-            // Move to the next card (loop back to the first card if at the end)
-            _currentCardIndex = (_currentCardIndex + 1) % _flashcards.Count;
+            // Check if we've reached the end of the flashcards
+            if (_currentCardIndex >= _flashcards.Count - 1)
+            {
+                // Navigate to the MainMenuView when cards run out
+                _navigationService.GetMainMenuView();
+                return;
+            }
+
+            // Move to the next card (increment index)
+            _currentCardIndex++;
 
             LoadCurrentCard();
         }
+
 
         private void LoadCurrentCard()
         {

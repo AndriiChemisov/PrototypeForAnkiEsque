@@ -2,9 +2,17 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="200" Width="400">
-    
-	<Grid>
+    <UserControl.Resources>
+        <Storyboard x:Key="FadeOutAnimation" AutoReverse="False" Completed="FadeOutAnimation_Completed">
+        <DoubleAnimation
+            Storyboard.TargetName="MotivationalMessageTextBlock"
+            Storyboard.TargetProperty="Opacity"
+            From="1" To="0" Duration="0:0:2" />
+        </Storyboard>
+    </UserControl.Resources>
 
+    <Grid>
+        <TextBlock x:Name="MotivationalMessageTextBlock" Text="{Binding MotivationalMessage}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20" FontSize="24" Foreground="Green" Visibility="{Binding MessageVisibility}"/>
         <Button Content="Add Flashcard" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="50" Command="{Binding OpenFlashcardEntryViewCommand}" Margin="0,0,0,20"/>
         <Button Content="Use Flashcards" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="150" Height="50" Command="{Binding OpenFlashcardViewCommand}" Margin="0,0,0,20"/>
 	</Grid>
