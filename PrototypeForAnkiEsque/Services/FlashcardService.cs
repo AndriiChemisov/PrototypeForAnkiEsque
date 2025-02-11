@@ -2,8 +2,9 @@
 using System.Linq;
 using PrototypeForAnkiEsque.Models;
 using Microsoft.EntityFrameworkCore;
+using PrototypeForAnkiEsque.Data;
 
-namespace PrototypeForAnkiEsque.Data
+namespace PrototypeForAnkiEsque.Services
 {
     public class FlashcardService
     {
