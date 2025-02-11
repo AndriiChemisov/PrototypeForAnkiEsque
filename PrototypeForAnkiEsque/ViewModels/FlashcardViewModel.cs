@@ -1,0 +1,144 @@
+﻿using System.Windows.Input;
+using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.Models;
+using PrototypeForAnkiEsque.Data;
+using System.Linq;
+
+namespace PrototypeForAnkiEsque.ViewModels
+{
+    public class FlashcardViewModel : BaseViewModel
+    {
+        private readonly FlashcardService _flashcardService;
+        private readonly NavigationService _navigationService;
+        private readonly ApplicationDbContext _dbContext;
+
+        private List<Flashcard> _flashcards;
+        private int _currentCardIndex;
+
+        public FlashcardViewModel(FlashcardService flashcardService, NavigationService navigationService, ApplicationDbContext dbContext)
+        {
+            _flashcardService = flashcardService;
+            _navigationService = navigationService;
+            _dbContext = dbContext;
+
+            // Initialize commands
+            ShowAnswerCommand = new RelayCommand(ShowAnswer);
+            NextCommand = new RelayCommand(NextCard);
+            EaseCommand = new RelayCommand<int>(SetEase);
+            OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
+            OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntry);
+
+            // Load all flashcards
+            _flashcards = _flashcardService.GetFlashcards();
+
+            // Initialize current card index to start from the first flashcard
+            _currentCardIndex = 0;
+
+            // Load the first flashcard
+            LoadCurrentCard();
+        }
+
+        public ICommand ShowAnswerCommand { get; }
+        public ICommand NextCommand { get; }
+        public ICommand EaseCommand { get; }
+        public ICommand OpenMainMenuCommand { get; }
+        public ICommand OpenFlashcardEntryCommand { get; }
+
+        private Flashcard _currentCard;
+        public Flashcard CurrentCard
+        {
+            get => _currentCard;
+            set => SetProperty(ref _currentCard, value);
+        }
+
+        private string _ratingMessage;
+        public string RatingMessage
+        {
+            get => _ratingMessage;
+            set => SetProperty(ref _ratingMessage, value);
+        }
+
+        private bool _isRatingClicked;
+        public bool IsRatingClicked
+        {
+            get => _isRatingClicked;
+            set => SetProperty(ref _isRatingClicked, value);
+        }
+
+        private bool _isAnswerVisible = false;
+        public bool IsAnswerVisible
+        {
+            get => _isAnswerVisible;
+            set => SetProperty(ref _isAnswerVisible, value);
+        }
+
+        private void ShowAnswer()
+        {
+            IsAnswerVisible = !IsAnswerVisible;
+        }
+
+        private void NextCard()
+        {
+            // Reset the rating state before going to the next card
+            IsRatingClicked = false;
+            IsAnswerVisible = false;
+
+            // Move to the next card (loop back to the first card if at the end)
+            _currentCardIndex = (_currentCardIndex + 1) % _flashcards.Count;
+
+            LoadCurrentCard();
+        }
+
+        private void LoadCurrentCard()
+        {
+            if (_flashcards.Any())
+            {
+                CurrentCard = _flashcards[_currentCardIndex];
+            }
+        }
+
+        private void SetEase(int ease)
+        {
+            if (CurrentCard == null)
+                return;
+
+            // Update ease rating in the database
+            CurrentCard.EaseFactor = ease;
+            _flashcardService.UpdateFlashcard(CurrentCard); // Update flashcard using the service
+
+            // Provide a message based on the ease rating
+            RatingMessage = ease switch
+            {
+                5 => "Great! You're mastering this card.",
+                4 => "Good! You're doing well.",
+                3 => "Keep going! You'll get it soon.",
+                _ => "Keep practicing!",
+            };
+
+            // Mark rating as clicked, disabling the buttons until next card
+            IsRatingClicked = true;
+
+            //Trigger fadeout animation for the message
+            TriggerFadeOutAnimation();
+        }
+
+        private void TriggerFadeOutAnimation()
+        {
+            // This calls the animation from the view
+            OnFadeOutMessage?.Invoke();
+        }
+
+        // Event for view to subscribe and trigger animation
+        public event Action OnFadeOutMessage;
+
+        private void OpenMainMenu()
+        {
+            _navigationService.GetMainMenuView();
+        }
+
+        private void OpenFlashcardEntry()
+        {
+            _navigationService.GetFlashcardEntryView();
+        }
+    }
+}

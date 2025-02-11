@@ -1,0 +1,9 @@
+<Window x:Class="PrototypeForAnkiEsque.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Main Window" Height="550" Width="950">
+    <Grid>
+        <!-- ContentControl that will display different user controls -->
+        <ContentControl Content="{Binding CurrentContent}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </Grid>
+</Window>

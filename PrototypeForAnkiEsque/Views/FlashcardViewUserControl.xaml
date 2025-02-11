@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="PrototypeForAnkiEsque.Views.FlashcardViewUserControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PrototypeForAnkiEsque"
+        xmlns:viewModels="clr-namespace:PrototypeForAnkiEsque.ViewModels"
+        xmlns:converters="clr-namespace:PrototypeForAnkiEsque.Converters"
+        mc:Ignorable="d"
+        Height="450" Width="800">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="FadeOutAnimation" AutoReverse="False" Completed="FadeOutAnimation_Completed">
+            <DoubleAnimation
+            Storyboard.TargetName="RatingMessageTextBlock"
+            Storyboard.TargetProperty="Opacity"
+            From="1" To="0" Duration="0:0:2" />
+        </Storyboard>
+        <!-- Register the BooleanToVisibilityConverter as a resource -->
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- TextBox for front of the card, visibility bound to IsAnswerVisible -->
+        <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
+                 Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=False}"/>
+
+        <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
+        <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
+                 Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+
+        <!-- Button to toggle visibility between front and back -->
+        <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Command="{Binding ShowAnswerCommand}" />
+
+        <!-- Button to go to the next card -->
+        <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding NextCommand}"/>
+
+        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
+
+        <Button Content="Add Flashcard" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardEntryCommand}"/>
+
+        <!-- Rating Buttons -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20">
+            <Button Content="Easy" Width="75" Command="{Binding EaseCommand}" CommandParameter="5" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+            <Button Content="Good" Width="75" Command="{Binding EaseCommand}" CommandParameter="4" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+            <Button Content="Hard" Width="75" Command="{Binding EaseCommand}" CommandParameter="3" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+        </StackPanel>
+
+        <!-- Rating message -->
+        <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="60" FontSize="16" Foreground="Green"/>
+    </Grid>
+</UserControl>
+
