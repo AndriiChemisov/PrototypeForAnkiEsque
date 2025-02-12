@@ -4,7 +4,6 @@ using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Animation;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
@@ -103,14 +102,14 @@ namespace PrototypeForAnkiEsque.ViewModels
         // Event for view to subscribe and trigger animation
         public event Action OnFadeOutMessage;
 
-        private void OpenMainMenu()
+        private async void OpenMainMenu()
         {
-            _navigationService.GetMainMenuView();
+            await _navigationService.GetMainMenuViewAsync();
         }
 
-        private void OpenFlashcardView()
+        private async void OpenFlashcardView()
         {
-            _navigationService.GetFlashcardView();
+            await _navigationService.GetFlashcardViewAsync();
         }
     }
 }

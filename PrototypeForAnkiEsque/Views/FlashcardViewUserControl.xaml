@@ -15,6 +15,10 @@
             Storyboard.TargetName="RatingMessageTextBlock"
             Storyboard.TargetProperty="Opacity"
             From="1" To="0" Duration="0:0:2" />
+            <DoubleAnimation
+            Storyboard.TargetName="MotivationalMessageBlock"
+            Storyboard.TargetProperty="Opacity"
+            From="1" To="0" Duration="0:0:2" />
         </Storyboard>
         <!-- Register the BooleanToVisibilityConverter as a resource -->
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -22,33 +26,37 @@
     </UserControl.Resources>
 
     <Grid>
-        <!-- TextBox for front of the card, visibility bound to IsAnswerVisible -->
-        <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
-                 Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=False}"/>
+        <Grid x:Name="MainGrid" Visibility="{Binding IsGridVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}">
+            <!-- TextBox for front of the card, visibility bound to IsAnswerVisible -->
+            <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
+                     Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=False}"/>
 
-        <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
-        <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
-                 Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+            <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
+            <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
+                     Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
 
-        <!-- Button to toggle visibility between front and back -->
-        <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Command="{Binding ShowAnswerCommand}" />
+            <!-- Button to toggle visibility between front and back -->
+            <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Command="{Binding ShowAnswerCommand}" />
 
-        <!-- Button to go to the next card -->
-        <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding NextCommand}"/>
+            <!-- Button to go to the next card -->
+            <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding NextCommand}"/>
 
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
+            <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
 
-        <Button Content="Add Flashcard" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardEntryCommand}"/>
+            <Button Content="Add Flashcard" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardEntryCommand}" />
 
-        <!-- Rating Buttons -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20">
-            <Button Content="Easy" Width="75" Command="{Binding EaseCommand}" CommandParameter="5" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
-            <Button Content="Good" Width="75" Command="{Binding EaseCommand}" CommandParameter="4" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
-            <Button Content="Hard" Width="75" Command="{Binding EaseCommand}" CommandParameter="3" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
-        </StackPanel>
+            <!-- Rating Buttons -->
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20">
+                <Button Content="Easy" Width="75" Command="{Binding EaseCommand}" CommandParameter="5" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Good" Width="75" Command="{Binding EaseCommand}" CommandParameter="4" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Hard" Width="75" Command="{Binding EaseCommand}" CommandParameter="3" IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+            </StackPanel>
 
-        <!-- Rating message -->
-        <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="60" FontSize="16" Foreground="Green"/>
+            <!-- Rating message -->
+            <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="60" FontSize="16" Foreground="Green"/>
+        </Grid>
+            <!--Motivational message -->
+        <TextBlock x:Name="MotivationalMessageBlock" Text="{Binding MotivationalMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="60" FontSize="32" Foreground="Green"/>
     </Grid>
 </UserControl>
 

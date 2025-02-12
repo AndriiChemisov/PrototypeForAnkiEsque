@@ -22,24 +22,44 @@ namespace PrototypeForAnkiEsque.Views
             var navigationService = App.ServiceProvider.GetRequiredService<NavigationService>();
 
             // Create and set up the binding for the visibility of the back of the card
-            var visibilityBinding = new System.Windows.Data.Binding("IsAnswerVisible")
+            var backVisibilityBinding = new System.Windows.Data.Binding("IsAnswerVisible")
             {
                 Source = DataContext,
                 Converter = booleanToVisibilityConverter
             };
 
             // Apply the binding to the visibility of the back TextBox
-            BackTextBox.SetBinding(TextBox.VisibilityProperty, visibilityBinding);
+            BackTextBox.SetBinding(TextBox.VisibilityProperty, backVisibilityBinding);
+
+            var gridVisibilityBinding = new System.Windows.Data.Binding("IsGridVisible")
+            {
+                Source = DataContext,
+                Converter = booleanToVisibilityConverter
+            };
+
+            MainGrid.SetBinding(VisibilityProperty, gridVisibilityBinding);
 
             // Subscribe to the ViewModel event for triggering the fade-out animation
             var viewModel = (FlashcardViewModel)DataContext;
             viewModel.OnFadeOutMessage += ViewModel_OnFadeOutMessage;
+            viewModel.OnFadeoutMotivationalMessage += ViewModel_OnFadeoutMotivationalMessage;
         }
 
         // Trigger the fade-out animation when the event is called from the ViewModel
         private void ViewModel_OnFadeOutMessage()
         {
             var fadeOutStoryboard = (Storyboard)Resources["FadeOutAnimation"];
+            var animation = fadeOutStoryboard.Children[0] as DoubleAnimation; // Assuming RatingMessageTextBlock is the 1st child
+            animation.To = 0; // Update opacity to 0 for fading out
+            fadeOutStoryboard.Begin();
+        }
+
+        // Trigger the fade-out animation for MotivationalMessageBlock
+        private void ViewModel_OnFadeoutMotivationalMessage()
+        {
+            var fadeOutStoryboard = (Storyboard)Resources["FadeOutAnimation"];
+            var animation = fadeOutStoryboard.Children[1] as DoubleAnimation; // Assuming MotivationalMessageBlock is the 2nd child
+            animation.To = 0; // Update opacity to 0 for fading out
             fadeOutStoryboard.Begin();
         }
 
@@ -48,6 +68,7 @@ namespace PrototypeForAnkiEsque.Views
         {
             // Reset the opacity after the fade-out is complete
             RatingMessageTextBlock.Opacity = 1;
+            MotivationalMessageBlock.Opacity = 1;
         }
     }
 }

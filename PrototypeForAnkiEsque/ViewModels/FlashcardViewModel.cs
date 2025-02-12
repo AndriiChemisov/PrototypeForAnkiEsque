@@ -2,7 +2,6 @@
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Data;
-using System.Linq;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
@@ -10,15 +9,18 @@ namespace PrototypeForAnkiEsque.ViewModels
     {
         private readonly FlashcardService _flashcardService;
         private readonly NavigationService _navigationService;
+        private readonly MainMenuViewModel _mainMenuViewModel;
         private readonly ApplicationDbContext _dbContext;
 
         private List<Flashcard> _flashcards;
         private int _currentCardIndex;
 
-        public FlashcardViewModel(FlashcardService flashcardService, NavigationService navigationService, ApplicationDbContext dbContext)
+
+        public FlashcardViewModel(FlashcardService flashcardService, NavigationService navigationService, ApplicationDbContext dbContext, MainMenuViewModel mainMenuViewModel)
         {
             _flashcardService = flashcardService;
             _navigationService = navigationService;
+            _mainMenuViewModel = mainMenuViewModel;
             _dbContext = dbContext;
 
             // Initialize commands
@@ -37,6 +39,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             // Load the first flashcard
             LoadCurrentCard();
         }
+
 
         public ICommand ShowAnswerCommand { get; }
         public ICommand NextCommand { get; }
@@ -58,6 +61,13 @@ namespace PrototypeForAnkiEsque.ViewModels
             set => SetProperty(ref _ratingMessage, value);
         }
 
+        private string _motivationalMessage;
+        public string MotivationalMessage
+        {
+            get => _motivationalMessage;
+            set => SetProperty(ref _motivationalMessage, value);
+        }
+
         private bool _isRatingClicked;
         public bool IsRatingClicked
         {
@@ -72,12 +82,20 @@ namespace PrototypeForAnkiEsque.ViewModels
             set => SetProperty(ref _isAnswerVisible, value);
         }
 
+        private bool _isGridVisible = true;
+        public bool IsGridVisible
+        {
+            get => _isGridVisible;
+            set => SetProperty(ref _isGridVisible, value);
+        }
+
+
         private void ShowAnswer()
         {
             IsAnswerVisible = !IsAnswerVisible;
         }
 
-        private void NextCard()
+        private async void NextCard()
         {
             // Reset the rating state before going to the next card
             IsRatingClicked = false;
@@ -86,8 +104,19 @@ namespace PrototypeForAnkiEsque.ViewModels
             // Check if we've reached the end of the flashcards
             if (_currentCardIndex >= _flashcards.Count - 1)
             {
-                // Navigate to the MainMenuView when cards run out
-                _navigationService.GetMainMenuView();
+                // Hide content before triggering the animation
+                IsGridVisible = !IsGridVisible;
+
+                MotivationalMessage = "Well done - you finished the deck!";
+
+                // Trigger the fade-out animation
+                TriggerFadeOutAnimationForMotivationalMessage();
+
+                // Wait for the animation to complete before navigating
+                await Task.Delay(2000);  // Match the animation duration (2 seconds)
+
+                // Navigate to the MainMenuView when animation completes
+                await _navigationService.GetMainMenuViewAsync();
                 return;
             }
 
@@ -128,7 +157,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             IsRatingClicked = true;
 
             //Trigger fadeout animation for the message
-            TriggerFadeOutAnimation();
+            TriggerFadeOutAnimation(); 
         }
 
         private void TriggerFadeOutAnimation()
@@ -137,17 +166,23 @@ namespace PrototypeForAnkiEsque.ViewModels
             OnFadeOutMessage?.Invoke();
         }
 
-        // Event for view to subscribe and trigger animation
-        public event Action OnFadeOutMessage;
-
-        private void OpenMainMenu()
+        private void TriggerFadeOutAnimationForMotivationalMessage()
         {
-            _navigationService.GetMainMenuView();
+            OnFadeoutMotivationalMessage?.Invoke();
         }
 
-        private void OpenFlashcardEntry()
+        // Event for view to subscribe and trigger animation
+        public event Action OnFadeOutMessage;
+        public event Action OnFadeoutMotivationalMessage;
+
+        private async void OpenMainMenu()
         {
-            _navigationService.GetFlashcardEntryView();
+            await _navigationService.GetMainMenuViewAsync();
+        }
+
+        private async void OpenFlashcardEntry()
+        {
+            await _navigationService.GetFlashcardEntryViewAsync();
         }
     }
 }

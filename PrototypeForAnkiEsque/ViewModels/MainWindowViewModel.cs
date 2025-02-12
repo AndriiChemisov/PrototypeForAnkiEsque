@@ -11,7 +11,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             _navigationService = navigationService;
             // You can default to a user control if needed, but navigation is handled by each user control's ViewModel.
-            _navigationService.GetMainMenuView(); // Or any other starting view
+            _navigationService.GetMainMenuViewAsync(); // Or any other starting view
         }
 
         public object CurrentContent
