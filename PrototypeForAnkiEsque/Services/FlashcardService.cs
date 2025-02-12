@@ -37,13 +37,13 @@ namespace PrototypeForAnkiEsque.Services
         }
 
         // Method to delete a flashcard
-        public void DeleteFlashcard(int cardId)
+        public async Task DeleteFlashcardAsync(int cardId)
         {
-            var card = _context.Flashcards.Find(cardId);
+            var card = await _context.Flashcards.FindAsync(cardId);
             if (card != null)
             {
                 _context.Flashcards.Remove(card);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(); // Save changes asynchronously
             }
         }
 

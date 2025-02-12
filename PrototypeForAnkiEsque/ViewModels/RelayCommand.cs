@@ -37,6 +37,12 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             _execute();
         }
+
+        // Call this method when you want to notify that CanExecute has changed
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 
     // RelayCommand with parameter
@@ -63,30 +69,29 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
 
         // Returns if the command can be executed with the given parameter
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null || _canExecute((T)parameter);
+        }
 
         // Executes the command with the given parameter
         public void Execute(object parameter)
         {
-            // Check if the parameter is a string (to handle conversion to int)
-            if (parameter is string stringParameter)
+            if (parameter is T param)
             {
-                // Try to parse the string as an integer
-                if (int.TryParse(stringParameter, out int parsedValue))
-                {
-                    _execute((T)(object)parsedValue); // Execute with the parsed integer value
-                }
-                else
-                {
-                    // Handle the case where conversion fails
-                    Console.WriteLine($"Failed to convert parameter '{stringParameter}' to int.");
-                }
+                _execute(param);
             }
             else
             {
-                // Handle the case where parameter is not a string or is of the wrong type
-                Console.WriteLine($"Expected a string parameter, but got {parameter?.GetType().Name}.");
+                // Log error or handle invalid parameter
+                Console.WriteLine($"Expected parameter of type {typeof(T)}, but got {parameter?.GetType().Name}.");
             }
+        }
+
+        // Call this method when you want to notify that CanExecute has changed
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }
