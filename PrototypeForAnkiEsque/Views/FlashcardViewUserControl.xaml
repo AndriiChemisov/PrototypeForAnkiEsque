@@ -28,11 +28,11 @@
     <Grid>
         <Grid x:Name="MainGrid" Visibility="{Binding IsGridVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}">
             <!-- TextBox for front of the card, visibility bound to IsAnswerVisible -->
-            <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
+            <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True" Background="Silver"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=False}"/>
 
             <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
-            <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True"
+            <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True" Background="Silver"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
 
             <!-- Button to toggle visibility between front and back -->

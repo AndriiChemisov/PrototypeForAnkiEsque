@@ -7,7 +7,7 @@
         <!-- Add Flashcard Button -->
         <Button Content="Add Flashcard" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
+                VerticalAlignment="Top" 
                 Width="150" Height="50"
                 Command="{Binding OpenFlashcardEntryViewCommand}" 
                 Margin="0,0,0,20"/>
@@ -15,9 +15,15 @@
         <!-- Use Flashcards Button -->
         <Button Content="Use Flashcards" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom" 
+                VerticalAlignment="Center" 
                 Width="150" Height="50"
                 Command="{Binding OpenFlashcardViewCommand}" 
+                Margin="0,0,0,20"/>
+        <Button Content="All Flashcards" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Bottom" 
+                Width="150" Height="50"
+                Command="{Binding OpenFlashcardDatabaseViewCommand}" 
                 Margin="0,0,0,20"/>
     </Grid>
 </UserControl>
