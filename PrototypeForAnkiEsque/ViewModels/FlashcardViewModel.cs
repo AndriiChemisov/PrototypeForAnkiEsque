@@ -26,7 +26,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             // Initialize commands
             ShowAnswerCommand = new RelayCommand(ShowAnswer);
             NextCommand = new RelayCommand(NextCard);
-            EaseCommand = new RelayCommand<int>(SetEase);
+            EaseCommand = new RelayCommand<string>(SetEase);
             OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
             OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntry);
 
@@ -135,8 +135,9 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        private void SetEase(int ease)
+        private void SetEase(string easeString)
         {
+            int ease = Int32.Parse(easeString);
             if (CurrentCard == null)
                 return;
 
