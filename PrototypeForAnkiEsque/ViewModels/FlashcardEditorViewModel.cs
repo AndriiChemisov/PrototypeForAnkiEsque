@@ -131,6 +131,11 @@ namespace PrototypeForAnkiEsque.ViewModels
             TriggerFadeOutAnimation();
         }
 
+        private void TriggerFadeOutAnimation()
+        {
+            // This calls the animation from the view
+            OnFadeOutMessage?.Invoke();
+        }
         private async void Return()
         {
             // Navigate back without saving
@@ -138,12 +143,6 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
 
         public event Action OnFadeOutMessage;
-
-        private void TriggerFadeOutAnimation()
-        {
-            // This calls the animation from the view
-            OnFadeOutMessage?.Invoke();
-        }
     }
 
 }

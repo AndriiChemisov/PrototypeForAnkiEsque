@@ -1,11 +1,8 @@
-﻿using PrototypeForAnkiEsque.ViewModels;
-using PrototypeForAnkiEsque;
+﻿using System.Windows;
 using System.Windows.Controls;
-using PrototypeForAnkiEsque.Services;
-using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Media.Animation;
-using System.Windows;
-
+using Microsoft.Extensions.DependencyInjection;
+using PrototypeForAnkiEsque.ViewModels;
 namespace PrototypeForAnkiEsque.Views
 {
 
@@ -13,14 +10,20 @@ namespace PrototypeForAnkiEsque.Views
     {
         public FlashcardEditorUserControl()
         {
-            InitializeComponent();
-
             // Initialize ViewModel and set DataContext
-            DataContext = App.ServiceProvider.GetRequiredService<FlashcardEditorViewModel>();
-            var viewModel = (FlashcardEditorViewModel)DataContext;
-
             // Subscribe to events in ViewModel
-            viewModel.OnFadeOutMessage += ViewModel_OnFadeOutMessage;  // Hook up fade-out animation
+            InitializeComponent();
+            Loaded += FlashcardEditorUserControl_Loaded; //Without this the animation doesn't trigger
+            DataContext = App.ServiceProvider.GetRequiredService<FlashcardEditorViewModel>();
+        }
+
+        private void FlashcardEditorUserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is FlashcardEditorViewModel viewModel)
+            {
+                viewModel.OnFadeOutMessage -= ViewModel_OnFadeOutMessage; // Avoid duplicate subscriptions
+                viewModel.OnFadeOutMessage += ViewModel_OnFadeOutMessage;
+            }
         }
 
         private void ViewModel_OnFadeOutMessage()
