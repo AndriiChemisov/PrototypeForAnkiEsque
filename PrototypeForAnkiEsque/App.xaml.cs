@@ -44,12 +44,14 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardEntryUserControl>();
             services.AddTransient<FlashcardViewUserControl>();
             services.AddTransient<FlashcardDatabaseUserControl>();
+            services.AddTransient<FlashcardEditorUserControl>();
 
             // Register ViewModels
             services.AddTransient<MainMenuViewModel>();
             services.AddTransient<FlashcardEntryViewModel>();
             services.AddTransient<FlashcardViewModel>();
             services.AddTransient<FlashcardDatabaseViewModel>();
+            services.AddTransient<FlashcardEditorViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
