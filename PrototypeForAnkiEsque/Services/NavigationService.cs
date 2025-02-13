@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PrototypeForAnkiEsque.Models;
+using PrototypeForAnkiEsque.ViewModels;
 using PrototypeForAnkiEsque.Views;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace PrototypeForAnkiEsque.Services
 {
@@ -47,13 +49,21 @@ namespace PrototypeForAnkiEsque.Services
             await NavigateAsync(flashcardDatabaseView); // Asynchronously set the content
         }
 
-        // Navigate to the Flashcard Editor view (user control)
-        //public async Task GetFlashcardEditorViewAsync(Flashcard flashcard)
-        //{
-        //    var flashcardEditorView = _serviceProvider.GetRequiredService<FlashcardEditorView>();
-        //    flashcardEditorView.DataContext = new FlashcardEditorViewModel(flashcard, this); // Pass flashcard to editor
-        //    await NavigateAsync(flashcardEditorView); // Asynchronously set the content
-        //}
+        //Navigate to the Flashcard Editor view(user control)
+        public async Task GetFlashcardEditorViewAsync(Flashcard flashcard)
+        {
+            var flashcardEditorView = _serviceProvider.GetRequiredService<FlashcardEditorUserControl>();
+            var viewModel = new FlashcardEditorViewModel(
+                _serviceProvider.GetRequiredService<FlashcardService>(),
+                _serviceProvider.GetRequiredService<NavigationService>()
+            );
+            viewModel.Initialize(flashcard);
+            flashcardEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
+
+            await NavigateAsync(flashcardEditorView); // Asynchronously set the content
+        }
+
+
 
         // General method to perform navigation asynchronously
         private async Task NavigateAsync(UserControl userControl)

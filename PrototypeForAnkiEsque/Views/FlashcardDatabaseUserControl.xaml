@@ -10,6 +10,7 @@
         <DataGrid x:Name="FlashcardDataGrid" 
                   AutoGenerateColumns="False"  
                   CanUserAddRows="false"
+                  IsReadOnly="True"
                   SelectionChanged="FlashcardDataGrid_SelectionChanged"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 60, 0, 50"
                   ItemsSource="{Binding Flashcards}">
@@ -23,8 +24,8 @@
 
         <!-- Edit and Delete buttons -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,0,20">
-            <Button Content="Edit" Width="100" Margin="10" IsEnabled="{Binding IsEditButtonEnabled}" Command="{Binding EditCommand}"/>
-            <Button Content="Delete" Width="100" Margin="10" IsEnabled="{Binding IsDeleteButtonEnabled}" Command="{Binding DeleteCommand}"/>
+            <Button Content="Edit" Width="100" Margin="10" Command="{Binding EditCommand}"/>
+            <Button Content="Delete" Width="100" Margin="10" Command="{Binding DeleteCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

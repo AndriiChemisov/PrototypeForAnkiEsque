@@ -46,13 +46,14 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     // Command for editing the selected flashcard
     public ICommand EditCommand { get; }
 
+
     private void EditFlashcard()
     {
-        //if (SelectedFlashcard != null)
-        //{
-        //    // Navigate to the FlashcardEditorView with the selected flashcard
-        //    _navigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
-        //}
+        if (SelectedFlashcard != null)
+        {
+            // Navigate to the FlashcardEditorView with the selected flashcard
+            _navigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
+        }
     }
 
     private bool CanEditFlashcard()

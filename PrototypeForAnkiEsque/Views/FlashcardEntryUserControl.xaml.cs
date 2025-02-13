@@ -28,6 +28,8 @@ namespace PrototypeForAnkiEsque.Views
         {
             // Reset the opacity after the fade-out is complete
             SavedMessageText.Opacity = 1;
+            var viewModel = (FlashcardEntryViewModel)DataContext;
+            viewModel.IsSavedMessageVisible = Visibility.Collapsed;
         }
     }
 }
