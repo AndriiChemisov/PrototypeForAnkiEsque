@@ -72,6 +72,14 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async void SaveFlashcard()
         {
+
+            if (string.IsNullOrWhiteSpace(Front) || string.IsNullOrWhiteSpace(Back))
+            {
+                // Show alert if front or back are blank
+                MessageBox.Show("The flashcard cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             var flashcard = new Flashcard
             {
                 Front = Front,
