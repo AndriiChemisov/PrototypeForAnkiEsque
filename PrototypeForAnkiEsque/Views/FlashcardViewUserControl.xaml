@@ -48,15 +48,15 @@
             <!-- Rating Buttons -->
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20">
                 <Button Content="Easy" Width="75" Command="{Binding EaseCommand}" 
-                    CommandParameter="5" 
+                    CommandParameter="0" 
                     IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
 
                 <Button Content="Good" Width="75" Command="{Binding EaseCommand}" 
-                    CommandParameter="4" 
+                    CommandParameter="1" 
                     IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
 
                 <Button Content="Hard" Width="75" Command="{Binding EaseCommand}" 
-                    CommandParameter="3" 
+                    CommandParameter="2" 
                     IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
             </StackPanel>
 

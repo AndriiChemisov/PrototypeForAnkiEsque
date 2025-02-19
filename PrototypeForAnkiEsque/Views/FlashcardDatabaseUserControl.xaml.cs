@@ -2,6 +2,8 @@
 using PrototypeForAnkiEsque.Models;
 using System.Windows.Controls;
 using PrototypeForAnkiEsque.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using PrototypeForAnkiEsque.Converters;
 
 namespace PrototypeForAnkiEsque.Views
 {

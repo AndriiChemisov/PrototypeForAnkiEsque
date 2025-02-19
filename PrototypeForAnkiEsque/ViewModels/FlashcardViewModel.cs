@@ -142,15 +142,15 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
 
             // Update ease rating in the database
-            CurrentCard.EaseFactor = ease;
+            CurrentCard.EaseRating = ease;
             _flashcardService.UpdateFlashcard(CurrentCard); // Update flashcard using the service
 
             // Provide a message based on the ease rating
             RatingMessage = ease switch
             {
-                5 => "Great! You're mastering this card.",
-                4 => "Good! You're doing well.",
-                3 => "Keep going! You'll get it soon.",
+                0 => "Great! You're mastering this card.",
+                1 => "Good! You're doing well.",
+                2 => "Keep going! You'll get it soon.",
                 _ => "Keep practicing!",
             };
 
