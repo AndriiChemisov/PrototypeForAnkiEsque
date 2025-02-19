@@ -1,28 +1,22 @@
 ﻿<UserControl x:Class="PrototypeForAnkiEsque.Views.FlashcardDeckSelectionUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:PrototypeForAnkiEsque.Converters"
-             Height="450" Width="800"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <UserControl.Resources>
-        <!-- Value Converter to calculate difficulty -->
-        <converters:DifficultyConverter x:Key="DifficultyConverter"/>
-    </UserControl.Resources>
+             Height="450" Width="800">
 
     <Grid>
         <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}" />
-        <ListBox ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck}" Height="350">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <!-- Display Deck Name -->
-                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                        <!-- Display Difficulty calculated using the DifficultyConverter -->
-                        <TextBlock Text="{Binding EaseRating, Converter={StaticResource DifficultyConverter}}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+
+        <!-- Define the DataGrid -->
+        <DataGrid ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck}" IsReadOnly="True" Height="350" AutoGenerateColumns="False" Margin="10">
+            <!-- Define Columns -->
+            <DataGrid.Columns>
+                <!-- Column for Deck Name -->
+                <DataGridTextColumn Header="Deck Name" Binding="{Binding Name}" Width="*"/>
+
+                <!-- Column for Ease Rating -->
+                <DataGridTextColumn Header="Ease Rating" Binding="{Binding EaseRating}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Button Content="Review Deck" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" />
         <Button Content="Edit Deck" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />

@@ -106,7 +106,9 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            await _deckService.CreateDeckAsync(DeckName, selectedIds);
+            string easeRating = _deckService.CalculateEaseRating(selectedIds);
+
+            await _deckService.CreateDeckAsync(DeckName, selectedIds, easeRating);
             MessageBox.Show("Deck created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             SelectedFlashcards.Clear();
             DeckName = string.Empty;

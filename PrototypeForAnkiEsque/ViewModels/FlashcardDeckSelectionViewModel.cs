@@ -1,21 +1,23 @@
-﻿using System.Windows;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using System.Threading.Tasks;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckSelectionViewModel : BaseViewModel
     {
         private readonly DeckService _deckService;
-        private readonly Services.NavigationService _navigationService;
+        private readonly NavigationService _navigationService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
+        private const int PageSize = 10;
+        private int _currentPage = 1;
 
-        public ObservableCollection<FlashcardDeck> Decks { get; set; }
+        public ObservableCollection<FlashcardDeck> Decks { get; private set; } = new();
 
         public ICommand ReviewDeckCommand { get; }
         public ICommand EditDeckCommand { get; }
@@ -34,25 +36,40 @@ namespace PrototypeForAnkiEsque.ViewModels
             set => SetProperty(ref _errorMessage, value);
         }
 
-        public FlashcardDeckSelectionViewModel(DeckService deckService, Services.NavigationService navigationService)
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage != value)
+                {
+                    _currentPage = value;
+                    LoadDecksAsync();
+                }
+            }
+        }
+
+        public FlashcardDeckSelectionViewModel(DeckService deckService, NavigationService navigationService)
         {
             _deckService = deckService;
             _navigationService = navigationService;
 
-            ReviewDeckCommand = new RelayCommand(ReviewDeck);
+            ReviewDeckCommand = new RelayCommand(ReviewDeckAsync);
             EditDeckCommand = new RelayCommand(EditDeck);
-            DeleteDeckCommand = new RelayCommand(DeleteDeck);
-            OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
+            DeleteDeckCommand = new RelayCommand(DeleteDeckAsync);
+            OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
 
-            LoadDecks();
+            LoadDecksAsync();
         }
 
-        private void LoadDecks()
+        private async void LoadDecksAsync()
         {
-            Decks = new ObservableCollection<FlashcardDeck>(_deckService.GetAllDecks());
+            var decks = await Task.Run(() => _deckService.GetPagedDecks(_currentPage, PageSize).ToList());
+            Decks = new ObservableCollection<FlashcardDeck>(decks);
+            OnPropertyChanged(nameof(Decks));
         }
 
-        private async void ReviewDeck()
+        private async void ReviewDeckAsync()
         {
             if (SelectedDeck == null)
             {
@@ -60,8 +77,6 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            // Proceed with reviewing the selected deck
-            // Navigate to FlashcardView and pass the selected deck
             await _navigationService.GetFlashcardViewAsync(SelectedDeck);
         }
 
@@ -70,14 +85,10 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (SelectedDeck == null)
             {
                 ShowErrorMessage("Please select a deck to edit.");
-                return;
             }
-
-            // Proceed with editing the selected deck
-            // Navigate to DeckEditorView and pass the selected deck
         }
 
-        private async void DeleteDeck()
+        private async void DeleteDeckAsync()
         {
             if (SelectedDeck == null)
             {
@@ -85,25 +96,22 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            // Confirm deletion
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this deck?", "Confirm Deletion", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
+            if (MessageBox.Show("Are you sure you want to delete this deck?",
+                "Confirm Deletion", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                // Proceed with deck deletion
                 await _deckService.DeleteDeckAsync(SelectedDeck.Id);
-                LoadDecks(); // Reload deck list after deletion
-                OnPropertyChanged(nameof(Decks)); // This should force the UI to update
+                LoadDecksAsync();
             }
+        }
+
+        private async void OpenMainMenuAsync()
+        {
+            await _navigationService.GetMainMenuViewAsync();
         }
 
         private void ShowErrorMessage(string message)
         {
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        private async void OpenMainMenu()
-        {
-            await _navigationService.GetMainMenuViewAsync();
         }
     }
 }
