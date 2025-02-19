@@ -24,7 +24,6 @@ namespace PrototypeForAnkiEsque.ViewModels
             _navigationService = navigationService;
             SaveFlashcardCommand = new RelayCommand(SaveFlashcard);
             OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
-            OpenFlashcardViewCommand = new RelayCommand(OpenFlashcardView);
             IsSavedMessageVisible = Visibility.Collapsed; // Initially hide the saved message
         }
 
@@ -70,7 +69,6 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         public ICommand SaveFlashcardCommand { get; }
         public ICommand OpenMainMenuCommand { get; }
-        public ICommand OpenFlashcardViewCommand { get; }
 
         private async void SaveFlashcard()
         {
@@ -128,9 +126,5 @@ namespace PrototypeForAnkiEsque.ViewModels
             await _navigationService.GetMainMenuViewAsync();
         }
 
-        private async void OpenFlashcardView()
-        {
-            await _navigationService.GetFlashcardViewAsync();
-        }
     }
 }

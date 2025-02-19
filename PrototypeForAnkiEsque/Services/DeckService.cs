@@ -1,7 +1,9 @@
-﻿using PrototypeForAnkiEsque.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PrototypeForAnkiEsque.Services
 {
@@ -20,7 +22,7 @@ namespace PrototypeForAnkiEsque.Services
                 .Any(d => d.Name.ToLower() == deckName.ToLower());
         }
 
-        public void CreateDeck(string deckName, List<int> flashcardIds)
+        public async Task CreateDeckAsync(string deckName, List<int> flashcardIds)
         {
             var newDeck = new FlashcardDeck
             {
@@ -29,7 +31,7 @@ namespace PrototypeForAnkiEsque.Services
             };
 
             _context.FlashcardDecks.Add(newDeck);
-            _context.SaveChanges();  // Persist changes to the database
+            await _context.SaveChangesAsync();  // Persist changes to the database asynchronously
         }
 
         public List<FlashcardDeck> GetAllDecks()
@@ -40,6 +42,18 @@ namespace PrototypeForAnkiEsque.Services
         public FlashcardDeck GetDeckById(int id)
         {
             return _context.FlashcardDecks.FirstOrDefault(d => d.Id == id);
+        }
+
+        public async Task DeleteDeckAsync(int deckId)
+        {
+            var deckToDelete = await _context.FlashcardDecks
+                .FirstOrDefaultAsync(d => d.Id == deckId);
+
+            if (deckToDelete != null)
+            {
+                _context.FlashcardDecks.Remove(deckToDelete);
+                await _context.SaveChangesAsync(); // Asynchronously save changes
+            }
         }
     }
 }
