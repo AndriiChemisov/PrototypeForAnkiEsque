@@ -23,7 +23,20 @@ namespace PrototypeForAnkiEsque.Data
 
             if (!context.Flashcards.Any())
             {
-                context.Flashcards.AddRange(new Flashcard { Front = "人", Back = "Human", EaseRating = 1});
+                context.Flashcards.AddRange(
+                    new Flashcard { Front = "人", Back = "にんげん ー Human", EaseRating = 1},
+                    new Flashcard { Front = "犬", Back = "いぬ ー Dog", EaseRating = 1 },
+                    new Flashcard { Front = "猫", Back = "ねこ ー Cat", EaseRating = 1 },
+                    new Flashcard { Front = "鳥", Back = "とり ー Bird", EaseRating = 1 },
+                    new Flashcard { Front = "魚", Back = "さかな ー Fish", EaseRating = 1 },
+                    new Flashcard { Front = "馬", Back = "うま ー Horse", EaseRating = 1 },
+                    new Flashcard { Front = "牛", Back = "うし ー Cow", EaseRating = 1 },
+                    new Flashcard { Front = "羊", Back = "ひつじ ー Sheep", EaseRating = 1 },
+                    new Flashcard { Front = "豚", Back = "ぶた ー Pig", EaseRating = 1 }
+                    );
+                context.FlashcardDecks.AddRange(
+                    new FlashcardDeck { Name = "動物 ー Animals", FlashcardIds = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 }, EaseRating = "1" }
+                    );
                 context.SaveChanges();
             }
         }
