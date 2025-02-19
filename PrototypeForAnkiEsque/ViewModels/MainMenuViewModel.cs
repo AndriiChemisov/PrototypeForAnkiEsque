@@ -17,11 +17,15 @@ namespace PrototypeForAnkiEsque.ViewModels
             OpenFlashcardViewCommand = new RelayCommand(() => OpenFlashcardView());
             OpenFlashcardEntryViewCommand = new RelayCommand(() => OpenFlashcardEntryView());
             OpenFlashcardDatabaseViewCommand = new RelayCommand(() => OpenFlashcardDatabaseView());
+            OpenFlashcardDeckCreatorViewCommand = new RelayCommand(() => OpenFlashcardDeckCreatorView());
+
         }
 
         public ICommand OpenFlashcardViewCommand { get; }
         public ICommand OpenFlashcardEntryViewCommand { get; }
         public ICommand OpenFlashcardDatabaseViewCommand { get; }
+        public ICommand OpenFlashcardDeckCreatorViewCommand { get; }
+
 
         // Navigate to Flashcard view
         private async void OpenFlashcardView()
@@ -38,6 +42,11 @@ namespace PrototypeForAnkiEsque.ViewModels
         private async void OpenFlashcardDatabaseView()
         {
             await _navigationService.GetFlashcardDatabaseViewAsync();
+        }
+
+        private async void OpenFlashcardDeckCreatorView()
+        {
+            await _navigationService.GetFlashcardDeckCreatorViewAsync();
         }
     }
 }

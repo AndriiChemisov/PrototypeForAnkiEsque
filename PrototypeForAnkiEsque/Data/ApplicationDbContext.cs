@@ -16,9 +16,11 @@ namespace PrototypeForAnkiEsque.Data
         { }
 
         public DbSet<Flashcard> Flashcards { get; set; }
+        public DbSet<FlashcardDeck> FlashcardDecks { get; set; }
 
         public static void Seed(ApplicationDbContext context)
         {
+
             if (!context.Flashcards.Any())
             {
                 context.Flashcards.AddRange(new Flashcard { Front = "人", Back = "Human", EaseRating = 1});

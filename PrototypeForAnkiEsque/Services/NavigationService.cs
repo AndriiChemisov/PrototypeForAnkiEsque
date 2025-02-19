@@ -65,7 +65,12 @@ namespace PrototypeForAnkiEsque.Services
             await NavigateAsync(flashcardEditorView); // Asynchronously set the content
         }
 
-
+        // Navigate to the Flashcard Deck Creator view (user control) asynchronously
+        public async Task GetFlashcardDeckCreatorViewAsync()
+        {
+            var flashcardDeckCreatorView = _serviceProvider.GetRequiredService<FlashcardDeckCreatorUserControl>();
+            await NavigateAsync(flashcardDeckCreatorView); // Asynchronously set the content
+        }
 
         // General method to perform navigation asynchronously
         private async Task NavigateAsync(UserControl userControl)
