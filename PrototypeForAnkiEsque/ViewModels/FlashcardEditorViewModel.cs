@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
+using System.Linq;
+using PrototypeForAnkiEsque.Data;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardEditorViewModel : BaseViewModel
     {
+        private readonly ApplicationDbContext _dbContext;
         private readonly FlashcardService _flashcardService;
         private readonly NavigationService _navigationService;
         private Flashcard _flashcard;
@@ -18,8 +22,9 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _savedMessage;
         private bool _isSavedMessageVisible;
 
-        public FlashcardEditorViewModel(FlashcardService flashcardService, NavigationService navigationService)
+        public FlashcardEditorViewModel(FlashcardService flashcardService, NavigationService navigationService, ApplicationDbContext dbContext)
         {
+            _dbContext = dbContext;
             _flashcardService = flashcardService;
             _navigationService = navigationService;
             SaveFlashcardCommand = new RelayCommand(SaveFlashcard);
@@ -109,12 +114,23 @@ namespace PrototypeForAnkiEsque.ViewModels
             EditableBack = _back;
         }
 
-        private void SaveFlashcard()
+        private async void SaveFlashcard()
         {
             if (string.IsNullOrWhiteSpace(EditableFront) || string.IsNullOrWhiteSpace(EditableBack))
             {
                 // Show alert if front or back are blank
                 MessageBox.Show("The flashcard cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Check for duplicates (case insensitive due to how EntityFramework works)
+            var existingFlashcard = await _dbContext.Flashcards
+                                .FirstOrDefaultAsync(f => f.Front.ToLower() == Front.ToLower());
+
+            if (existingFlashcard != null)
+            {
+                // If a duplicate is found, show a warning message
+                MessageBox.Show("This flashcard already exists!", "Duplicate Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

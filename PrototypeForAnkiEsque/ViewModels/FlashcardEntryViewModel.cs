@@ -4,6 +4,8 @@ using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
@@ -72,11 +74,22 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async void SaveFlashcard()
         {
-
+            //Ensure that the flashcard is not blank
             if (string.IsNullOrWhiteSpace(Front) || string.IsNullOrWhiteSpace(Back))
             {
                 // Show alert if front or back are blank
-                MessageBox.Show("The flashcard cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("The flashcard cannot have blank sides!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Check for duplicates (case insensitive due to how EntityFramework works)
+            var existingFlashcard = await _dbContext.Flashcards
+                                .FirstOrDefaultAsync(f => f.Front.ToLower() == Front.ToLower());
+
+            if (existingFlashcard != null)
+            {
+                // If a duplicate is found, show a warning message
+                MessageBox.Show("This flashcard already exists!", "Duplicate Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
