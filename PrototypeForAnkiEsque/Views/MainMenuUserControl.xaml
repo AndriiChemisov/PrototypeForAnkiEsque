@@ -4,26 +4,34 @@
              Height="200" Width="400">
 
     <Grid>
-        <!-- Add Flashcard Button -->
-        <Button Content="Add Flashcard" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top" 
-                Width="150" Height="50"
-                Command="{Binding OpenFlashcardEntryViewCommand}" 
-                Margin="0,0,0,20"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <!-- Add Flashcard Button -->
+            <Button Content="Add Flashcard" 
+                    HorizontalAlignment="Stretch"
+                    Width="150" Height="20"
+                    Command="{Binding OpenFlashcardEntryViewCommand}" 
+                    Margin="0,0,0,10" />
 
-        <!-- Use Flashcards Button -->
-        <Button Content="Use Flashcards" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Width="150" Height="50"
-                Command="{Binding OpenFlashcardViewCommand}" 
-                Margin="0,0,0,20"/>
-        <Button Content="All Flashcards" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom" 
-                Width="150" Height="50"
-                Command="{Binding OpenFlashcardDatabaseViewCommand}" 
-                Margin="0,0,0,20"/>
+            <!-- Use Flashcards Button -->
+            <Button Content="Use Flashcards" 
+                    HorizontalAlignment="Stretch" 
+                    Width="150" Height="20" 
+                    Command="{Binding OpenFlashcardViewCommand}" 
+                    Margin="0,0,0,10" />
+
+            <!-- All Flashcards Button -->
+            <Button Content="All Flashcards" 
+                    HorizontalAlignment="Stretch" 
+                    Width="150" Height="20" 
+                    Command="{Binding OpenFlashcardDatabaseViewCommand}" 
+                    Margin="0,0,0,10" />
+
+            <!-- Deck Creator Button -->
+            <Button Content="Create Deck" 
+                    HorizontalAlignment="Stretch" 
+                    Width="150" Height="20" 
+                    Command="{Binding OpenFlashcardDeckCreatorViewCommand}" 
+                    Margin="0,0,0,10" />
+        </StackPanel>
     </Grid>
 </UserControl>
