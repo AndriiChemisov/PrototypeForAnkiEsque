@@ -30,11 +30,17 @@ namespace PrototypeForAnkiEsque.Services
         }
 
         // Navigate to the Flashcard view (user control) asynchronously
-        public async Task GetFlashcardViewAsync()
+        public async Task GetFlashcardViewAsync(FlashcardDeck selectedDeck)
         {
             var flashcardView = _serviceProvider.GetRequiredService<FlashcardViewUserControl>();
+
+            // Pass the selected deck to the view
+            var viewModel = (FlashcardViewModel)flashcardView.DataContext;
+            viewModel.SetSelectedDeck(selectedDeck);
+
             await NavigateAsync(flashcardView); // Asynchronously set the content
         }
+
 
         // Navigate to the Flashcard Entry view (user control) asynchronously
         public async Task GetFlashcardEntryViewAsync()
@@ -70,6 +76,12 @@ namespace PrototypeForAnkiEsque.Services
         {
             var flashcardDeckCreatorView = _serviceProvider.GetRequiredService<FlashcardDeckCreatorUserControl>();
             await NavigateAsync(flashcardDeckCreatorView); // Asynchronously set the content
+        }
+
+        public async Task GetFlashcardDeckSelectionViewAsync()
+        {
+            var flashcardDeckSelectionView = _serviceProvider.GetRequiredService<FlashcardDeckSelectionUserControl>();
+            await NavigateAsync(flashcardDeckSelectionView); // Asynchronously set the content
         }
 
         // General method to perform navigation asynchronously

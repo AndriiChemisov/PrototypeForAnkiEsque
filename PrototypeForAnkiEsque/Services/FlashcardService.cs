@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using PrototypeForAnkiEsque.Models;
 using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Data;
@@ -15,13 +16,30 @@ namespace PrototypeForAnkiEsque.Services
             _context = context;
         }
 
-        // Method to retrieve flashcards from the database
+        // Method to retrieve all flashcards from the database
         public List<Flashcard> GetFlashcards()
         {
             return _context.Flashcards.ToList(); // Get all flashcards from the database
         }
 
-        // Add more methods for adding, updating, or deleting flashcards as necessary
+        // Method to retrieve flashcards by deck ID using the FlashcardIds in the FlashcardDeck
+        public List<Flashcard> GetFlashcardsByDeck(int deckId)
+        {
+            // Get the deck by ID
+            var deck = _context.FlashcardDecks
+                               .FirstOrDefault(d => d.Id == deckId);
+
+            if (deck != null && deck.FlashcardIds != null)
+            {
+                // Get flashcards that match the IDs in the FlashcardIds list
+                return _context.Flashcards
+                               .Where(fc => deck.FlashcardIds.Contains(fc.Id))
+                               .ToList();
+            }
+
+            return new List<Flashcard>(); // Return an empty list if no deck is found
+        }
+
         // Method to add a flashcard
         public void AddFlashcard(Flashcard card)
         {
@@ -46,6 +64,5 @@ namespace PrototypeForAnkiEsque.Services
                 await _context.SaveChangesAsync(); // Save changes asynchronously
             }
         }
-
     }
 }

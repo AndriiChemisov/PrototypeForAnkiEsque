@@ -38,6 +38,7 @@ namespace PrototypeForAnkiEsque
             services.AddSingleton<BooleanToVisibilityConverter>();
             services.AddSingleton<DIValueConverterProvider>();
             services.AddSingleton<EaseRatingToStringConverter>();
+            services.AddSingleton<DifficultyConverter>();
 
             // Register services and views
             services.AddSingleton<Services.NavigationService>();
@@ -48,6 +49,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardDatabaseUserControl>();
             services.AddTransient<FlashcardEditorUserControl>();
             services.AddTransient<FlashcardDeckCreatorUserControl>();
+            services.AddTransient<FlashcardDeckSelectionUserControl>();
 
             // Register ViewModels
             services.AddTransient<MainMenuViewModel>();
@@ -56,6 +58,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardDatabaseViewModel>();
             services.AddTransient<FlashcardEditorViewModel>();
             services.AddTransient<FlashcardDeckCreatorViewModel>();
+            services.AddTransient<FlashcardDeckSelectionViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

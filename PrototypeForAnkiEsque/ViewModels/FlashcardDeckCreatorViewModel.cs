@@ -32,6 +32,8 @@ namespace PrototypeForAnkiEsque.ViewModels
             NextPageCommand = new RelayCommand(NextPage, CanGoToNextPage);
             CreateDeckCommand = new RelayCommand(CreateDeck, CanCreateDeck);
             OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
+            ToggleFlashcardSelectionCommand = new RelayCommand<int>(ToggleSelection);
+
         }
 
         public ObservableCollection<Flashcard> Flashcards { get; set; }
@@ -56,6 +58,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand NextPageCommand { get; }
         public ICommand CreateDeckCommand { get; }
         public ICommand OpenMainMenuCommand { get; }
+        public ICommand ToggleFlashcardSelectionCommand { get; }
 
         private void LoadPage(int pageNumber)
         {
@@ -85,7 +88,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private bool CanGoToNextPage() => _currentPage < (_allFlashcards.Count + PageSize - 1) / PageSize;
 
-        private void CreateDeck()
+        private async void CreateDeck()
         {
             var selectedIds = Flashcards.Where(f => SelectedFlashcards.ContainsKey(f.Id) && SelectedFlashcards[f.Id])
                                         .Select(f => f.Id)
@@ -103,20 +106,33 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            _deckService.CreateDeck(DeckName, selectedIds);
+            await _deckService.CreateDeckAsync(DeckName, selectedIds);
             MessageBox.Show("Deck created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             SelectedFlashcards.Clear();
             DeckName = string.Empty;
-
         }
 
         private bool CanCreateDeck() => !string.IsNullOrEmpty(DeckName) && SelectedFlashcards.Values.Any(v => v);
 
-        private void OpenMainMenu()
+        private async void OpenMainMenu()
         {
-            _navigationService.GetMainMenuViewAsync();
+            await _navigationService.GetMainMenuViewAsync();
         }
 
+        private void ToggleSelection(int flashcardId)
+        {
+            if (SelectedFlashcards.ContainsKey(flashcardId))
+            {
+                SelectedFlashcards[flashcardId] = !SelectedFlashcards[flashcardId];
+            }
+            else
+            {
+                SelectedFlashcards[flashcardId] = true; // Add to selection if not already present
+            }
+            // Ensure the "Create Deck" button gets enabled/disabled based on the selection
+            (CreateDeckCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        }
 
     }
+
 }

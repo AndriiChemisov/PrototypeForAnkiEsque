@@ -38,10 +38,16 @@
                 <DataGridTemplateColumn Header="Select" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.SelectedFlashcards[Id], Mode=TwoWay}"/>
+                            <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                        Path=DataContext.ToggleFlashcardSelectionCommand}"
+                      CommandParameter="{Binding Id}"
+                      IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                         Path=DataContext.SelectedFlashcards[Id], 
+                                         Mode=TwoWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTextColumn Header="Front" Binding="{Binding Front}" Width="*" />
                 <DataGridTextColumn Header="Back" Binding="{Binding Back}" Width="*" />
                 <DataGridTemplateColumn Header="Rating" Width="*">
