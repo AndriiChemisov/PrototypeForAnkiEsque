@@ -21,8 +21,7 @@ namespace PrototypeForAnkiEsque.Data
         {
             if (!context.Flashcards.Any())
             {
-                context.Flashcards.AddRange(new Flashcard { Front = "人", Back = "Human", EaseFactor = 0, Interval = 0, LastReviewed = DateTime.Today,
-                NextReview = DateTime.Today});
+                context.Flashcards.AddRange(new Flashcard { Front = "人", Back = "Human", EaseRating = 1});
                 context.SaveChanges();
             }
         }

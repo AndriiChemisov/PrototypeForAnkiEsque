@@ -37,6 +37,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardService>();
             services.AddSingleton<BooleanToVisibilityConverter>();
             services.AddSingleton<DIValueConverterProvider>();
+            services.AddSingleton<EaseRatingToStringConverter>();
 
             // Register services and views
             services.AddSingleton<Services.NavigationService>();
