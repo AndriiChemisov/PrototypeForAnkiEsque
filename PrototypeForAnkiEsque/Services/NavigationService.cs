@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.ViewModels;
 using PrototypeForAnkiEsque.Views;
@@ -55,7 +56,8 @@ namespace PrototypeForAnkiEsque.Services
             var flashcardEditorView = _serviceProvider.GetRequiredService<FlashcardEditorUserControl>();
             var viewModel = new FlashcardEditorViewModel(
                 _serviceProvider.GetRequiredService<FlashcardService>(),
-                _serviceProvider.GetRequiredService<NavigationService>()
+                _serviceProvider.GetRequiredService<NavigationService>(),
+                _serviceProvider.GetRequiredService<ApplicationDbContext>()
             );
             viewModel.Initialize(flashcard);
             flashcardEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
