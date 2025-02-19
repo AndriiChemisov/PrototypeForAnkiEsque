@@ -123,27 +123,42 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            // Check for duplicates (case insensitive due to how EntityFramework works)
-            var existingFlashcard = await _dbContext.Flashcards
-                                .FirstOrDefaultAsync(f => f.Front.ToLower() == Front.ToLower());
-
-            if (existingFlashcard != null)
+            // If the front value is changed, check for duplicates
+            if (!string.Equals(EditableFront, Front, StringComparison.OrdinalIgnoreCase))
             {
-                // If a duplicate is found, show a warning message
-                MessageBox.Show("This flashcard already exists!", "Duplicate Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                var existingFlashcard = await _dbContext.Flashcards
+                    .FirstOrDefaultAsync(f => f.Front.ToLower() == EditableFront.ToLower());
+
+                if (existingFlashcard != null)
+                {
+                    // If a duplicate is found, show a warning message
+                    MessageBox.Show("This flashcard already exists!", "Duplicate Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
             }
 
-            // Update the flashcard in the database
-            _flashcard.Front = EditableFront;
-            _flashcard.Back = EditableBack;
-            _flashcardService.UpdateFlashcard(_flashcard);
+            // Update the flashcard fields with the edited values
+            if (_flashcard != null)
+            {
+                _flashcard.Front = EditableFront;
+                _flashcard.Back = EditableBack;
 
-            // Show confirmation message and trigger animation
+                // Save the updated flashcard
+                _flashcardService.UpdateFlashcard(_flashcard);
+
+                // Show confirmation message and trigger animation
+                ShowSaveMessage();
+            }
+            else
+            {
+                MessageBox.Show("No flashcard to save!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ShowSaveMessage()
+        {
             SavedMessage = "Changes saved!";
             IsSavedMessageVisible = true;
-
-            // Trigger the fade-out animation
             TriggerFadeOutAnimation();
         }
 
