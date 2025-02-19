@@ -15,13 +15,11 @@ namespace PrototypeForAnkiEsque.Views
             DataContext = viewModel;
         }
 
-        private void FlashcardDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (FlashcardDatabaseViewModel)DataContext;
-            if (e.AddedItems.Count > 0)
-            {
-                viewModel.SelectedFlashcard = (Flashcard)e.AddedItems[0];
-            }
+
         }
     }
 }

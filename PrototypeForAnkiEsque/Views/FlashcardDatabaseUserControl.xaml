@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:PrototypeForAnkiEsque.Converters"
              Height="450" Width="800">
-    
+
     <UserControl.Resources>
         <converters:EaseRatingToStringConverter x:Key="EaseRatingToStringConverter"/>
     </UserControl.Resources>
-    
+
     <Grid>
         <!-- Navigation Button -->
         <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
@@ -17,9 +17,9 @@
                   AutoGenerateColumns="False"  
                   CanUserAddRows="false"
                   IsReadOnly="True"
-                  SelectionChanged="FlashcardDataGrid_SelectionChanged"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 60, 0, 50"
-                  ItemsSource="{Binding Flashcards}">
+                  ItemsSource="{Binding Flashcards}"
+                  SelectedItem="{Binding SelectedFlashcard, Mode=TwoWay}">
             <!-- Define column for Front property -->
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Front" Binding="{Binding Front}" Width="*" />
@@ -35,8 +35,14 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <!-- Pagination Buttons -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,10,0,20">
+            <Button Content="Previous Page" Width="100" Margin="10" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding CanGoToPreviousPage}"/>
+            <Button Content="Next Page" Width="100" Margin="10" Command="{Binding NextPageCommand}" IsEnabled="{Binding CanGoToNextPage}"/>
+        </StackPanel>
+
         <!-- Edit and Delete buttons -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,0,20">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,0,10">
             <Button Content="Edit" Width="100" Margin="10" Command="{Binding EditCommand}"/>
             <Button Content="Delete" Width="100" Margin="10" Command="{Binding DeleteCommand}"/>
         </StackPanel>
