@@ -94,7 +94,8 @@ namespace PrototypeForAnkiEsque.ViewModels
             var flashcard = new Flashcard
             {
                 Front = Front,
-                Back = Back
+                Back = Back,
+                EaseRating = 2 // Default ease rating
             };
 
             _dbContext.Flashcards.Add(flashcard);
