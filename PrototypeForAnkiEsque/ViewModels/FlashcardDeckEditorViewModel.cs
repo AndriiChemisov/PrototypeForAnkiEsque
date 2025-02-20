@@ -266,24 +266,4 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
         // Enable Save button only if changes have been made (either -> or <- was clicked)
         IsSaveButtonEnabled = AreChangesMade;
     }
-
-    private void CheckForDuplicateDeckName(string newName)
-    {
-        // Check if the deck name has changed and if it's not the same as the original name
-        if (newName != _originalDeckName)
-        {
-            // Perform the duplicate name check
-            bool isDuplicate = _deckService.CheckIfDeckNameExists(newName);  // Assuming a service method that checks for duplicates
-
-            if (isDuplicate)
-            {
-                // Show a message box or handle the duplication case here
-                MessageBox.Show("A deck with this name already exists. Please choose another name.", "Duplicate Deck Name", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                // Reset the name to the original name if it's a duplicate
-                DeckName = _originalDeckName;
-                IsSaveButtonEnabled = false;  // Disable Save button until valid name
-            }
-        }
-    }
 }
