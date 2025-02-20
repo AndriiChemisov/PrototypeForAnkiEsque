@@ -1,9 +1,12 @@
-﻿using PrototypeForAnkiEsque.Models;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using System.Windows;
 
 public class FlashcardDeckCreatorViewModel : BaseViewModel
 {
@@ -11,52 +14,45 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
     private readonly NavigationService _navigationService;
     private readonly FlashcardService _flashcardService;
     private string _deckName;
+    private string _searchAvailableText;
+    private string _searchSelectedText;
+    private bool _isAddButtonEnabled;
+    private bool _isRemoveButtonEnabled;
+    private bool _areChangesMade;
 
     public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
     public ObservableCollection<Flashcard> SelectedFlashcards { get; } = new();
 
+    public ObservableCollection<Flashcard> FilteredAvailableFlashcards { get; } = new();
+    public ObservableCollection<Flashcard> FilteredSelectedFlashcards { get; } = new();
+
     public Dictionary<int, bool> SelectedAvailableFlashcards { get; set; } = new();
     public Dictionary<int, bool> SelectedDeckFlashcards { get; set; } = new();
 
-    private bool _isAddButtonEnabled;
-    private bool _isRemoveButtonEnabled;
-    private bool _isSaveButtonEnabled;
-
-    public bool IsAddButtonEnabled
+    public string SearchAvailableText
     {
-        get => _isAddButtonEnabled;
+        get => _searchAvailableText;
         set
         {
-            if (_isAddButtonEnabled != value)
+            if (_searchAvailableText != value)
             {
-                _isAddButtonEnabled = value;
-                OnPropertyChanged(nameof(IsAddButtonEnabled));
+                _searchAvailableText = value;
+                OnPropertyChanged();
+                UpdateFilteredAvailableFlashcards();
             }
         }
     }
 
-    public bool IsRemoveButtonEnabled
+    public string SearchSelectedText
     {
-        get => _isRemoveButtonEnabled;
+        get => _searchSelectedText;
         set
         {
-            if (_isRemoveButtonEnabled != value)
+            if (_searchSelectedText != value)
             {
-                _isRemoveButtonEnabled = value;
-                OnPropertyChanged(nameof(IsRemoveButtonEnabled));
-            }
-        }
-    }
-
-    public bool IsSaveButtonEnabled
-    {
-        get => _isSaveButtonEnabled;
-        set
-        {
-            if (_isSaveButtonEnabled != value)
-            {
-                _isSaveButtonEnabled = value;
-                OnPropertyChanged(nameof(IsSaveButtonEnabled));
+                _searchSelectedText = value;
+                OnPropertyChanged();
+                UpdateFilteredSelectedFlashcards();
             }
         }
     }
@@ -68,8 +64,38 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
         {
             _deckName = value;
             OnPropertyChanged();
-            AreChangesMade = true;  // Mark as changed when the name changes
+            AreChangesMade = true;
             UpdateButtonStates();
+        }
+    }
+
+    public bool IsAddButtonEnabled
+    {
+        get => _isAddButtonEnabled;
+        set
+        {
+            _isAddButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsRemoveButtonEnabled
+    {
+        get => _isRemoveButtonEnabled;
+        set
+        {
+            _isRemoveButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool AreChangesMade
+    {
+        get => _areChangesMade;
+        set
+        {
+            _areChangesMade = value;
+            OnPropertyChanged();
         }
     }
 
@@ -86,27 +112,22 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
         _navigationService = navigationService;
         _flashcardService = flashcardService;
 
-        OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
+        OpenDeckSelectionCommand = new RelayCommand(async () => await OpenDeckSelectionAsync());
         AddFlashcardsCommand = new RelayCommand(AddFlashcards);
         RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
-        SaveDeckCommand = new RelayCommand(SaveDeck);
+        SaveDeckCommand = new RelayCommand(async () => await SaveDeckAsync());
         ToggleAvailableFlashcardSelectionCommand = new RelayCommand<int>(ToggleAvailableFlashcardSelection);
         ToggleDeckFlashcardSelectionCommand = new RelayCommand<int>(ToggleDeckFlashcardSelection);
-
-        // Initial states for buttons
-        IsAddButtonEnabled = false;
-        IsRemoveButtonEnabled = false;
-        IsSaveButtonEnabled = false;
 
         LoadFlashcards();
     }
 
-    public bool AreChangesMade { get; set; }
-
-    private async void LoadFlashcards()
+    private void LoadFlashcards()
     {
         AvailableFlashcards.Clear();
         SelectedFlashcards.Clear();
+        FilteredAvailableFlashcards.Clear();
+        FilteredSelectedFlashcards.Clear();
 
         var allFlashcards = _flashcardService.GetFlashcards();
 
@@ -115,148 +136,130 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
             AvailableFlashcards.Add(flashcard);
         }
 
+        UpdateFilteredAvailableFlashcards();
+        UpdateFilteredSelectedFlashcards();
         UpdateButtonStates();
     }
 
     private void AddFlashcards()
     {
-        foreach (var flashcard in SelectedAvailableFlashcards.Where(x => x.Value).Select(x => AvailableFlashcards.First(f => f.Id == x.Key)).ToList())
+        var selected = SelectedAvailableFlashcards
+            .Where(x => x.Value)
+            .Select(x => AvailableFlashcards.First(f => f.Id == x.Key))
+            .ToList();
+
+        foreach (var flashcard in selected)
         {
-            if (!SelectedFlashcards.Contains(flashcard))
-            {
-                SelectedFlashcards.Add(flashcard);
-                AvailableFlashcards.Remove(flashcard);
-            }
+            SelectedFlashcards.Add(flashcard);
+            AvailableFlashcards.Remove(flashcard);
         }
 
-        // Clear the selection after adding
-        foreach (var flashcard in SelectedAvailableFlashcards.Keys.ToList())
-        {
-            SelectedAvailableFlashcards[flashcard] = false;
-        }
-
-        // Disable the Add button after action
-        IsAddButtonEnabled = false;
-
-        // Mark changes
+        SelectedAvailableFlashcards.Clear();
+        UpdateFilteredAvailableFlashcards();
+        UpdateFilteredSelectedFlashcards();
         AreChangesMade = true;
-
-        // Update Save button state
         UpdateButtonStates();
     }
 
     private void RemoveFlashcards()
     {
-        foreach (var flashcard in SelectedDeckFlashcards.Where(x => x.Value).Select(x => SelectedFlashcards.First(f => f.Id == x.Key)).ToList())
+        var selected = SelectedDeckFlashcards
+            .Where(x => x.Value)
+            .Select(x => SelectedFlashcards.First(f => f.Id == x.Key))
+            .ToList();
+
+        foreach (var flashcard in selected)
         {
             SelectedFlashcards.Remove(flashcard);
             AvailableFlashcards.Add(flashcard);
         }
 
-        // Clear the selection after removing
-        foreach (var flashcard in SelectedDeckFlashcards.Keys.ToList())
-        {
-            SelectedDeckFlashcards[flashcard] = false;
-        }
-
-        // Disable the Remove button after action
-        IsRemoveButtonEnabled = false;
-
-        // Mark changes
+        SelectedDeckFlashcards.Clear();
+        UpdateFilteredAvailableFlashcards();
+        UpdateFilteredSelectedFlashcards();
         AreChangesMade = true;
-
-        // Update Save button state
         UpdateButtonStates();
     }
 
-    private async void SaveDeck()
+    private async Task SaveDeckAsync()
     {
-        // Check if deck name is empty or contains only spaces
-        if (string.IsNullOrWhiteSpace(DeckName))
-        {
-            MessageBox.Show("The deck must have a name!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+        if (string.IsNullOrWhiteSpace(DeckName) || !SelectedFlashcards.Any() || _deckService.DeckExists(DeckName))
             return;
-        }
 
-        // Check if the deck name already exists
-        if (_deckService.CheckIfDeckNameExists(DeckName))
-        {
-            MessageBox.Show("A deck with this name already exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
+        var flashcardIds = SelectedFlashcards.Select(f => f.Id).ToList();
+        string easeRating = _deckService.CalculateEaseRating(flashcardIds);
 
-        // Proceed with saving the deck
-        await _deckService.CreateDeckAsync(DeckName, SelectedFlashcards.Select(f => f.Id).ToList(),
-              _deckService.CalculateEaseRating(SelectedFlashcards.Select(f => f.Id).ToList()));
+        await _deckService.CreateDeckAsync(DeckName, flashcardIds, easeRating);
 
-        MessageBox.Show("Deck saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-        // Reset everything after saving
-        ResetDeckCreation();
-
-        // Disable the Save button after action
-        IsSaveButtonEnabled = false;
-    }
-
-    private void ResetDeckCreation()
-    {
-        // Clear the selection and the deck name
+        // Reset fields
         DeckName = string.Empty;
-        SelectedFlashcards.Clear();
-        AvailableFlashcards.Clear();
-        SelectedAvailableFlashcards.Clear();
-        SelectedDeckFlashcards.Clear();
-
-        // Reload flashcards after clearing
+        AreChangesMade = false;
         LoadFlashcards();
-
-        // Reset button states
-        IsAddButtonEnabled = false;
-        IsRemoveButtonEnabled = false;
+        MessageBox.Show("Deck successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
-    private async void OpenDeckSelectionAsync()
+
+    private async Task OpenDeckSelectionAsync()
     {
+        if (AreChangesMade)
+        {
+            // Auto-save logic or user prompt could be added here
+        }
+
         await _navigationService.GetFlashcardDeckSelectionViewAsync();
+    }
+
+    private void UpdateFilteredAvailableFlashcards()
+    {
+        FilteredAvailableFlashcards.Clear();
+        foreach (var flashcard in AvailableFlashcards
+            .Where(f => (f.Front.Contains(SearchAvailableText ?? "", System.StringComparison.OrdinalIgnoreCase) ||
+                        f.Back.Contains(SearchAvailableText ?? "", System.StringComparison.OrdinalIgnoreCase)))
+        )
+        {
+            FilteredAvailableFlashcards.Add(flashcard);
+        }
+    }
+
+    private void UpdateFilteredSelectedFlashcards()
+    {
+        FilteredSelectedFlashcards.Clear();
+        foreach (var flashcard in SelectedFlashcards
+            .Where(f => (f.Front.Contains(SearchSelectedText ?? "", System.StringComparison.OrdinalIgnoreCase) ||
+                        f.Back.Contains(SearchSelectedText ?? "", System.StringComparison.OrdinalIgnoreCase)))
+        )
+        {
+            FilteredSelectedFlashcards.Add(flashcard);
+        }
     }
 
     private void ToggleAvailableFlashcardSelection(int flashcardId)
     {
         if (SelectedAvailableFlashcards.ContainsKey(flashcardId))
-        {
             SelectedAvailableFlashcards[flashcardId] = !SelectedAvailableFlashcards[flashcardId];
-        }
         else
-        {
             SelectedAvailableFlashcards[flashcardId] = true;
-        }
 
+        // Force UI update
+        OnPropertyChanged(nameof(SelectedAvailableFlashcards));
         UpdateButtonStates();
     }
 
     private void ToggleDeckFlashcardSelection(int flashcardId)
     {
         if (SelectedDeckFlashcards.ContainsKey(flashcardId))
-        {
             SelectedDeckFlashcards[flashcardId] = !SelectedDeckFlashcards[flashcardId];
-        }
         else
-        {
             SelectedDeckFlashcards[flashcardId] = true;
-        }
 
+        // Force UI update
+        OnPropertyChanged(nameof(SelectedDeckFlashcards));
         UpdateButtonStates();
     }
 
     private void UpdateButtonStates()
     {
-        // Enable Add button if any checkbox is checked in Available Flashcards
         IsAddButtonEnabled = SelectedAvailableFlashcards.Any(x => x.Value);
-
-        // Enable Remove button if any checkbox is checked in Deck Flashcards
         IsRemoveButtonEnabled = SelectedDeckFlashcards.Any(x => x.Value);
-
-        // Enable Save button only if changes have been made and the deck name is valid
-        IsSaveButtonEnabled = AreChangesMade && !string.IsNullOrWhiteSpace(DeckName);
     }
 }
