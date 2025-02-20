@@ -17,29 +17,34 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- All Flashcards -->
-            <DataGrid ItemsSource="{Binding AvailableFlashcards}" 
-                      AutoGenerateColumns="False" 
-                      SelectionMode="Extended" 
-                      Grid.Column="0"
-                      IsReadOnly="True" Margin="0,56,0,27">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Select" Width="Auto">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                         Path=DataContext.ToggleAvailableFlashcardSelectionCommand}"
-                                          CommandParameter="{Binding Id}"
-                                          IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                         Path=DataContext.SelectedAvailableFlashcards[{Binding Id}], 
-                                                         Mode=TwoWay}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Flashcard Front" Binding="{Binding Front}" Width="*" />
-                    <DataGridTextColumn Header="Flashcard Back" Binding="{Binding Back}" Width="*" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <!-- Available Flashcards Section -->
+            <StackPanel Grid.Column="0" Margin="0,38,0,0">
+                <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
+                <TextBox Width="200" Height="25" Margin="0,0,0,5"
+                         Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}" 
+                         />
+                <DataGrid ItemsSource="{Binding FilteredAvailableFlashcards}"
+                          AutoGenerateColumns="False" 
+                          SelectionMode="Extended" 
+                          IsReadOnly="True" Margin="0,5,0,27">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Select" Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                                             Path=DataContext.ToggleAvailableFlashcardSelectionCommand}"
+                                              CommandParameter="{Binding Id}"
+                                              IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                                             Path=DataContext.SelectedAvailableFlashcards[{Binding Id}], 
+                                                             Mode=TwoWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Flashcard Front" Binding="{Binding Front}" Width="*" />
+                        <DataGridTextColumn Header="Flashcard Back" Binding="{Binding Back}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
 
             <!-- Add/Remove Buttons -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
@@ -52,14 +57,16 @@
                         IsEnabled="{Binding IsAddButtonEnabled}" />
             </StackPanel>
 
-            <!-- Selected Flashcards (Deck) -->
-            <StackPanel Grid.Column="2" Margin="0,10,0,27">
+            <!-- Selected Flashcards Section -->
+            <StackPanel Grid.Column="2">
                 <TextBlock Text="Deck Name" HorizontalAlignment="Center"/>
+                <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
                 <TextBox Text="{Binding DeckName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,0,10"/>
-                <DataGrid ItemsSource="{Binding SelectedFlashcards}" 
+                <TextBox Width="200" Height="25" Margin="0,0,0,5"
+                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGrid ItemsSource="{Binding FilteredSelectedFlashcards}"
                           AutoGenerateColumns="False" 
                           SelectionMode="Extended" 
-                          Grid.Column="2"
                           IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Select" Width="Auto">
