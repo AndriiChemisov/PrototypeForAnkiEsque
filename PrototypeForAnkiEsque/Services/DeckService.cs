@@ -22,26 +22,41 @@ namespace PrototypeForAnkiEsque.Services
                 .Any(d => d.Name.ToLower() == deckName.ToLower());
         }
 
-        public async Task CreateDeckAsync(string deckName, List<int> flashcardIds)
+        public async Task CreateDeckAsync(string deckName, List<int> flashcardIds, string easeRating)
         {
             var newDeck = new FlashcardDeck
             {
                 Name = deckName,
-                FlashcardIds = flashcardIds
+                FlashcardIds = flashcardIds,
+                EaseRating = easeRating
             };
 
             _context.FlashcardDecks.Add(newDeck);
             await _context.SaveChangesAsync();  // Persist changes to the database asynchronously
         }
 
-        public List<FlashcardDeck> GetAllDecks()
+        public List<FlashcardDeck> GetPagedDecks(int pageNumber, int pageSize)
         {
-            return _context.FlashcardDecks.ToList();
+            return _context.FlashcardDecks
+                           .Skip((pageNumber - 1) * pageSize)
+                           .Take(pageSize)
+                           .ToList();
+        }
+
+        public int GetTotalDeckCount()
+        {
+            return _context.FlashcardDecks.Count();
         }
 
         public FlashcardDeck GetDeckById(int id)
         {
             return _context.FlashcardDecks.FirstOrDefault(d => d.Id == id);
+        }
+
+        public async Task UpdateDeckAsync(FlashcardDeck deck)
+        {
+            _context.FlashcardDecks.Update(deck);
+            _context.SaveChanges();
         }
 
         public async Task DeleteDeckAsync(int deckId)
@@ -54,6 +69,17 @@ namespace PrototypeForAnkiEsque.Services
                 _context.FlashcardDecks.Remove(deckToDelete);
                 await _context.SaveChangesAsync(); // Asynchronously save changes
             }
+        }
+
+        public string CalculateEaseRating(List<int> flashcardIds)
+        {
+            var flashcards = _context.Flashcards.Where(f => flashcardIds.Contains(f.Id)).ToList();
+            if (!flashcards.Any()) return "0";
+
+            double averageEaseRating = flashcards.Average(f => f.EaseRating);
+
+            // Convert to percentage
+            return (100 - (averageEaseRating / 2) * 100).ToString() + "%";
         }
     }
 }

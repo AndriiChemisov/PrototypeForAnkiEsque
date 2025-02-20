@@ -8,6 +8,7 @@ public class FlashcardViewModel : BaseViewModel
 {
     private readonly FlashcardService _flashcardService;
     private readonly NavigationService _navigationService;
+    private readonly DeckService _deckService;
     private readonly MainMenuViewModel _mainMenuViewModel;
 
     private List<Flashcard> _flashcards;
@@ -26,11 +27,12 @@ public class FlashcardViewModel : BaseViewModel
         }
     }
 
-    public FlashcardViewModel(FlashcardService flashcardService, NavigationService navigationService, MainMenuViewModel mainMenuViewModel)
+    public FlashcardViewModel(FlashcardService flashcardService, NavigationService navigationService, DeckService deckService, MainMenuViewModel mainMenuViewModel)
     {
         _flashcardService = flashcardService;
         _navigationService = navigationService;
         _mainMenuViewModel = mainMenuViewModel;
+        _deckService = deckService;
 
         ShowAnswerCommand = new RelayCommand(ShowAnswer);
         NextCommand = new RelayCommand(NextCard);
@@ -103,6 +105,9 @@ public class FlashcardViewModel : BaseViewModel
         if (_currentCardIndex >= _flashcards.Count - 1)
         {
             IsGridVisible = !IsGridVisible;
+            SelectedDeck.EaseRating = _deckService.CalculateEaseRating(SelectedDeck.FlashcardIds);
+            await _deckService.UpdateDeckAsync(SelectedDeck);
+
             MotivationalMessage = "Well done - you finished the deck!";
             TriggerFadeOutAnimationForMotivationalMessage();
             await Task.Delay(2000);
