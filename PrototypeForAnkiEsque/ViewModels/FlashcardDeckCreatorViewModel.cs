@@ -76,7 +76,7 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
     public ICommand AddFlashcardsCommand { get; }
     public ICommand RemoveFlashcardsCommand { get; }
     public ICommand SaveDeckCommand { get; }
-    public ICommand OpenMainMenuCommand { get; }
+    public ICommand OpenDeckSelectionCommand { get; }
     public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
     public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
@@ -86,7 +86,7 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
         _navigationService = navigationService;
         _flashcardService = flashcardService;
 
-        OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
+        OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
         AddFlashcardsCommand = new RelayCommand(AddFlashcards);
         RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
         SaveDeckCommand = new RelayCommand(SaveDeck);
@@ -215,9 +215,9 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
         IsRemoveButtonEnabled = false;
     }
 
-    private async void OpenMainMenuAsync()
+    private async void OpenDeckSelectionAsync()
     {
-        await _navigationService.GetMainMenuViewAsync();
+        await _navigationService.GetFlashcardDeckSelectionViewAsync();
     }
 
     private void ToggleAvailableFlashcardSelection(int flashcardId)

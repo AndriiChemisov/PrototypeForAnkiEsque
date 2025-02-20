@@ -37,7 +37,6 @@ public class FlashcardViewModel : BaseViewModel
         ShowAnswerCommand = new RelayCommand(ShowAnswer);
         NextCommand = new RelayCommand(NextCard);
         EaseCommand = new RelayCommand<string>(SetEase);
-        OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
         OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntry);
 
         _flashcards = new List<Flashcard>(); // Initialize as empty
@@ -47,7 +46,6 @@ public class FlashcardViewModel : BaseViewModel
     public ICommand ShowAnswerCommand { get; }
     public ICommand NextCommand { get; }
     public ICommand EaseCommand { get; }
-    public ICommand OpenMainMenuCommand { get; }
     public ICommand OpenFlashcardEntryCommand { get; }
 
     private Flashcard _currentCard;
@@ -179,11 +177,6 @@ public class FlashcardViewModel : BaseViewModel
 
     public event Action OnFadeOutMessage;
     public event Action OnFadeoutMotivationalMessage;
-
-    private async void OpenMainMenu()
-    {
-        await _navigationService.GetMainMenuViewAsync();
-    }
 
     private async void OpenFlashcardEntry()
     {

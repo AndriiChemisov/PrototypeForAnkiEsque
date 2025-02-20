@@ -23,7 +23,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             _dbContext = dbContext;
             _navigationService = navigationService;
             SaveFlashcardCommand = new RelayCommand(SaveFlashcard);
-            OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
+            OpenFlashcardDatabaseCommand = new RelayCommand(OpenFlashcardDatabaseAsync);
             IsSavedMessageVisible = Visibility.Collapsed; // Initially hide the saved message
         }
 
@@ -68,7 +68,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
 
         public ICommand SaveFlashcardCommand { get; }
-        public ICommand OpenMainMenuCommand { get; }
+        public ICommand OpenFlashcardDatabaseCommand { get; }
 
         private async void SaveFlashcard()
         {
@@ -121,9 +121,9 @@ namespace PrototypeForAnkiEsque.ViewModels
         // Event for view to subscribe and trigger animation
         public event Action OnFadeOutMessage;
 
-        private async void OpenMainMenu()
+        private async void OpenFlashcardDatabaseAsync()
         {
-            await _navigationService.GetMainMenuViewAsync();
+            await _navigationService.GetFlashcardDatabaseViewAsync();
         }
 
     }

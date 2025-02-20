@@ -23,6 +23,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand EditDeckCommand { get; }
         public ICommand DeleteDeckCommand { get; }
         public ICommand OpenMainMenuCommand { get; }
+        public ICommand OpenDeckCreatorCommand { get; }
 
         public FlashcardDeck SelectedDeck
         {
@@ -58,6 +59,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             EditDeckCommand = new RelayCommand(EditDeck);
             DeleteDeckCommand = new RelayCommand(DeleteDeckAsync);
             OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
+            OpenDeckCreatorCommand = new RelayCommand(OpenDeckCreatorAsync);
 
             LoadDecksAsync();
         }
@@ -109,6 +111,11 @@ namespace PrototypeForAnkiEsque.ViewModels
         private async void OpenMainMenuAsync()
         {
             await _navigationService.GetMainMenuViewAsync();
+        }
+
+        private async void OpenDeckCreatorAsync()
+        {
+            await _navigationService.GetFlashcardDeckCreatorViewAsync();
         }
 
         private void ShowErrorMessage(string message)

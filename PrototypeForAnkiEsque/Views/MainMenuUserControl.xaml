@@ -5,12 +5,6 @@
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <!-- Add Flashcard Button -->
-            <Button Content="Add Flashcard" 
-                    HorizontalAlignment="Stretch"
-                    Width="150" Height="20"
-                    Command="{Binding OpenFlashcardEntryViewCommand}" 
-                    Margin="0,0,0,10" />
 
             <!-- All Flashcards Button -->
             <Button Content="All Flashcards" 
@@ -19,13 +13,6 @@
                     Command="{Binding OpenFlashcardDatabaseViewCommand}" 
                     Margin="0,0,0,10" />
 
-            <!-- Deck Creator Button -->
-            <Button Content="Create Deck" 
-                    HorizontalAlignment="Stretch" 
-                    Width="150" Height="20" 
-                    Command="{Binding OpenFlashcardDeckCreatorViewCommand}" 
-                    Margin="0,0,0,10" />
-            
             <Button Content="Select Deck" 
                     HorizontalAlignment="Stretch" 
                     Width="150" Height="20" 

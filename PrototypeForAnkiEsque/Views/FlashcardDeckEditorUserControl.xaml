@@ -6,8 +6,8 @@
 
     <Grid>
         <!-- Navigation Button -->
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Margin="10" Command="{Binding OpenMainMenuCommand}" />
+        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                Margin="10" Command="{Binding OpenDeckSelectionCommand}" />
 
         <!-- Grid with Column Definitions -->
         <Grid Margin="10,30,10,10">

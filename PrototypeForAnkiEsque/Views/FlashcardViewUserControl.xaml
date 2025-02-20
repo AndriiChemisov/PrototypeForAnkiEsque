@@ -41,9 +41,7 @@
             <!-- Button to go to the next card -->
             <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding NextCommand}"/>
 
-            <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
-
-            <Button Content="Add Flashcard" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardEntryCommand}" />
+            <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
 
             <!-- Rating Buttons -->
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20">
