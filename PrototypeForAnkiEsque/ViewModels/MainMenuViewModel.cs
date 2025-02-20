@@ -14,32 +14,17 @@ namespace PrototypeForAnkiEsque.ViewModels
 
 
             // Commands for the buttons
-            OpenFlashcardEntryViewCommand = new RelayCommand(() => OpenFlashcardEntryView());
             OpenFlashcardDatabaseViewCommand = new RelayCommand(() => OpenFlashcardDatabaseView());
-            OpenFlashcardDeckCreatorViewCommand = new RelayCommand(() => OpenFlashcardDeckCreatorView());
             OpenFlashcardDeckSelectionViewCommand = new RelayCommand(() => OpenFlashcardDeckSelectionView());
 
         }
 
-        public ICommand OpenFlashcardEntryViewCommand { get; }
         public ICommand OpenFlashcardDatabaseViewCommand { get; }
-        public ICommand OpenFlashcardDeckCreatorViewCommand { get; }
         public ICommand OpenFlashcardDeckSelectionViewCommand { get; }
-
-        // Navigate to Settings view
-        private async void OpenFlashcardEntryView()
-        {
-            await _navigationService.GetFlashcardEntryViewAsync(); // Get Settings view
-        }
 
         private async void OpenFlashcardDatabaseView()
         {
             await _navigationService.GetFlashcardDatabaseViewAsync();
-        }
-
-        private async void OpenFlashcardDeckCreatorView()
-        {
-            await _navigationService.GetFlashcardDeckCreatorViewAsync();
         }
 
         private async void OpenFlashcardDeckSelectionView()

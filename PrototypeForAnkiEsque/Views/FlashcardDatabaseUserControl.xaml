@@ -10,8 +10,9 @@
 
     <Grid>
         <!-- Navigation Button -->
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
-
+        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
+        <Button Content="Create a new Flashcard" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardEntryCommand}"/>
+        
         <!-- DataGrid to show flashcards -->
         <DataGrid x:Name="FlashcardDataGrid" 
                   AutoGenerateColumns="False"  

@@ -34,5 +34,9 @@ namespace PrototypeForAnkiEsque.Views
             DataContext = _viewModel;
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

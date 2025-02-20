@@ -31,6 +31,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
         PreviousPageCommand = new RelayCommand(PreviousPage, CanGoToPreviousPage);
         NextPageCommand = new RelayCommand(NextPage, CanGoToNextPage);
+        OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntryAsync);
     }
 
     public ObservableCollection<Flashcard> Flashcards { get; set; }
@@ -74,6 +75,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     // Commands for pagination
     public ICommand PreviousPageCommand { get; }
     public ICommand NextPageCommand { get; }
+    public ICommand OpenFlashcardEntryCommand { get; }
 
 
     // Pagination logic
@@ -153,9 +155,14 @@ public class FlashcardDatabaseViewModel : BaseViewModel
 
     // Command for opening the main menu
 
-    private void OpenMainMenu()
+    private async void OpenMainMenu()
     {
-        _navigationService.GetMainMenuViewAsync();
+        await _navigationService.GetMainMenuViewAsync();
+    }
+
+    private async void OpenFlashcardEntryAsync()
+    {
+        await _navigationService.GetFlashcardEntryViewAsync();
     }
 
     // Previous page command logic

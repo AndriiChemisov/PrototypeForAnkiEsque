@@ -6,8 +6,8 @@
 
     <Grid>
         <!-- Navigation Button -->
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Margin="10" Command="{Binding OpenMainMenuCommand}" />
+        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                Margin="10" Command="{Binding OpenDeckSelectionCommand}" />
 
         <!-- Grid with Column Definitions -->
         <Grid Margin="10,30,10,10">
@@ -53,28 +53,35 @@
             </StackPanel>
 
             <!-- Selected Flashcards (Deck) -->
-            <DataGrid ItemsSource="{Binding DeckFlashcards}" 
-                      AutoGenerateColumns="False" 
-                      SelectionMode="Extended" 
-                      Grid.Column="2"
-                      IsReadOnly="True" Margin="0,10,0,27">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Select" Width="Auto">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+            <StackPanel Grid.Column="2" Margin="0,10,0,10">
+                <!-- Deck Name TextBox -->
+                <TextBlock Text="Deck Name" HorizontalAlignment="Center" />
+                <TextBox Text="{Binding DeckName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,0,10"/>
+
+                <!-- DataGrid for Deck Flashcards -->
+                <DataGrid ItemsSource="{Binding DeckFlashcards}" 
+                          AutoGenerateColumns="False" 
+                          SelectionMode="Extended" 
+                          IsReadOnly="True" Margin="0,10,0,27">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Select" Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
                                                          Path=DataContext.ToggleDeckFlashcardSelectionCommand}"
-                                          CommandParameter="{Binding Id}"
-                                          IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                              CommandParameter="{Binding Id}"
+                                              IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
                                                          Path=DataContext.SelectedDeckFlashcards[{Binding Id}], 
                                                          Mode=TwoWay}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Flashcard front" Binding="{Binding Front}" Width="*" />
-                    <DataGridTextColumn Header="Flashcard back" Binding="{Binding Back}" Width="*" />
-                </DataGrid.Columns>
-            </DataGrid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Flashcard front" Binding="{Binding Front}" Width="*" />
+                        <DataGridTextColumn Header="Flashcard back" Binding="{Binding Back}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+
         </Grid>
 
         <!-- Save Deck Button -->

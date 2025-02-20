@@ -28,7 +28,7 @@
                 Command="{Binding SaveFlashcardCommand}" />
 
         <!-- Navigation Buttons -->
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}" />
+        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardDatabaseCommand}" />
 
         <!-- Confirmation Message (Saved) -->
         <TextBlock Name="SavedMessageText" Text="{Binding SavedMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 60, 0, 10"

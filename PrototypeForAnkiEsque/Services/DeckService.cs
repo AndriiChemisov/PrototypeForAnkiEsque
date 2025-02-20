@@ -81,5 +81,12 @@ namespace PrototypeForAnkiEsque.Services
             // Convert to percentage
             return (100 - (averageEaseRating / 2) * 100).ToString() + "%";
         }
+
+        public bool CheckIfDeckNameExists(string deckName)
+        {
+            // Check if any deck in the database has the same name, ignoring case
+            return _context.FlashcardDecks
+                .Any(d => d.Name.ToLower() == deckName.ToLower());
+        }
     }
 }

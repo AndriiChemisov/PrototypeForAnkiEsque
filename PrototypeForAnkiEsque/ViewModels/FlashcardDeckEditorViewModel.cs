@@ -11,7 +11,6 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
     private readonly NavigationService _navigationService;
     private readonly FlashcardService _flashcardService;
     private FlashcardDeck _selectedDeck;
-
     public ObservableCollection<Flashcard> DeckFlashcards { get; } = new();
     public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
 
@@ -23,6 +22,8 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
     private bool _isAddButtonEnabled;
     private bool _isRemoveButtonEnabled;
     private bool _isSaveButtonEnabled;
+    private string _tempDeckName;
+    private string _originalDeckName;
 
     public bool IsAddButtonEnabled
     {
@@ -61,10 +62,31 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
         }
     }
 
+    public string DeckName
+    {
+        get => _tempDeckName;
+        set
+        {
+            if (_tempDeckName != value)
+            {
+                _tempDeckName = value;
+                OnPropertyChanged();
+                // If the name is changed, enable the Save button immediately
+                IsSaveButtonEnabled = true;
+
+                // Track if the name has changed from the original deck name
+                if (_originalDeckName != _tempDeckName)
+                {
+                    AreChangesMade = true;  // Mark that changes have been made
+                }
+            }
+        }
+    }
+
     public ICommand AddFlashcardsCommand { get; }
     public ICommand RemoveFlashcardsCommand { get; }
     public ICommand SaveDeckCommand { get; }
-    public ICommand OpenMainMenuCommand { get; }
+    public ICommand OpenDeckSelectionCommand { get; }
     public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
     public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
@@ -74,7 +96,7 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
         _navigationService = navigationService;
         _flashcardService = flashcardService;
 
-        OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
+        OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
         AddFlashcardsCommand = new RelayCommand(AddFlashcards);
         RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
         SaveDeckCommand = new RelayCommand(SaveDeck);
@@ -167,6 +189,7 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
         UpdateButtonStates();
     }
 
+    // Update SaveDeck method to check for duplicates and only enable saving if valid
     private async void SaveDeck()
     {
         if (DeckFlashcards.Count == 0)
@@ -175,21 +198,32 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
             return;
         }
 
+        // Check for duplicates only if the name has changed
+        if (_originalDeckName != DeckName && _deckService.CheckIfDeckNameExists(DeckName))
+        {
+            MessageBox.Show("A deck with this name already exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        // Save the deck name and flashcards
+        _selectedDeck.Name = DeckName;
         _selectedDeck.FlashcardIds = DeckFlashcards.Select(f => f.Id).ToList();
         await _deckService.UpdateDeckAsync(_selectedDeck);
 
         MessageBox.Show("Deck saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        IsSaveButtonEnabled = false;
+        IsSaveButtonEnabled = false;  // Disable Save button after saving
     }
 
-    private async void OpenMainMenuAsync()
+    private async void OpenDeckSelectionAsync()
     {
-        await _navigationService.GetMainMenuViewAsync();
+        await _navigationService.GetFlashcardDeckSelectionViewAsync();
     }
 
     public void Initialize(FlashcardDeck selectedDeck)
     {
         _selectedDeck = selectedDeck;
+        _originalDeckName = selectedDeck.Name;  // Store the initial name
+        DeckName = selectedDeck.Name;
         LoadFlashcards();
     }
 
@@ -231,5 +265,25 @@ public class FlashcardDeckEditorViewModel : BaseViewModel
 
         // Enable Save button only if changes have been made (either -> or <- was clicked)
         IsSaveButtonEnabled = AreChangesMade;
+    }
+
+    private void CheckForDuplicateDeckName(string newName)
+    {
+        // Check if the deck name has changed and if it's not the same as the original name
+        if (newName != _originalDeckName)
+        {
+            // Perform the duplicate name check
+            bool isDuplicate = _deckService.CheckIfDeckNameExists(newName);  // Assuming a service method that checks for duplicates
+
+            if (isDuplicate)
+            {
+                // Show a message box or handle the duplication case here
+                MessageBox.Show("A deck with this name already exists. Please choose another name.", "Duplicate Deck Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                // Reset the name to the original name if it's a duplicate
+                DeckName = _originalDeckName;
+                IsSaveButtonEnabled = false;  // Disable Save button until valid name
+            }
+        }
     }
 }
