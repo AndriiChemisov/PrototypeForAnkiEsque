@@ -37,7 +37,7 @@ public class FlashcardViewModel : BaseViewModel
         ShowAnswerCommand = new RelayCommand(ShowAnswer);
         NextCommand = new RelayCommand(NextCard);
         EaseCommand = new RelayCommand<string>(SetEase);
-        OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntry);
+        OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
 
         _flashcards = new List<Flashcard>(); // Initialize as empty
         _currentCardIndex = 0;
@@ -46,7 +46,7 @@ public class FlashcardViewModel : BaseViewModel
     public ICommand ShowAnswerCommand { get; }
     public ICommand NextCommand { get; }
     public ICommand EaseCommand { get; }
-    public ICommand OpenFlashcardEntryCommand { get; }
+    public ICommand OpenDeckSelectionCommand { get; }
 
     private Flashcard _currentCard;
     public Flashcard CurrentCard
@@ -178,9 +178,9 @@ public class FlashcardViewModel : BaseViewModel
     public event Action OnFadeOutMessage;
     public event Action OnFadeoutMotivationalMessage;
 
-    private async void OpenFlashcardEntry()
+    private async void OpenDeckSelectionAsync()
     {
-        await _navigationService.GetFlashcardEntryViewAsync();
+        await _navigationService.GetFlashcardDeckSelectionViewAsync();
     }
 
     // Method to set the selected deck when passed from navigation
