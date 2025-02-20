@@ -50,6 +50,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardEditorUserControl>();
             services.AddTransient<FlashcardDeckCreatorUserControl>();
             services.AddTransient<FlashcardDeckSelectionUserControl>();
+            services.AddTransient<FlashcardDeckEditorUserControl>();
 
             // Register ViewModels
             services.AddTransient<MainMenuViewModel>();
@@ -59,6 +60,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardEditorViewModel>();
             services.AddTransient<FlashcardDeckCreatorViewModel>();
             services.AddTransient<FlashcardDeckSelectionViewModel>();
+            services.AddTransient<FlashcardDeckEditorViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

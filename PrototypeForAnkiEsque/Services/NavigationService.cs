@@ -84,6 +84,20 @@ namespace PrototypeForAnkiEsque.Services
             await NavigateAsync(flashcardDeckSelectionView); // Asynchronously set the content
         }
 
+        public async Task GetFlashcardDeckEditorViewAsync(FlashcardDeck selectedDeck)
+        {
+            var flashcardDeckEditorView = _serviceProvider.GetRequiredService<FlashcardDeckEditorUserControl>();
+            var viewModel = new FlashcardDeckEditorViewModel(
+                _serviceProvider.GetRequiredService<DeckService>(),
+                _serviceProvider.GetRequiredService<NavigationService>(),
+                _serviceProvider.GetRequiredService<FlashcardService>()
+            );
+            viewModel.Initialize(selectedDeck);
+            flashcardDeckEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
+
+            await NavigateAsync(flashcardDeckEditorView); // Asynchronously set the content
+        }
+
         // General method to perform navigation asynchronously
         private async Task NavigateAsync(UserControl userControl)
         {

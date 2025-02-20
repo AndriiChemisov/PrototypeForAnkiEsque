@@ -80,12 +80,14 @@ namespace PrototypeForAnkiEsque.ViewModels
             await _navigationService.GetFlashcardViewAsync(SelectedDeck);
         }
 
-        private void EditDeck()
+        private async void EditDeck()
         {
             if (SelectedDeck == null)
             {
                 ShowErrorMessage("Please select a deck to edit.");
             }
+
+            await _navigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
         }
 
         private async void DeleteDeckAsync()
