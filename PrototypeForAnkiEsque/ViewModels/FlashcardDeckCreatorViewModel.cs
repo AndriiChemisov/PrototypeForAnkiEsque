@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
@@ -19,6 +20,8 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
     private bool _isAddButtonEnabled;
     private bool _isRemoveButtonEnabled;
     private bool _areChangesMade;
+    private readonly DispatcherTimer _debounceTimer;
+
 
     public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
     public ObservableCollection<Flashcard> SelectedFlashcards { get; } = new();
@@ -28,6 +31,8 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
 
     public Dictionary<int, bool> SelectedAvailableFlashcards { get; set; } = new();
     public Dictionary<int, bool> SelectedDeckFlashcards { get; set; } = new();
+
+
 
     public string SearchAvailableText
     {
@@ -63,10 +68,17 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
         set
         {
             _deckName = value;
-            OnPropertyChanged();
-            AreChangesMade = true;
-            UpdateButtonStates();
+            _debounceTimer.Stop();
+            _debounceTimer.Start();
         }
+    }
+
+    private void DebounceTimer_Tick(object sender, EventArgs e)
+    {
+        _debounceTimer.Stop();
+        OnPropertyChanged(nameof(DeckName));
+        AreChangesMade = true;
+        UpdateButtonStates();
     }
 
     public bool IsAddButtonEnabled
@@ -111,6 +123,12 @@ public class FlashcardDeckCreatorViewModel : BaseViewModel
         _deckService = deckService;
         _navigationService = navigationService;
         _flashcardService = flashcardService;
+
+        _debounceTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(300)
+        };
+        _debounceTimer.Tick += DebounceTimer_Tick;
 
         OpenDeckSelectionCommand = new RelayCommand(async () => await OpenDeckSelectionAsync());
         AddFlashcardsCommand = new RelayCommand(AddFlashcards);
