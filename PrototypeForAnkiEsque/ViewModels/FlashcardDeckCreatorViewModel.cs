@@ -1,140 +1,262 @@
 ﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.ViewModels;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 using System.Windows.Input;
+using System.Windows;
 
-namespace PrototypeForAnkiEsque.ViewModels
+public class FlashcardDeckCreatorViewModel : BaseViewModel
 {
-    public class FlashcardDeckCreatorViewModel : BaseViewModel
+    private readonly DeckService _deckService;
+    private readonly NavigationService _navigationService;
+    private readonly FlashcardService _flashcardService;
+    private string _deckName;
+
+    public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
+    public ObservableCollection<Flashcard> SelectedFlashcards { get; } = new();
+
+    public Dictionary<int, bool> SelectedAvailableFlashcards { get; set; } = new();
+    public Dictionary<int, bool> SelectedDeckFlashcards { get; set; } = new();
+
+    private bool _isAddButtonEnabled;
+    private bool _isRemoveButtonEnabled;
+    private bool _isSaveButtonEnabled;
+
+    public bool IsAddButtonEnabled
     {
-        private readonly FlashcardService _flashcardService;
-        private readonly DeckService _deckService;
-        private readonly NavigationService _navigationService;
-        private ObservableCollection<Flashcard> _allFlashcards;
-        private const int PageSize = 15;
-        private int _currentPage = 1;
-
-        public FlashcardDeckCreatorViewModel(FlashcardService flashcardService, DeckService deckService, NavigationService navigationService)
+        get => _isAddButtonEnabled;
+        set
         {
-            _flashcardService = flashcardService;
-            _deckService = deckService;
-            _navigationService = navigationService;
-
-            _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
-            Flashcards = new ObservableCollection<Flashcard>();
-            SelectedFlashcards = new Dictionary<int, bool>(); // Track selection by ID
-
-            LoadPage(_currentPage);
-
-            PreviousPageCommand = new RelayCommand(PreviousPage, CanGoToPreviousPage);
-            NextPageCommand = new RelayCommand(NextPage, CanGoToNextPage);
-            CreateDeckCommand = new RelayCommand(CreateDeck, CanCreateDeck);
-            OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
-            ToggleFlashcardSelectionCommand = new RelayCommand<int>(ToggleSelection);
-
-        }
-
-        public ObservableCollection<Flashcard> Flashcards { get; set; }
-        public Dictionary<int, bool> SelectedFlashcards { get; set; } // Track selected flashcard IDs
-
-        public string DeckName { get; set; }
-
-        public int CurrentPage
-        {
-            get => _currentPage;
-            set
+            if (_isAddButtonEnabled != value)
             {
-                if (_currentPage != value)
-                {
-                    _currentPage = value;
-                    LoadPage(_currentPage);
-                }
+                _isAddButtonEnabled = value;
+                OnPropertyChanged(nameof(IsAddButtonEnabled));
             }
         }
-
-        public ICommand PreviousPageCommand { get; }
-        public ICommand NextPageCommand { get; }
-        public ICommand CreateDeckCommand { get; }
-        public ICommand OpenMainMenuCommand { get; }
-        public ICommand ToggleFlashcardSelectionCommand { get; }
-
-        private void LoadPage(int pageNumber)
-        {
-            _currentPage = pageNumber;
-            var pagedFlashcards = _allFlashcards.Skip((pageNumber - 1) * PageSize).Take(PageSize);
-            Flashcards.Clear();
-            foreach (var flashcard in pagedFlashcards)
-            {
-                Flashcards.Add(flashcard);
-            }
-            (PreviousPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            (NextPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        }
-
-        private void PreviousPage()
-        {
-            if (_currentPage > 1) CurrentPage--;
-        }
-
-        private bool CanGoToPreviousPage() => _currentPage > 1;
-
-        private void NextPage()
-        {
-            int totalPages = (_allFlashcards.Count + PageSize - 1) / PageSize;
-            if (_currentPage < totalPages) CurrentPage++;
-        }
-
-        private bool CanGoToNextPage() => _currentPage < (_allFlashcards.Count + PageSize - 1) / PageSize;
-
-        private async void CreateDeck()
-        {
-            var selectedIds = Flashcards.Where(f => SelectedFlashcards.ContainsKey(f.Id) && SelectedFlashcards[f.Id])
-                                        .Select(f => f.Id)
-                                        .ToList();
-
-            if (!selectedIds.Any())
-            {
-                MessageBox.Show("No flashcards selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (_deckService.DeckExists(DeckName))
-            {
-                MessageBox.Show("A deck with that name already exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            string easeRating = _deckService.CalculateEaseRating(selectedIds);
-
-            await _deckService.CreateDeckAsync(DeckName, selectedIds, easeRating);
-            MessageBox.Show("Deck created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            SelectedFlashcards.Clear();
-            DeckName = string.Empty;
-        }
-
-        private bool CanCreateDeck() => !string.IsNullOrEmpty(DeckName) && SelectedFlashcards.Values.Any(v => v);
-
-        private async void OpenMainMenu()
-        {
-            await _navigationService.GetMainMenuViewAsync();
-        }
-
-        private void ToggleSelection(int flashcardId)
-        {
-            if (SelectedFlashcards.ContainsKey(flashcardId))
-            {
-                SelectedFlashcards[flashcardId] = !SelectedFlashcards[flashcardId];
-            }
-            else
-            {
-                SelectedFlashcards[flashcardId] = true; // Add to selection if not already present
-            }
-            // Ensure the "Create Deck" button gets enabled/disabled based on the selection
-            (CreateDeckCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        }
-
     }
 
+    public bool IsRemoveButtonEnabled
+    {
+        get => _isRemoveButtonEnabled;
+        set
+        {
+            if (_isRemoveButtonEnabled != value)
+            {
+                _isRemoveButtonEnabled = value;
+                OnPropertyChanged(nameof(IsRemoveButtonEnabled));
+            }
+        }
+    }
+
+    public bool IsSaveButtonEnabled
+    {
+        get => _isSaveButtonEnabled;
+        set
+        {
+            if (_isSaveButtonEnabled != value)
+            {
+                _isSaveButtonEnabled = value;
+                OnPropertyChanged(nameof(IsSaveButtonEnabled));
+            }
+        }
+    }
+
+    public string DeckName
+    {
+        get => _deckName;
+        set
+        {
+            _deckName = value;
+            OnPropertyChanged();
+            AreChangesMade = true;  // Mark as changed when the name changes
+            UpdateButtonStates();
+        }
+    }
+
+    public ICommand AddFlashcardsCommand { get; }
+    public ICommand RemoveFlashcardsCommand { get; }
+    public ICommand SaveDeckCommand { get; }
+    public ICommand OpenMainMenuCommand { get; }
+    public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
+    public ICommand ToggleDeckFlashcardSelectionCommand { get; }
+
+    public FlashcardDeckCreatorViewModel(DeckService deckService, NavigationService navigationService, FlashcardService flashcardService)
+    {
+        _deckService = deckService;
+        _navigationService = navigationService;
+        _flashcardService = flashcardService;
+
+        OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
+        AddFlashcardsCommand = new RelayCommand(AddFlashcards);
+        RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
+        SaveDeckCommand = new RelayCommand(SaveDeck);
+        ToggleAvailableFlashcardSelectionCommand = new RelayCommand<int>(ToggleAvailableFlashcardSelection);
+        ToggleDeckFlashcardSelectionCommand = new RelayCommand<int>(ToggleDeckFlashcardSelection);
+
+        // Initial states for buttons
+        IsAddButtonEnabled = false;
+        IsRemoveButtonEnabled = false;
+        IsSaveButtonEnabled = false;
+
+        LoadFlashcards();
+    }
+
+    public bool AreChangesMade { get; set; }
+
+    private async void LoadFlashcards()
+    {
+        AvailableFlashcards.Clear();
+        SelectedFlashcards.Clear();
+
+        var allFlashcards = _flashcardService.GetFlashcards();
+
+        foreach (var flashcard in allFlashcards)
+        {
+            AvailableFlashcards.Add(flashcard);
+        }
+
+        UpdateButtonStates();
+    }
+
+    private void AddFlashcards()
+    {
+        foreach (var flashcard in SelectedAvailableFlashcards.Where(x => x.Value).Select(x => AvailableFlashcards.First(f => f.Id == x.Key)).ToList())
+        {
+            if (!SelectedFlashcards.Contains(flashcard))
+            {
+                SelectedFlashcards.Add(flashcard);
+                AvailableFlashcards.Remove(flashcard);
+            }
+        }
+
+        // Clear the selection after adding
+        foreach (var flashcard in SelectedAvailableFlashcards.Keys.ToList())
+        {
+            SelectedAvailableFlashcards[flashcard] = false;
+        }
+
+        // Disable the Add button after action
+        IsAddButtonEnabled = false;
+
+        // Mark changes
+        AreChangesMade = true;
+
+        // Update Save button state
+        UpdateButtonStates();
+    }
+
+    private void RemoveFlashcards()
+    {
+        foreach (var flashcard in SelectedDeckFlashcards.Where(x => x.Value).Select(x => SelectedFlashcards.First(f => f.Id == x.Key)).ToList())
+        {
+            SelectedFlashcards.Remove(flashcard);
+            AvailableFlashcards.Add(flashcard);
+        }
+
+        // Clear the selection after removing
+        foreach (var flashcard in SelectedDeckFlashcards.Keys.ToList())
+        {
+            SelectedDeckFlashcards[flashcard] = false;
+        }
+
+        // Disable the Remove button after action
+        IsRemoveButtonEnabled = false;
+
+        // Mark changes
+        AreChangesMade = true;
+
+        // Update Save button state
+        UpdateButtonStates();
+    }
+
+    private async void SaveDeck()
+    {
+        // Check if deck name is empty or contains only spaces
+        if (string.IsNullOrWhiteSpace(DeckName))
+        {
+            MessageBox.Show("The deck must have a name!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        // Check if the deck name already exists
+        if (_deckService.CheckIfDeckNameExists(DeckName))
+        {
+            MessageBox.Show("A deck with this name already exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        // Proceed with saving the deck
+        await _deckService.CreateDeckAsync(DeckName, SelectedFlashcards.Select(f => f.Id).ToList(),
+              _deckService.CalculateEaseRating(SelectedFlashcards.Select(f => f.Id).ToList()));
+
+        MessageBox.Show("Deck saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+        // Reset everything after saving
+        ResetDeckCreation();
+
+        // Disable the Save button after action
+        IsSaveButtonEnabled = false;
+    }
+
+    private void ResetDeckCreation()
+    {
+        // Clear the selection and the deck name
+        DeckName = string.Empty;
+        SelectedFlashcards.Clear();
+        AvailableFlashcards.Clear();
+        SelectedAvailableFlashcards.Clear();
+        SelectedDeckFlashcards.Clear();
+
+        // Reload flashcards after clearing
+        LoadFlashcards();
+
+        // Reset button states
+        IsAddButtonEnabled = false;
+        IsRemoveButtonEnabled = false;
+    }
+
+    private async void OpenMainMenuAsync()
+    {
+        await _navigationService.GetMainMenuViewAsync();
+    }
+
+    private void ToggleAvailableFlashcardSelection(int flashcardId)
+    {
+        if (SelectedAvailableFlashcards.ContainsKey(flashcardId))
+        {
+            SelectedAvailableFlashcards[flashcardId] = !SelectedAvailableFlashcards[flashcardId];
+        }
+        else
+        {
+            SelectedAvailableFlashcards[flashcardId] = true;
+        }
+
+        UpdateButtonStates();
+    }
+
+    private void ToggleDeckFlashcardSelection(int flashcardId)
+    {
+        if (SelectedDeckFlashcards.ContainsKey(flashcardId))
+        {
+            SelectedDeckFlashcards[flashcardId] = !SelectedDeckFlashcards[flashcardId];
+        }
+        else
+        {
+            SelectedDeckFlashcards[flashcardId] = true;
+        }
+
+        UpdateButtonStates();
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Enable Add button if any checkbox is checked in Available Flashcards
+        IsAddButtonEnabled = SelectedAvailableFlashcards.Any(x => x.Value);
+
+        // Enable Remove button if any checkbox is checked in Deck Flashcards
+        IsRemoveButtonEnabled = SelectedDeckFlashcards.Any(x => x.Value);
+
+        // Enable Save button only if changes have been made and the deck name is valid
+        IsSaveButtonEnabled = AreChangesMade && !string.IsNullOrWhiteSpace(DeckName);
+    }
 }

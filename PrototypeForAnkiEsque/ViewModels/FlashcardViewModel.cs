@@ -133,10 +133,18 @@ public class FlashcardViewModel : BaseViewModel
         {
             // Assuming FlashcardService can handle loading by deck
             _flashcards = _flashcardService.GetFlashcardsByDeck(SelectedDeck.Id);
+
+            // Shuffle with ease bias (higher ease rating => more likely to appear first)
+            _flashcards = _flashcards
+                .OrderByDescending(f => f.EaseRating) // Prioritize higher ease
+                .ThenBy(f => Guid.NewGuid()) // Randomize within the same ease group
+                .ToList();
+
             _currentCardIndex = 0;
             LoadCurrentCard();
         }
     }
+
 
     private void SetEase(string easeString)
     {
