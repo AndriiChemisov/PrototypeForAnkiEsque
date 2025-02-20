@@ -1,20 +1,36 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrototypeForAnkiEsque", "PrototypeForAnkiEsque\PrototypeForAnkiEsque.csproj", "{C986B2B1-5649-4961-A2D1-082E9C653E4C}"
 EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "NotAnkiInstaller", "NotAnkiInstaller\NotAnkiInstaller.aiproj", "{94983F31-5BB7-44F7-8CA1-638E1877F3BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		DefaultBuild|Any CPU = DefaultBuild|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.All|Any CPU.Build.0 = Release|Any CPU
 		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
 		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C986B2B1-5649-4961-A2D1-082E9C653E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.All|Any CPU.ActiveCfg = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.All|Any CPU.Build.0 = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.Debug|Any CPU.Build.0 = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.DefaultBuild|Any CPU.ActiveCfg = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.DefaultBuild|Any CPU.Build.0 = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{94983F31-5BB7-44F7-8CA1-638E1877F3BC}.Release|Any CPU.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
