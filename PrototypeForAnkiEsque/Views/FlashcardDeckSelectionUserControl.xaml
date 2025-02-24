@@ -9,7 +9,7 @@
         <!-- Search TextBox -->
         <TextBlock Text="Search Decks:" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" />
         <TextBox Width="200" Height="20" Margin="20,20,20,0" VerticalAlignment="Top" HorizontalAlignment="Center"
-          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.526,-0.763"  />
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.526,-0.763"  />
         <!-- Define the DataGrid -->
         <DataGrid ItemsSource="{Binding FilteredDecks}" SelectedItem="{Binding SelectedDeck}" IsReadOnly="True" AutoGenerateColumns="False" Margin="10,60,10,50">
             <!-- Define Columns -->
@@ -25,5 +25,7 @@
         <Button Content="Review Deck" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" />
         <Button Content="Edit Deck" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />
         <Button Content="Delete Deck" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" />
+        <Button Content="Import Decks" Command="{Binding ImportDecksCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,10" />
+        <Button Content="Export Decks" Command="{Binding ExportDecksCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" />
     </Grid>
 </UserControl>

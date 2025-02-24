@@ -1,10 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
+using System.IO;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
@@ -24,6 +27,8 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand DeleteDeckCommand { get; }
         public ICommand OpenMainMenuCommand { get; }
         public ICommand OpenDeckCreatorCommand { get; }
+        public ICommand ImportDecksCommand { get; }
+        public ICommand ExportDecksCommand { get; }
 
         public FlashcardDeck SelectedDeck
         {
@@ -61,6 +66,8 @@ namespace PrototypeForAnkiEsque.ViewModels
             DeleteDeckCommand = new RelayCommand(DeleteDeckAsync);
             OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
             OpenDeckCreatorCommand = new RelayCommand(OpenDeckCreatorAsync);
+            ImportDecksCommand = new RelayCommand(async () => await ImportDecksAsync());
+            ExportDecksCommand = new RelayCommand(async () => await ExportDecksAsync());
 
             LoadDecksAsync();
         }
@@ -132,6 +139,63 @@ namespace PrototypeForAnkiEsque.ViewModels
         private void ShowErrorMessage(string message)
         {
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public async Task ExportDecksAsync()
+        {
+            var decksToExport = SelectedDeck != null ? new List<FlashcardDeck> { SelectedDeck } : Decks.ToList();
+            var deckDtos = decksToExport.Select(d => new FlashcardDeckDto
+            {
+                DeckName = d.Name,
+                Flashcards = d.FlashcardFronts.Select(f => new FlashcardDto { Front = f, Back = "" }).ToList(),
+                EaseRating = d.EaseRating
+            }).ToList();
+
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json",
+                FileName = "FlashcardDecks.json"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var json = JsonSerializer.Serialize(deckDtos);
+                await File.WriteAllTextAsync(saveFileDialog.FileName, json);
+            }
+        }
+
+        public async Task ImportDecksAsync()
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var json = await File.ReadAllTextAsync(openFileDialog.FileName);
+                var deckDtos = JsonSerializer.Deserialize<List<FlashcardDeckDto>>(json);
+
+                var existingDecks = _deckService.GetPagedDecks(1, int.MaxValue);
+                var newDecks = deckDtos
+                    .Where(dto => !existingDecks.Any(d => d.Name == dto.DeckName))
+                    .Select(dto => new FlashcardDeck
+                    {
+                        Name = dto.DeckName,
+                        FlashcardFronts = dto.Flashcards.Select(f => f.Front).ToList(),
+                        EaseRating = dto.EaseRating ?? "Hard"
+                    })
+                    .ToList();
+
+                if (newDecks.Any())
+                {
+                    foreach (var deck in newDecks)
+                    {
+                        await _deckService.CreateDeckAsync(deck.Name, deck.FlashcardFronts, deck.EaseRating);
+                    }
+                    LoadDecksAsync();
+                }
+            }
         }
     }
 }

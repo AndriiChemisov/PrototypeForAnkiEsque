@@ -4,6 +4,12 @@ using PrototypeForAnkiEsque.ViewModels;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using Microsoft.Win32;
+using System.Threading.Tasks;
+using System.Windows;
 
 public class FlashcardDatabaseViewModel : BaseViewModel
 {
@@ -34,6 +40,8 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         PreviousPageCommand = new RelayCommand(PreviousPage, CanGoToPreviousPage);
         NextPageCommand = new RelayCommand(NextPage, CanGoToNextPage);
         OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntryAsync);
+        ImportFlashcardsCommand = new RelayCommand(async () => await ImportFlashcardsAsync());
+        ExportFlashcardsCommand = new RelayCommand(async () => await ExportFlashcardsAsync());
     }
 
     public ObservableCollection<Flashcard> Flashcards { get; set; }
@@ -96,6 +104,8 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     public ICommand PreviousPageCommand { get; }
     public ICommand NextPageCommand { get; }
     public ICommand OpenFlashcardEntryCommand { get; }
+    public ICommand ImportFlashcardsCommand { get; }
+    public ICommand ExportFlashcardsCommand { get; }
 
     private void LoadPage(int pageNumber)
     {
@@ -123,9 +133,18 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     {
         if (SelectedFlashcard != null)
         {
-            await _flashcardService.DeleteFlashcardAsync(SelectedFlashcard.Id);
-            _allFlashcards.Remove(SelectedFlashcard);
-            ApplySearchFilter();
+            var result = MessageBox.Show(
+                "Are you sure you want to delete this flashcard?",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                await _flashcardService.DeleteFlashcardAsync(SelectedFlashcard.Id);
+                _allFlashcards.Remove(SelectedFlashcard);
+                ApplySearchFilter();
+            }
         }
     }
 
@@ -170,5 +189,52 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     {
         (PreviousPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (NextPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    }
+
+    public async Task ExportFlashcardsAsync()
+    {
+        var flashcardDtos = _allFlashcards.Select(f => new FlashcardDto { Front = f.Front, Back = f.Back }).ToList();
+
+        var saveFileDialog = new SaveFileDialog
+        {
+            Filter = "JSON files (*.json)|*.json",
+            FileName = "Flashcards.json"
+        };
+
+        if (saveFileDialog.ShowDialog() == true)
+        {
+            var json = JsonSerializer.Serialize(flashcardDtos);
+            await File.WriteAllTextAsync(saveFileDialog.FileName, json);
+        }
+    }
+
+    public async Task ImportFlashcardsAsync()
+    {
+        var openFileDialog = new OpenFileDialog
+        {
+            Filter = "JSON files (*.json)|*.json"
+        };
+
+        if (openFileDialog.ShowDialog() == true)
+        {
+            var json = await File.ReadAllTextAsync(openFileDialog.FileName);
+            var flashcardDtos = JsonSerializer.Deserialize<List<FlashcardDto>>(json);
+
+            var existingFlashcards = _flashcardService.GetFlashcards();
+            var newFlashcards = flashcardDtos
+                .Where(dto => !existingFlashcards.Any(f => f.Front == dto.Front && f.Back == dto.Back))
+                .Select(dto => new Flashcard { Front = dto.Front, Back = dto.Back })
+                .ToList();
+
+            if (newFlashcards.Any())
+            {
+                foreach (var flashcard in newFlashcards)
+                {
+                    _flashcardService.AddFlashcard(flashcard);
+                }
+                _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
+                ApplySearchFilter();
+            }
+        }
     }
 }

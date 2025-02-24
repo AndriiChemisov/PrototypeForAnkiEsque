@@ -104,6 +104,7 @@ namespace PrototypeForAnkiEsque.Services
             // Ensure this runs on the UI thread
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
+                Application.Current.MainWindow.Title = title; // Set the window title
                 Application.Current.MainWindow.Content = userControl;
                 _lastNavigatedView = userControl; // Store the last navigated view
             });

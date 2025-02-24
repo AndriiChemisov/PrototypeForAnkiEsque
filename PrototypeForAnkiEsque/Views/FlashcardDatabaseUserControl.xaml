@@ -55,5 +55,9 @@
             <Button Content="Edit" Width="100" Margin="10" Command="{Binding EditCommand}"/>
             <Button Content="Delete" Width="100" Margin="10" Command="{Binding DeleteCommand}"/>
         </StackPanel>
+
+        <!-- Import and Export buttons -->
+        <Button Content="Import Flashcards" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Command="{Binding ImportFlashcardsCommand}"/>
+        <Button Content="Export Flashcards" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding ExportFlashcardsCommand}"/>
     </Grid>
 </UserControl>
