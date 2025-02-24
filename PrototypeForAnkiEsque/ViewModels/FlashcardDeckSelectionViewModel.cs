@@ -154,7 +154,8 @@ namespace PrototypeForAnkiEsque.ViewModels
             var saveFileDialog = new SaveFileDialog
             {
                 Filter = "JSON files (*.json)|*.json",
-                FileName = "FlashcardDecks.json"
+                FileName = "FlashcardDecks.json",
+                InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Exports")
             };
 
             if (saveFileDialog.ShowDialog() == true)
@@ -163,6 +164,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 await File.WriteAllTextAsync(saveFileDialog.FileName, json);
             }
         }
+
 
         public async Task ImportDecksAsync()
         {

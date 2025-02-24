@@ -198,7 +198,8 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         var saveFileDialog = new SaveFileDialog
         {
             Filter = "JSON files (*.json)|*.json",
-            FileName = "Flashcards.json"
+            FileName = "Flashcards.json",
+            InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Exports")
         };
 
         if (saveFileDialog.ShowDialog() == true)
@@ -207,6 +208,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
             await File.WriteAllTextAsync(saveFileDialog.FileName, json);
         }
     }
+
 
     public async Task ImportFlashcardsAsync()
     {
