@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using System.Linq;
 using PrototypeForAnkiEsque.Data;
 
 namespace PrototypeForAnkiEsque.ViewModels

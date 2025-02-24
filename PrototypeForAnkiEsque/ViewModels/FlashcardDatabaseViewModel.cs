@@ -2,13 +2,10 @@
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
-using System.Threading.Tasks;
 using System.Windows;
 
 public class FlashcardDatabaseViewModel : BaseViewModel

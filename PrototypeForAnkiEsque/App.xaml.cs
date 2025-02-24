@@ -42,8 +42,8 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<BooleanToDictionaryValueMultiConverter>();
 
             // Register services and views
-            services.AddSingleton<Services.NavigationService>();
-            services.AddSingleton<Services.DeckService>();
+            services.AddSingleton<NavigationService>();
+            services.AddSingleton<DeckService>();
             services.AddTransient<MainWindow>();
             services.AddTransient<MainMenuUserControl>();
             services.AddTransient<FlashcardEntryUserControl>();

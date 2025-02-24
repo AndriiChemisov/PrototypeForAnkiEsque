@@ -2,9 +2,7 @@
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace PrototypeForAnkiEsque.ViewModels

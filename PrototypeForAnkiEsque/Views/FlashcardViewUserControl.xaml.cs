@@ -1,7 +1,4 @@
-﻿using PrototypeForAnkiEsque.Converters;
-using PrototypeForAnkiEsque.ViewModels;
-using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 using PrototypeForAnkiEsque.Services;
 using System.Windows.Media.Animation;

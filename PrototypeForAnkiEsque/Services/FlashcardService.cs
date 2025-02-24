@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PrototypeForAnkiEsque.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Data;
 
 namespace PrototypeForAnkiEsque.Services

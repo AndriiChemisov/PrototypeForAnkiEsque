@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PrototypeForAnkiEsque.Services
 {

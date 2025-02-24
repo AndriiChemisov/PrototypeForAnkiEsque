@@ -1,9 +1,4 @@
-﻿using System.Windows;
-using PrototypeForAnkiEsque.Models;
-using System.Windows.Controls;
-using PrototypeForAnkiEsque.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
-using PrototypeForAnkiEsque.Converters;
+﻿using System.Windows.Controls;
 
 namespace PrototypeForAnkiEsque.Views
 {

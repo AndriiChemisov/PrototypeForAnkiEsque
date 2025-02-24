@@ -1,6 +1,5 @@
 ﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using PrototypeForAnkiEsque.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows;

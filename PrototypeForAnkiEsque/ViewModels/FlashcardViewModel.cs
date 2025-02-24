@@ -1,5 +1,4 @@
-﻿using PrototypeForAnkiEsque.Data;
-using PrototypeForAnkiEsque.Models;
+﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
 using System.Windows.Input;
