@@ -20,7 +20,7 @@ namespace PrototypeForAnkiEsque.Data
 
             // Create a DbContextOptionsBuilder to configure the DbContext
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
 
             // Return the DbContext instance with options
             return new ApplicationDbContext(optionsBuilder.Options);

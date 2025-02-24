@@ -224,6 +224,12 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(DeckName))
+            {
+                MessageBox.Show("The Deck name cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (_originalDeckName != DeckName && _deckService.CheckIfDeckNameExists(DeckName))
             {
                 MessageBox.Show("A deck with this name already exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);

@@ -28,13 +28,22 @@ namespace PrototypeForAnkiEsque.Data
                     new Flashcard { Front = "羊", Back = "ひつじ ー Sheep", EaseRating = 2 },
                     new Flashcard { Front = "豚", Back = "ぶた ー Pig", EaseRating = 2 }
                     );
-                context.FlashcardDecks.AddRange(
-                    new FlashcardDeck { Name = "動物 ー Animals", FlashcardFronts = new List<string> {
-                        "犬", "猫", "鳥",
-                        "魚", "馬", "牛",
-                        "羊", "豚"},
-                        EaseRating = "100%" }
-                    );
+
+                if (!context.FlashcardDecks.Any())
+                {
+                    context.FlashcardDecks.AddRange(
+                        new FlashcardDeck
+                        {
+                            Name = "動物 ー Animals",
+                            FlashcardFronts = new List<string> {
+                            "犬", "猫", "鳥",
+                            "魚", "馬", "牛",
+                            "羊", "豚"},
+                            EaseRating = "100%"
+                        }
+                        );
+                }
+
                 context.SaveChanges();
             }
         }

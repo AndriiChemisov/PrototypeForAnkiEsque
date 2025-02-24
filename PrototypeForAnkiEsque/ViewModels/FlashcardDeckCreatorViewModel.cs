@@ -196,8 +196,23 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task SaveDeckAsync()
         {
-            if (string.IsNullOrWhiteSpace(DeckName) || !SelectedFlashcards.Any() || _deckService.DeckExists(DeckName))
+            if (string.IsNullOrWhiteSpace(DeckName))
+            {
+                MessageBox.Show("The Deck name cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
+            }
+
+            if (!SelectedFlashcards.Any())
+            {
+                MessageBox.Show("The Deck must contain at least one flashcard!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (_deckService.DeckExists(DeckName))
+            {
+                MessageBox.Show("A deck with that name already exists!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             var flashcardFronts = SelectedFlashcards.Select(f => f.Front).ToList();
             string easeRating = _deckService.CalculateEaseRating(flashcardFronts);

@@ -32,7 +32,7 @@ namespace PrototypeForAnkiEsque
             var connectionString = config.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlite(connectionString));
 
             services.AddTransient<FlashcardService>();
             services.AddSingleton<BooleanToVisibilityConverter>();
@@ -68,20 +68,27 @@ namespace PrototypeForAnkiEsque
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
+            try
+            {
+                base.OnStartup(e);
 
-            // Ensure that the database is created and seeded
-            var dbContext = ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            dbContext.Database.EnsureCreated();
-            ApplicationDbContext.Seed(dbContext);
+                // Ensure that the database is created and seeded
+                var dbContext = ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
+                ApplicationDbContext.Seed(dbContext);
 
-            // Create MainWindow and inject NavigationService
-            var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
-            var mainWindow = new MainWindow(navigationService);
+                // Create MainWindow and inject NavigationService
+                var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
+                var mainWindow = new MainWindow(navigationService);
 
-            // Set MainWindow and show it
-            Application.Current.MainWindow = mainWindow;
-            mainWindow.Show();
+                // Set MainWindow and show it
+                Application.Current.MainWindow = mainWindow;
+                mainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
