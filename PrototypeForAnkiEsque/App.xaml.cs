@@ -39,6 +39,7 @@ namespace PrototypeForAnkiEsque
             services.AddSingleton<DIValueConverterProvider>();
             services.AddSingleton<EaseRatingToStringConverter>();
             services.AddSingleton<DifficultyConverter>();
+            services.AddTransient<BooleanToDictionaryValueMultiConverter>();
 
             // Register services and views
             services.AddSingleton<Services.NavigationService>();

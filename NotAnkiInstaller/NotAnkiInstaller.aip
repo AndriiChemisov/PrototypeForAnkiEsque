@@ -5,10 +5,10 @@
     <ROW Property="ALLUSERS" Value="1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="Manufacturer" Value="Rusty Cog Spaghetticode"/>
-    <ROW Property="ProductCode" Value="1033:{DDFE6F03-DE5C-4CF1-B9C1-A795DFCA02B4} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{86E22D9F-DBF7-4D55-AC75-070053D8D27B} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Definetly not Anki"/>
-    <ROW Property="ProductVersion" Value="0.0.21" Options="32"/>
+    <ROW Property="ProductVersion" Value="0.1.0" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{A38E9713-FFD1-472C-8151-761493324006}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

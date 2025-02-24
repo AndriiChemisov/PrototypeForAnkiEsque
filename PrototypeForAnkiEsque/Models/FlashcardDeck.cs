@@ -8,7 +8,7 @@ namespace PrototypeForAnkiEsque.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<int> FlashcardIds { get; set; }
+        public List<string> FlashcardFronts { get; set; }
         public string EaseRating { get; set; }
     }
 }

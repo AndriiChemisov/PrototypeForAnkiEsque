@@ -22,12 +22,12 @@ namespace PrototypeForAnkiEsque.Services
                 .Any(d => d.Name.ToLower() == deckName.ToLower());
         }
 
-        public async Task CreateDeckAsync(string deckName, List<int> flashcardIds, string easeRating)
+        public async Task CreateDeckAsync(string deckName, List<string> flashcardFronts, string easeRating)
         {
             var newDeck = new FlashcardDeck
             {
                 Name = deckName,
-                FlashcardIds = flashcardIds,
+                FlashcardFronts = flashcardFronts,
                 EaseRating = easeRating
             };
 
@@ -56,7 +56,7 @@ namespace PrototypeForAnkiEsque.Services
         public async Task UpdateDeckAsync(FlashcardDeck deck)
         {
             _context.FlashcardDecks.Update(deck);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDeckAsync(int deckId)
@@ -71,9 +71,9 @@ namespace PrototypeForAnkiEsque.Services
             }
         }
 
-        public string CalculateEaseRating(List<int> flashcardIds)
+        public string CalculateEaseRating(List<string> flashcardFronts)
         {
-            var flashcards = _context.Flashcards.Where(f => flashcardIds.Contains(f.Id)).ToList();
+            var flashcards = _context.Flashcards.Where(f => flashcardFronts.Contains(f.Front)).ToList();
             if (!flashcards.Any()) return "100%";
 
             double averageEaseRating = flashcards.Average(f => f.EaseRating);

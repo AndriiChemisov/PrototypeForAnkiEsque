@@ -1,8 +1,13 @@
 ﻿<UserControl x:Class="PrototypeForAnkiEsque.Views.FlashcardDeckEditorUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PrototypeForAnkiEsque.Converters"
              Height="450" Width="800"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+        <local:BooleanToDictionaryValueMultiConverter x:Key="BooleanToDictionaryValueMultiConverter" />
+    </UserControl.Resources>
 
     <Grid>
         <!-- Navigation Button -->
@@ -38,10 +43,14 @@
                                 <DataTemplate>
                                     <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
                                                          Path=DataContext.ToggleAvailableFlashcardSelectionCommand}"
-                                          CommandParameter="{Binding Id}"
-                                          IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                         Path=DataContext.SelectedAvailableFlashcards[{Binding Id}], 
-                                                         Mode=TwoWay}" />
+                                          CommandParameter="{Binding Front}">
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource BooleanToDictionaryValueMultiConverter}">
+                                                <Binding Path="DataContext.SelectedAvailableFlashcards" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                <Binding Path="Front" />
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -50,7 +59,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
-            
+
             <!-- Add/Remove Buttons -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
                 <Button Content="&lt;-" Width="50" Height="30" Margin="5"
@@ -64,7 +73,7 @@
 
             <!-- Selected Flashcards (Deck) -->
 
-                <StackPanel Grid.Column="2" Margin="0,48,0,28">
+            <StackPanel Grid.Column="2" Margin="0,48,0,28">
                 <!-- Search Deck Flashcards -->
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="25" Margin="0,0,0,5"
@@ -80,10 +89,14 @@
                                 <DataTemplate>
                                     <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
                                                          Path=DataContext.ToggleDeckFlashcardSelectionCommand}"
-                                              CommandParameter="{Binding Id}"
-                                              IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                         Path=DataContext.SelectedDeckFlashcards[{Binding Id}], 
-                                                         Mode=TwoWay}" />
+                                              CommandParameter="{Binding Front}">
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource BooleanToDictionaryValueMultiConverter}">
+                                                <Binding Path="DataContext.SelectedDeckFlashcards" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                <Binding Path="Front" />
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

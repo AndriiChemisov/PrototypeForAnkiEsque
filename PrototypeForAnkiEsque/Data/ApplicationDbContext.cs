@@ -35,7 +35,11 @@ namespace PrototypeForAnkiEsque.Data
                     new Flashcard { Front = "豚", Back = "ぶた ー Pig", EaseRating = 2 }
                     );
                 context.FlashcardDecks.AddRange(
-                    new FlashcardDeck { Name = "動物 ー Animals", FlashcardIds = new List<int> { 2, 3, 4, 5, 6, 7, 8, 9 }, EaseRating = "100%" }
+                    new FlashcardDeck { Name = "動物 ー Animals", FlashcardFronts = new List<string> {
+                        "犬", "猫", "鳥",
+                        "魚", "馬", "牛",
+                        "羊", "豚"},
+                        EaseRating = "100%" }
                     );
                 context.SaveChanges();
             }

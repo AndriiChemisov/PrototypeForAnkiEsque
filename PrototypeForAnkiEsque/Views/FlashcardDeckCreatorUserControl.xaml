@@ -1,8 +1,13 @@
 ﻿<UserControl x:Class="PrototypeForAnkiEsque.Views.FlashcardDeckCreatorUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PrototypeForAnkiEsque.Converters"
              Height="450" Width="800"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <UserControl.Resources>
+        <local:BooleanToDictionaryValueMultiConverter x:Key="BooleanToDictionaryValueMultiConverter" />
+    </UserControl.Resources>
 
     <Grid>
         <!-- Navigation Button -->
@@ -38,23 +43,13 @@
                                 <DataTemplate>
                                     <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
                                                              Path=DataContext.ToggleAvailableFlashcardSelectionCommand}"
-                                              CommandParameter="{Binding Id}">
-                                        <CheckBox.Style>
-                                            <Style TargetType="CheckBox">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                                                 Path=DataContext.SelectedAvailableFlashcards[{Binding Id}]}" 
-                                                                 Value="True">
-                                                        <Setter Property="IsChecked" Value="True" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                                                 Path=DataContext.SelectedAvailableFlashcards[{Binding Id}]}" 
-                                                                 Value="False">
-                                                        <Setter Property="IsChecked" Value="False" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
+                                              CommandParameter="{Binding Front}">
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource BooleanToDictionaryValueMultiConverter}">
+                                                <Binding Path="DataContext.SelectedAvailableFlashcards" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                <Binding Path="Front" />
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
                                     </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -92,23 +87,13 @@
                                 <DataTemplate>
                                     <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
                                                              Path=DataContext.ToggleDeckFlashcardSelectionCommand}"
-                                              CommandParameter="{Binding Id}">
-                                        <CheckBox.Style>
-                                            <Style TargetType="CheckBox">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                                                 Path=DataContext.SelectedDeckFlashcards[{Binding Id}]}" 
-                                                                 Value="True">
-                                                        <Setter Property="IsChecked" Value="True" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                                                 Path=DataContext.SelectedDeckFlashcards[{Binding Id}]}" 
-                                                                 Value="False">
-                                                        <Setter Property="IsChecked" Value="False" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
+                                              CommandParameter="{Binding Front}">
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource BooleanToDictionaryValueMultiConverter}">
+                                                <Binding Path="DataContext.SelectedDeckFlashcards" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                <Binding Path="Front" />
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
                                     </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

@@ -9,6 +9,8 @@ using System.Windows;
 
 namespace PrototypeForAnkiEsque.Services
 {
+
+
     public class NavigationService
     {
         private readonly IServiceProvider _serviceProvider;
@@ -102,12 +104,7 @@ namespace PrototypeForAnkiEsque.Services
             // Ensure this runs on the UI thread
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var mainWindow = Application.Current.MainWindow;
-                if (mainWindow != null)
-                {
-                    mainWindow.Title = title; // Set the window title
-                    mainWindow.Content = userControl; // Set the content
-                }
+                Application.Current.MainWindow.Content = userControl;
                 _lastNavigatedView = userControl; // Store the last navigated view
             });
         }
