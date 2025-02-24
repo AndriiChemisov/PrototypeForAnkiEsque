@@ -6,9 +6,12 @@
     <Grid>
         <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}" />
         <Button Content="Create a new Deck" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenDeckCreatorCommand}" />
-
+        <!-- Search TextBox -->
+        <TextBlock Text="Search Decks:" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" />
+        <TextBox Width="200" Height="20" Margin="20,20,20,0" VerticalAlignment="Top" HorizontalAlignment="Center"
+          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.526,-0.763"  />
         <!-- Define the DataGrid -->
-        <DataGrid ItemsSource="{Binding Decks}" SelectedItem="{Binding SelectedDeck}" IsReadOnly="True" Height="350" AutoGenerateColumns="False" Margin="10">
+        <DataGrid ItemsSource="{Binding FilteredDecks}" SelectedItem="{Binding SelectedDeck}" IsReadOnly="True" AutoGenerateColumns="False" Margin="10,60,10,50">
             <!-- Define Columns -->
             <DataGrid.Columns>
                 <!-- Column for Deck Name -->

@@ -14,10 +14,10 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly NavigationService _navigationService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
-        private const int PageSize = 10;
-        private int _currentPage = 1;
+        private string _searchText;
 
         public ObservableCollection<FlashcardDeck> Decks { get; private set; } = new();
+        public ObservableCollection<FlashcardDeck> FilteredDecks { get; private set; } = new();
 
         public ICommand ReviewDeckCommand { get; }
         public ICommand EditDeckCommand { get; }
@@ -37,15 +37,16 @@ namespace PrototypeForAnkiEsque.ViewModels
             set => SetProperty(ref _errorMessage, value);
         }
 
-        public int CurrentPage
+        public string SearchText
         {
-            get => _currentPage;
+            get => _searchText;
             set
             {
-                if (_currentPage != value)
+                if (_searchText != value)
                 {
-                    _currentPage = value;
-                    LoadDecksAsync();
+                    _searchText = value;
+                    OnPropertyChanged();
+                    UpdateFilteredDecks();
                 }
             }
         }
@@ -66,9 +67,18 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async void LoadDecksAsync()
         {
-            var decks = await Task.Run(() => _deckService.GetPagedDecks(_currentPage, PageSize).ToList());
+            var decks = await Task.Run(() => _deckService.GetPagedDecks(1, int.MaxValue).ToList());
             Decks = new ObservableCollection<FlashcardDeck>(decks);
-            OnPropertyChanged(nameof(Decks));
+            UpdateFilteredDecks();
+        }
+
+        private void UpdateFilteredDecks()
+        {
+            FilteredDecks.Clear();
+            foreach (var deck in Decks.Where(d => string.IsNullOrEmpty(SearchText) || d.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)))
+            {
+                FilteredDecks.Add(deck);
+            }
         }
 
         private async void ReviewDeckAsync()
@@ -87,6 +97,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (SelectedDeck == null)
             {
                 ShowErrorMessage("Please select a deck to edit.");
+                return;
             }
 
             await _navigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
@@ -124,3 +135,4 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
     }
 }
+
