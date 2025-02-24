@@ -29,11 +29,11 @@ namespace PrototypeForAnkiEsque.Services
             var deck = _context.FlashcardDecks
                                .FirstOrDefault(d => d.Id == deckId);
 
-            if (deck != null && deck.FlashcardIds != null)
+            if (deck != null && deck.FlashcardFronts != null)
             {
                 // Get flashcards that match the IDs in the FlashcardIds list
                 return _context.Flashcards
-                               .Where(fc => deck.FlashcardIds.Contains(fc.Id))
+                               .Where(fc => deck.FlashcardFronts.Contains(fc.Front))
                                .ToList();
             }
 

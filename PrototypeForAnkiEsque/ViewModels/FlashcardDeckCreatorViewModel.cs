@@ -11,8 +11,6 @@ using PrototypeForAnkiEsque.ViewModels;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
-
-
     public class FlashcardDeckCreatorViewModel : BaseViewModel
     {
         private readonly DeckService _deckService;
@@ -26,17 +24,14 @@ namespace PrototypeForAnkiEsque.ViewModels
         private bool _areChangesMade;
         private readonly DispatcherTimer _debounceTimer;
 
-
         public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
         public ObservableCollection<Flashcard> SelectedFlashcards { get; } = new();
 
         public ObservableCollection<Flashcard> FilteredAvailableFlashcards { get; } = new();
         public ObservableCollection<Flashcard> FilteredSelectedFlashcards { get; } = new();
 
-        public Dictionary<int, bool> SelectedAvailableFlashcards { get; set; } = new();
-        public Dictionary<int, bool> SelectedDeckFlashcards { get; set; } = new();
-
-
+        public Dictionary<string, bool> SelectedAvailableFlashcards { get; set; } = new();
+        public Dictionary<string, bool> SelectedDeckFlashcards { get; set; } = new();
 
         public string SearchAvailableText
         {
@@ -138,8 +133,8 @@ namespace PrototypeForAnkiEsque.ViewModels
             AddFlashcardsCommand = new RelayCommand(AddFlashcards);
             RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
             SaveDeckCommand = new RelayCommand(async () => await SaveDeckAsync());
-            ToggleAvailableFlashcardSelectionCommand = new RelayCommand<int>(ToggleAvailableFlashcardSelection);
-            ToggleDeckFlashcardSelectionCommand = new RelayCommand<int>(ToggleDeckFlashcardSelection);
+            ToggleAvailableFlashcardSelectionCommand = new RelayCommand<string>(ToggleAvailableFlashcardSelection);
+            ToggleDeckFlashcardSelectionCommand = new RelayCommand<string>(ToggleDeckFlashcardSelection);
 
             LoadFlashcards();
         }
@@ -167,7 +162,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             var selected = SelectedAvailableFlashcards
                 .Where(x => x.Value)
-                .Select(x => AvailableFlashcards.First(f => f.Id == x.Key))
+                .Select(x => AvailableFlashcards.First(f => f.Front == x.Key))
                 .ToList();
 
             foreach (var flashcard in selected)
@@ -187,7 +182,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             var selected = SelectedDeckFlashcards
                 .Where(x => x.Value)
-                .Select(x => SelectedFlashcards.First(f => f.Id == x.Key))
+                .Select(x => SelectedFlashcards.First(f => f.Front == x.Key))
                 .ToList();
 
             foreach (var flashcard in selected)
@@ -208,10 +203,10 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (string.IsNullOrWhiteSpace(DeckName) || !SelectedFlashcards.Any() || _deckService.DeckExists(DeckName))
                 return;
 
-            var flashcardIds = SelectedFlashcards.Select(f => f.Id).ToList();
-            string easeRating = _deckService.CalculateEaseRating(flashcardIds);
+            var flashcardFronts = SelectedFlashcards.Select(f => f.Front).ToList();
+            string easeRating = _deckService.CalculateEaseRating(flashcardFronts);
 
-            await _deckService.CreateDeckAsync(DeckName, flashcardIds, easeRating);
+            await _deckService.CreateDeckAsync(DeckName, flashcardFronts, easeRating);
 
             // Reset fields
             DeckName = string.Empty;
@@ -219,7 +214,6 @@ namespace PrototypeForAnkiEsque.ViewModels
             LoadFlashcards();
             MessageBox.Show("Deck successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
 
         private async Task OpenDeckSelectionAsync()
         {
@@ -255,24 +249,24 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        private void ToggleAvailableFlashcardSelection(int flashcardId)
+        private void ToggleAvailableFlashcardSelection(string flashcardFront)
         {
-            if (SelectedAvailableFlashcards.ContainsKey(flashcardId))
-                SelectedAvailableFlashcards[flashcardId] = !SelectedAvailableFlashcards[flashcardId];
+            if (SelectedAvailableFlashcards.ContainsKey(flashcardFront))
+                SelectedAvailableFlashcards[flashcardFront] = !SelectedAvailableFlashcards[flashcardFront];
             else
-                SelectedAvailableFlashcards[flashcardId] = true;
+                SelectedAvailableFlashcards[flashcardFront] = true;
 
             // Force UI update
             OnPropertyChanged(nameof(SelectedAvailableFlashcards));
             UpdateButtonStates();
         }
 
-        private void ToggleDeckFlashcardSelection(int flashcardId)
+        private void ToggleDeckFlashcardSelection(string flashcardFront)
         {
-            if (SelectedDeckFlashcards.ContainsKey(flashcardId))
-                SelectedDeckFlashcards[flashcardId] = !SelectedDeckFlashcards[flashcardId];
+            if (SelectedDeckFlashcards.ContainsKey(flashcardFront))
+                SelectedDeckFlashcards[flashcardFront] = !SelectedDeckFlashcards[flashcardFront];
             else
-                SelectedDeckFlashcards[flashcardId] = true;
+                SelectedDeckFlashcards[flashcardFront] = true;
 
             // Force UI update
             OnPropertyChanged(nameof(SelectedDeckFlashcards));
@@ -286,4 +280,3 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
     }
 }
-

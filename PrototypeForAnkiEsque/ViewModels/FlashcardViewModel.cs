@@ -103,7 +103,7 @@ public class FlashcardViewModel : BaseViewModel
         if (_currentCardIndex >= _flashcards.Count - 1)
         {
             IsGridVisible = !IsGridVisible;
-            SelectedDeck.EaseRating = _deckService.CalculateEaseRating(SelectedDeck.FlashcardIds);
+            SelectedDeck.EaseRating = _deckService.CalculateEaseRating(SelectedDeck.FlashcardFronts);
             await _deckService.UpdateDeckAsync(SelectedDeck);
 
             MotivationalMessage = "Well done - you finished the deck!";
