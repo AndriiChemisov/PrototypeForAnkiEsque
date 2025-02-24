@@ -43,6 +43,7 @@ namespace PrototypeForAnkiEsque
             // Register services and views
             services.AddSingleton<Services.NavigationService>();
             services.AddSingleton<Services.DeckService>();
+            services.AddTransient<MainWindow>();
             services.AddTransient<MainMenuUserControl>();
             services.AddTransient<FlashcardEntryUserControl>();
             services.AddTransient<FlashcardViewUserControl>();
@@ -53,6 +54,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<FlashcardDeckEditorUserControl>();
 
             // Register ViewModels
+            services.AddTransient<MainWindowViewModel>();
             services.AddTransient<MainMenuViewModel>();
             services.AddTransient<FlashcardEntryViewModel>();
             services.AddTransient<FlashcardViewModel>();

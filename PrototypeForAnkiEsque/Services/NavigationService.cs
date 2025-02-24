@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
+using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
 using PrototypeForAnkiEsque.Views;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
+using System.Windows;
 
 namespace PrototypeForAnkiEsque.Services
 {
+
+
     public class NavigationService
     {
         private readonly IServiceProvider _serviceProvider;
@@ -26,7 +27,7 @@ namespace PrototypeForAnkiEsque.Services
         public async Task GetMainMenuViewAsync()
         {
             var mainMenuView = _serviceProvider.GetRequiredService<MainMenuUserControl>();
-            await NavigateAsync(mainMenuView); // Asynchronously set the content
+            await NavigateAsync(mainMenuView, "Main Menu"); // Asynchronously set the content
         }
 
         // Navigate to the Flashcard view (user control) asynchronously
@@ -38,25 +39,24 @@ namespace PrototypeForAnkiEsque.Services
             var viewModel = (FlashcardViewModel)flashcardView.DataContext;
             viewModel.SetSelectedDeck(selectedDeck);
 
-            await NavigateAsync(flashcardView); // Asynchronously set the content
+            await NavigateAsync(flashcardView, "Flashcard View"); // Asynchronously set the content
         }
-
 
         // Navigate to the Flashcard Entry view (user control) asynchronously
         public async Task GetFlashcardEntryViewAsync()
         {
             var flashcardEntryView = _serviceProvider.GetRequiredService<FlashcardEntryUserControl>();
-            await NavigateAsync(flashcardEntryView); // Asynchronously set the content
+            await NavigateAsync(flashcardEntryView, "Flashcard Entry"); // Asynchronously set the content
         }
 
         // Navigate to the Flashcard Database view (user control)
         public async Task GetFlashcardDatabaseViewAsync()
         {
             var flashcardDatabaseView = _serviceProvider.GetRequiredService<FlashcardDatabaseUserControl>();
-            await NavigateAsync(flashcardDatabaseView); // Asynchronously set the content
+            await NavigateAsync(flashcardDatabaseView, "Flashcard Database"); // Asynchronously set the content
         }
 
-        //Navigate to the Flashcard Editor view(user control)
+        // Navigate to the Flashcard Editor view (user control)
         public async Task GetFlashcardEditorViewAsync(Flashcard flashcard)
         {
             var flashcardEditorView = _serviceProvider.GetRequiredService<FlashcardEditorUserControl>();
@@ -68,20 +68,20 @@ namespace PrototypeForAnkiEsque.Services
             viewModel.Initialize(flashcard);
             flashcardEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
 
-            await NavigateAsync(flashcardEditorView); // Asynchronously set the content
+            await NavigateAsync(flashcardEditorView, "Flashcard Editor"); // Asynchronously set the content
         }
 
         // Navigate to the Flashcard Deck Creator view (user control) asynchronously
         public async Task GetFlashcardDeckCreatorViewAsync()
         {
             var flashcardDeckCreatorView = _serviceProvider.GetRequiredService<FlashcardDeckCreatorUserControl>();
-            await NavigateAsync(flashcardDeckCreatorView); // Asynchronously set the content
+            await NavigateAsync(flashcardDeckCreatorView, "Deck Creator"); // Asynchronously set the content
         }
 
         public async Task GetFlashcardDeckSelectionViewAsync()
         {
             var flashcardDeckSelectionView = _serviceProvider.GetRequiredService<FlashcardDeckSelectionUserControl>();
-            await NavigateAsync(flashcardDeckSelectionView); // Asynchronously set the content
+            await NavigateAsync(flashcardDeckSelectionView, "Deck Selection"); // Asynchronously set the content
         }
 
         public async Task GetFlashcardDeckEditorViewAsync(FlashcardDeck selectedDeck)
@@ -95,11 +95,11 @@ namespace PrototypeForAnkiEsque.Services
             viewModel.Initialize(selectedDeck);
             flashcardDeckEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
 
-            await NavigateAsync(flashcardDeckEditorView); // Asynchronously set the content
+            await NavigateAsync(flashcardDeckEditorView, "Deck Editor"); // Asynchronously set the content
         }
 
         // General method to perform navigation asynchronously
-        private async Task NavigateAsync(UserControl userControl)
+        private async Task NavigateAsync(UserControl userControl, string title)
         {
             // Ensure this runs on the UI thread
             await Application.Current.Dispatcher.InvokeAsync(() =>
