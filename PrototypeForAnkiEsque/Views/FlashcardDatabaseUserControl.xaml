@@ -12,16 +12,25 @@
         <!-- Navigation Button -->
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}"/>
         <Button Content="Create a new Flashcard" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardEntryCommand}"/>
-        
+
+        <!-- Search Bar -->
+        <TextBox x:Name="SearchBox"
+                 Width="300"
+                 Height="20"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Top"
+                 Margin="0,50,0,0"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,52,0,0"/>
+
         <!-- DataGrid to show flashcards -->
         <DataGrid x:Name="FlashcardDataGrid" 
                   AutoGenerateColumns="False"  
-                  CanUserAddRows="false"
+                  CanUserAddRows="False"
                   IsReadOnly="True"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 60, 0, 50"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 90, 0, 50"
                   ItemsSource="{Binding Flashcards}"
                   SelectedItem="{Binding SelectedFlashcard, Mode=TwoWay}">
-            <!-- Define column for Front property -->
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Front" Binding="{Binding Front}" Width="*" />
                 <DataGridTextColumn Header="Back" Binding="{Binding Back}" Width="*" />
@@ -32,7 +41,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <!-- You can add more columns as necessary -->
             </DataGrid.Columns>
         </DataGrid>
 

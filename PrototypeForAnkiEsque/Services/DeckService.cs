@@ -74,12 +74,12 @@ namespace PrototypeForAnkiEsque.Services
         public string CalculateEaseRating(List<int> flashcardIds)
         {
             var flashcards = _context.Flashcards.Where(f => flashcardIds.Contains(f.Id)).ToList();
-            if (!flashcards.Any()) return "0";
+            if (!flashcards.Any()) return "100%";
 
             double averageEaseRating = flashcards.Average(f => f.EaseRating);
 
             // Convert to percentage
-            return (100 - (averageEaseRating / 2) * 100).ToString() + "%";
+            return Math.Round((100 - (averageEaseRating / 2) * 100), 2).ToString() + "%";
         }
 
         public bool CheckIfDeckNameExists(string deckName)

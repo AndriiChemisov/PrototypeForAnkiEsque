@@ -2,9 +2,8 @@
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using System.Windows;
 using System.Linq;
+using System.Windows.Input;
 
 public class FlashcardDatabaseViewModel : BaseViewModel
 {
@@ -12,9 +11,11 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     private readonly NavigationService _navigationService;
     private Flashcard _selectedFlashcard;
     private ObservableCollection<Flashcard> _allFlashcards;
+    private ObservableCollection<Flashcard> _filteredFlashcards;
+    private string _searchText = string.Empty;
 
-    private const int PageSize = 15; // Number of items per page
-    private int _currentPage = 1; // Current page, starts from 1
+    private const int PageSize = 15;
+    private int _currentPage = 1;
 
     public FlashcardDatabaseViewModel(FlashcardService flashcardService, NavigationService navigationService)
     {
@@ -22,9 +23,10 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         _navigationService = navigationService;
 
         _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
+        _filteredFlashcards = new ObservableCollection<Flashcard>(_allFlashcards);
         Flashcards = new ObservableCollection<Flashcard>();
 
-        LoadPage(_currentPage);
+        LoadPage(1);
 
         EditCommand = new RelayCommand(EditFlashcard, CanEditFlashcard);
         DeleteCommand = new RelayCommand(DeleteFlashcard, CanDeleteFlashcard);
@@ -49,111 +51,85 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         }
     }
 
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            if (_searchText != value)
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                ApplySearchFilter();
+            }
+        }
+    }
+
+    private void ApplySearchFilter()
+    {
+        _filteredFlashcards = string.IsNullOrWhiteSpace(SearchText)
+            ? new ObservableCollection<Flashcard>(_allFlashcards)
+            : new ObservableCollection<Flashcard>(
+                _allFlashcards.Where(f =>
+                    f.Front.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    f.Back.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+            );
+
+        CurrentPage = 1;
+        LoadPage(CurrentPage);
+    }
+
     public Flashcard SelectedFlashcard
     {
         get => _selectedFlashcard;
         set
         {
-            if (value != null && !string.IsNullOrWhiteSpace(value.Front)) // Check if the flashcard is valid (not empty)
-            {
-                SetProperty(ref _selectedFlashcard, value);
-                (EditCommand as RelayCommand)?.RaiseCanExecuteChanged(); // Enable the Edit button
-                (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged(); // Enable the Delete button
-            }
-            else
-            {
-                // If it's the extra row (null or empty), set the selected flashcard to null
-                _selectedFlashcard = null;
-            }
+            SetProperty(ref _selectedFlashcard, value);
+            (EditCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged();
         }
     }
 
-    // Command for editing the selected flashcard
     public ICommand EditCommand { get; }
     public ICommand DeleteCommand { get; }
     public ICommand OpenMainMenuCommand { get; }
-    // Commands for pagination
     public ICommand PreviousPageCommand { get; }
     public ICommand NextPageCommand { get; }
     public ICommand OpenFlashcardEntryCommand { get; }
 
-
-    // Pagination logic
     private void LoadPage(int pageNumber)
     {
         _currentPage = pageNumber;
-        var pagedFlashcards = _allFlashcards.Skip((pageNumber - 1) * PageSize).Take(PageSize);
+        var pagedFlashcards = _filteredFlashcards.Skip((pageNumber - 1) * PageSize).Take(PageSize);
         Flashcards.Clear();
         foreach (var flashcard in pagedFlashcards)
         {
             Flashcards.Add(flashcard);
         }
-        (PreviousPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (NextPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        UpdatePaginationButtons();
     }
 
     private void EditFlashcard()
     {
         if (SelectedFlashcard != null)
         {
-            // Navigate to the FlashcardEditorView with the selected flashcard
             _navigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
         }
     }
 
-    private bool CanEditFlashcard()
-    {
-        return SelectedFlashcard != null;
-    }
-
-    // Command for deleting the selected flashcard
+    private bool CanEditFlashcard() => SelectedFlashcard != null;
 
     private async void DeleteFlashcard()
     {
         if (SelectedFlashcard != null)
         {
-            var result = MessageBox.Show("Are you sure you want to delete this flashcard?",
-                "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                await _flashcardService.DeleteFlashcardAsync(SelectedFlashcard.Id);
-                _allFlashcards.Remove(SelectedFlashcard);
-                SelectedFlashcard = null; // Deselect the flashcard
-                CalculatePagination();
-            }
+            await _flashcardService.DeleteFlashcardAsync(SelectedFlashcard.Id);
+            _allFlashcards.Remove(SelectedFlashcard);
+            ApplySearchFilter();
         }
     }
 
-    // Recalculate pagination after a deletion
-    private void CalculatePagination()
-    {
-        int totalItems = _allFlashcards.Count;
-        int totalPages = (totalItems + PageSize - 1) / PageSize;
-
-        // Adjust current page if it's out of range
-        if (_currentPage > totalPages)
-        {
-            _currentPage = totalPages > 0 ? totalPages : 1; // Go to the last page if current is invalid, or first if no pages
-        }
-
-        // Update page buttons visibility based on current page and total pages
-        LoadPage(_currentPage);
-        UpdatePaginationButtons();
-    }
-
-    private void UpdatePaginationButtons()
-    {
-        // Enable/Disable buttons based on current page and total pages
-        (PreviousPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (NextPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    }
-
-    private bool CanDeleteFlashcard()
-    {
-        return SelectedFlashcard != null;
-    }
-
-    // Command for opening the main menu
+    private bool CanDeleteFlashcard() => SelectedFlashcard != null;
 
     private async void OpenMainMenu()
     {
@@ -165,7 +141,6 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         await _navigationService.GetFlashcardEntryViewAsync();
     }
 
-    // Previous page command logic
     private void PreviousPage()
     {
         if (_currentPage > 1)
@@ -174,15 +149,11 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         }
     }
 
-    private bool CanGoToPreviousPage()
-    {
-        return _currentPage > 1;
-    }
+    private bool CanGoToPreviousPage() => _currentPage > 1;
 
-    // Next page command logic
     private void NextPage()
     {
-        int totalPages = (_allFlashcards.Count + PageSize - 1) / PageSize; // Calculate total pages
+        int totalPages = (_filteredFlashcards.Count + PageSize - 1) / PageSize;
         if (_currentPage < totalPages)
         {
             CurrentPage++;
@@ -191,7 +162,13 @@ public class FlashcardDatabaseViewModel : BaseViewModel
 
     private bool CanGoToNextPage()
     {
-        int totalPages = (_allFlashcards.Count + PageSize - 1) / PageSize; // Calculate total pages
+        int totalPages = (_filteredFlashcards.Count + PageSize - 1) / PageSize;
         return _currentPage < totalPages;
+    }
+
+    private void UpdatePaginationButtons()
+    {
+        (PreviousPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        (NextPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 }

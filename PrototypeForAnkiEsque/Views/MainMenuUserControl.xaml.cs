@@ -13,15 +13,10 @@ namespace PrototypeForAnkiEsque.Views
         {
             InitializeComponent();
 
-            var navigationService = App.ServiceProvider.GetRequiredService<NavigationService>();
             var viewModel = App.ServiceProvider.GetRequiredService<MainMenuViewModel>();
             DataContext = viewModel;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
 }
