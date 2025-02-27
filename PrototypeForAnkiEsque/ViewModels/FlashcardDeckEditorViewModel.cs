@@ -157,7 +157,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             FilteredAvailableFlashcards.Clear();
             FilteredSelectedFlashcards.Clear();
 
-            var allFlashcards = _flashcardService.GetFlashcards();
+            var allFlashcards = await _flashcardService.GetFlashcardsAsync();
             var deckFlashcardFronts = _selectedDeck.FlashcardFronts;
 
             foreach (var flashcard in allFlashcards)

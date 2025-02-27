@@ -26,8 +26,8 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         _flashcardService = flashcardService;
         _navigationService = navigationService;
 
-        _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
-        _filteredFlashcards = new ObservableCollection<Flashcard>(_allFlashcards);
+        LoadFlashcardsAsync().Wait();
+
         Flashcards = new ObservableCollection<Flashcard>();
 
         LoadPage(1);
@@ -40,6 +40,13 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntryAsync);
         ImportFlashcardsCommand = new RelayCommand(async () => await ImportFlashcardsAsync());
         ExportFlashcardsCommand = new RelayCommand(async () => await ExportFlashcardsAsync());
+    }
+
+    private async Task LoadFlashcardsAsync()
+    {
+        var flashcards = await _flashcardService.GetFlashcardsAsync();
+        _allFlashcards = new ObservableCollection<Flashcard>(flashcards);
+        _filteredFlashcards = new ObservableCollection<Flashcard>(_allFlashcards);
     }
 
     public ObservableCollection<Flashcard> Flashcards { get; set; }
@@ -218,7 +225,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
             var json = await File.ReadAllTextAsync(openFileDialog.FileName);
             var flashcardDtos = JsonSerializer.Deserialize<List<FlashcardDto>>(json);
 
-            var existingFlashcards = _flashcardService.GetFlashcards();
+            var existingFlashcards = await _flashcardService.GetFlashcardsAsync();
             var newFlashcards = flashcardDtos
                 .Where(dto => !existingFlashcards.Any(f => f.Front == dto.Front && f.Back == dto.Back))
                 .Select(dto => new Flashcard { Front = dto.Front, Back = dto.Back })
@@ -228,9 +235,9 @@ public class FlashcardDatabaseViewModel : BaseViewModel
             {
                 foreach (var flashcard in newFlashcards)
                 {
-                    _flashcardService.AddFlashcard(flashcard);
+                    await _flashcardService.AddFlashcardAsync(flashcard);
                 }
-                _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
+                _allFlashcards = new ObservableCollection<Flashcard>(await _flashcardService.GetFlashcardsAsync());
                 ApplySearchFilter();
             }
         }

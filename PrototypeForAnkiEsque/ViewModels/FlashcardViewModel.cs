@@ -37,7 +37,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             ShowAnswerCommand = new RelayCommand(ShowAnswer);
             NextCommand = new RelayCommand(NextCard);
-            EaseCommand = new RelayCommand<string>(SetEase);
+            EaseCommand = new RelayCommand<string>(async (string easeString) => await SetEaseAsync(easeString));
             OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
 
             _flashcards = new List<Flashcard>(); // Initialize as empty
@@ -126,12 +126,12 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        private void LoadFlashcardsFromDeck()
+        private async Task LoadFlashcardsFromDeck()
         {
             if (SelectedDeck != null)
             {
                 // Assuming FlashcardService can handle loading by deck
-                _flashcards = _flashcardService.GetFlashcardsByDeck(SelectedDeck.Id);
+                _flashcards = await _flashcardService.GetFlashcardsByDeckAsync(SelectedDeck.Id);
 
                 // Shuffle with ease bias (higher ease rating => more likely to appear first)
                 _flashcards = _flashcards
@@ -145,14 +145,14 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
 
 
-        private void SetEase(string easeString)
+        private async Task SetEaseAsync(string easeString)
         {
             int ease = Int32.Parse(easeString);
             if (CurrentCard == null)
                 return;
 
             CurrentCard.EaseRating = ease;
-            _flashcardService.UpdateFlashcard(CurrentCard);
+            await _flashcardService.UpdateFlashcardAsync(CurrentCard);
 
             RatingMessage = ease switch
             {

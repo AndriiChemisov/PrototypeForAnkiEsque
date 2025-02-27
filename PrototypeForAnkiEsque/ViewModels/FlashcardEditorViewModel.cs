@@ -143,7 +143,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 _flashcard.Back = EditableBack;
 
                 // Save the updated flashcard
-                _flashcardService.UpdateFlashcard(_flashcard);
+                await _flashcardService.UpdateFlashcardAsync(_flashcard);
 
                 // Show confirmation message and trigger animation
                 ShowSaveMessage();

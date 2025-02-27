@@ -59,11 +59,7 @@ namespace PrototypeForAnkiEsque.Services
         public async Task GetFlashcardEditorViewAsync(Flashcard flashcard)
         {
             var flashcardEditorView = _serviceProvider.GetRequiredService<FlashcardEditorUserControl>();
-            var viewModel = new FlashcardEditorViewModel(
-                _serviceProvider.GetRequiredService<IFlashcardService>(),
-                _serviceProvider.GetRequiredService<INavigationService>(),
-                _serviceProvider.GetRequiredService<ApplicationDbContext>()
-            );
+            var viewModel = _serviceProvider.GetRequiredService<FlashcardEditorViewModel>();
             viewModel.Initialize(flashcard);
             flashcardEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
 
@@ -86,11 +82,7 @@ namespace PrototypeForAnkiEsque.Services
         public async Task GetFlashcardDeckEditorViewAsync(FlashcardDeck selectedDeck)
         {
             var flashcardDeckEditorView = _serviceProvider.GetRequiredService<FlashcardDeckEditorUserControl>();
-            var viewModel = new FlashcardDeckEditorViewModel(
-                _serviceProvider.GetRequiredService<IDeckService>(),
-                _serviceProvider.GetRequiredService<INavigationService>(),
-                _serviceProvider.GetRequiredService<IFlashcardService>()
-            );
+            var viewModel = _serviceProvider.GetRequiredService<FlashcardDeckEditorViewModel>();
             viewModel.Initialize(selectedDeck);
             flashcardDeckEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl
 

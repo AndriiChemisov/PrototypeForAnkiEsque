@@ -6,10 +6,10 @@ namespace PrototypeForAnkiEsque.Services
 {
     public interface IFlashcardService
     {
-        List<Flashcard> GetFlashcards();
-        List<Flashcard> GetFlashcardsByDeck(int deckId);
-        void AddFlashcard(Flashcard card);
-        void UpdateFlashcard(Flashcard card);
+        Task<List<Flashcard>> GetFlashcardsAsync();
+        Task<List<Flashcard>> GetFlashcardsByDeckAsync(int deckId);
+        Task AddFlashcardAsync(Flashcard card);
+        Task UpdateFlashcardAsync(Flashcard card);
         Task DeleteFlashcardAsync(int cardId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PrototypeForAnkiEsque.Services
 {
@@ -13,13 +14,13 @@ namespace PrototypeForAnkiEsque.Services
         }
 
         // Method to retrieve all flashcards from the database
-        public List<Flashcard> GetFlashcards()
+        public async Task<List<Flashcard>> GetFlashcardsAsync()
         {
-            return _context.Flashcards.ToList(); // Get all flashcards from the database
+            return await _context.Flashcards.ToListAsync();
         }
 
         // Method to retrieve flashcards by deck ID using the FlashcardIds in the FlashcardDeck
-        public List<Flashcard> GetFlashcardsByDeck(int deckId)
+        public async Task<List<Flashcard>> GetFlashcardsByDeckAsync(int deckId)
         {
             // Get the deck by ID
             var deck = _context.FlashcardDecks
@@ -37,17 +38,18 @@ namespace PrototypeForAnkiEsque.Services
         }
 
         // Method to add a flashcard
-        public void AddFlashcard(Flashcard card)
+        public async Task AddFlashcardAsync(Flashcard card)
         {
             _context.Flashcards.Add(card);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
+
         // Method to update a flashcard
-        public void UpdateFlashcard(Flashcard card)
+        public async Task UpdateFlashcardAsync(Flashcard card)
         {
             _context.Flashcards.Update(card);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         // Method to delete a flashcard

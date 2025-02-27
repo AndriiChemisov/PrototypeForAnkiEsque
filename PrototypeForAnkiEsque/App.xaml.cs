@@ -78,8 +78,7 @@ namespace PrototypeForAnkiEsque
                 ApplicationDbContext.Seed(dbContext);
 
                 // Create MainWindow and inject NavigationService
-                var navigationService = ServiceProvider.GetRequiredService<INavigationService>();
-                var mainWindow = new MainWindow(navigationService);
+                var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
 
                 // Set MainWindow and show it
                 Application.Current.MainWindow = mainWindow;

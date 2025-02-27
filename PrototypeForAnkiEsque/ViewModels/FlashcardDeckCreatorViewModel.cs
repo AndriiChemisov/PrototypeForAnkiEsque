@@ -133,17 +133,17 @@ namespace PrototypeForAnkiEsque.ViewModels
             ToggleAvailableFlashcardSelectionCommand = new RelayCommand<string>(ToggleAvailableFlashcardSelection);
             ToggleDeckFlashcardSelectionCommand = new RelayCommand<string>(ToggleDeckFlashcardSelection);
 
-            LoadFlashcards();
+            LoadFlashcardsAsync();
         }
 
-        private void LoadFlashcards()
+        private async Task LoadFlashcardsAsync()
         {
             AvailableFlashcards.Clear();
             SelectedFlashcards.Clear();
             FilteredAvailableFlashcards.Clear();
             FilteredSelectedFlashcards.Clear();
 
-            var allFlashcards = _flashcardService.GetFlashcards();
+            var allFlashcards = await _flashcardService.GetFlashcardsAsync();
 
             foreach (var flashcard in allFlashcards)
             {
@@ -223,7 +223,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             // Reset fields
             DeckName = string.Empty;
             AreChangesMade = false;
-            LoadFlashcards();
+            await LoadFlashcardsAsync();
             MessageBox.Show("Deck successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
