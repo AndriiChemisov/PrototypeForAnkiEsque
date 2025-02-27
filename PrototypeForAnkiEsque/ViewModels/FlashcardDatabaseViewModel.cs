@@ -12,7 +12,8 @@ using PrototypeForAnkiEsque.Commands;
 public class FlashcardDatabaseViewModel : BaseViewModel
 {
     private readonly IFlashcardService _flashcardService;
-    private readonly INavigationService _navigationService;
+    private readonly IMainMenuNavigationService _mainMenuNavigationService;
+    private readonly IFlashcardNavigationService _flashcardNavigationService;
     private readonly IMessageService _messageService;
     private Flashcard _selectedFlashcard = null!;
     private ObservableCollection<Flashcard> _allFlashcards = new();
@@ -22,11 +23,12 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     private const int PageSize = 15;
     private int _currentPage = 1;
 
-    public FlashcardDatabaseViewModel(IFlashcardService flashcardService, INavigationService navigationService, IMessageService messageService)
+    public FlashcardDatabaseViewModel(IFlashcardService flashcardService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IMessageService messageService)
     {
         _flashcardService = flashcardService;
-        _navigationService = navigationService;
+        _mainMenuNavigationService = mainMenuNavigationService;
         _messageService = messageService;
+        _flashcardNavigationService = flashcardNavigationService;
 
         LoadFlashcardsAsync().Wait();
 
@@ -127,7 +129,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     {
         if (SelectedFlashcard != null)
         {
-            await _navigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
+            await _flashcardNavigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
         }
     }
 
@@ -159,12 +161,12 @@ public class FlashcardDatabaseViewModel : BaseViewModel
 
     private async Task OpenMainMenuAsync()
     {
-        await _navigationService.GetMainMenuViewAsync();
+        await _mainMenuNavigationService.GetMainMenuViewAsync();
     }
 
     private async Task OpenFlashcardEntryAsync()
     {
-        await _navigationService.GetFlashcardEntryViewAsync();
+        await _flashcardNavigationService.GetFlashcardEntryViewAsync();
     }
 
     private async Task PreviousPageAsync()

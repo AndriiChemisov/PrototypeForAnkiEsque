@@ -14,7 +14,9 @@ namespace PrototypeForAnkiEsque.ViewModels
     public class FlashcardDeckSelectionViewModel : BaseViewModel
     {
         private readonly IDeckService _deckService;
-        private readonly INavigationService _navigationService;
+        private readonly IMainMenuNavigationService _mainMenuNavigationService;
+        private readonly IFlashcardNavigationService _flashcardNavigationService;
+        private readonly IDeckNavigationService _deckNavigationService;
         private readonly IMessageService _messageService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
@@ -57,10 +59,12 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        public FlashcardDeckSelectionViewModel(IDeckService deckService, INavigationService navigationService, IMessageService messageService)
+        public FlashcardDeckSelectionViewModel(IDeckService deckService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService, IMessageService messageService)
         {
             _deckService = deckService;
-            _navigationService = navigationService;
+            _mainMenuNavigationService = mainMenuNavigationService;
+            _flashcardNavigationService = flashcardNavigationService;
+            _deckNavigationService = deckNavigationService;
             _messageService = messageService;
 
             ReviewDeckCommand = new AsyncRelayCommand(ReviewDeckAsync);
@@ -105,7 +109,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            await _navigationService.GetFlashcardViewAsync(SelectedDeck);
+            await _flashcardNavigationService.GetFlashcardViewAsync(SelectedDeck);
         }
 
         private async Task EditDeckAsync()
@@ -116,7 +120,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            await _navigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
+            await _deckNavigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
         }
 
         private async Task DeleteDeckAsync()
@@ -139,12 +143,12 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task OpenMainMenuAsync()
         {
-            await _navigationService.GetMainMenuViewAsync();
+            await _mainMenuNavigationService.GetMainMenuViewAsync();
         }
 
         private async Task OpenDeckCreatorAsync()
         {
-            await _navigationService.GetFlashcardDeckCreatorViewAsync();
+            await _deckNavigationService.GetFlashcardDeckCreatorViewAsync();
         }
 
         public async Task ExportDecksAsync(string filePath)

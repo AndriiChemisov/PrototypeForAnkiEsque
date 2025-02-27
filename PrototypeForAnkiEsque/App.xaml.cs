@@ -22,7 +22,7 @@ namespace PrototypeForAnkiEsque
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -41,7 +41,10 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<BooleanToDictionaryValueMultiConverter>();
 
             // Register services and views
-            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IMainMenuNavigationService, NavigationService>();
+            services.AddSingleton<IFlashcardNavigationService, NavigationService>();
+            services.AddSingleton<IDeckNavigationService, NavigationService>();
+            services.AddSingleton<ILastNavigatedViewService, NavigationService>();
             services.AddTransient<IFlashcardService, FlashcardService>();
             services.AddTransient<IDeckService, DeckService>();
             services.AddTransient<IMessageService, MessageService>();

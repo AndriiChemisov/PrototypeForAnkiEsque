@@ -10,16 +10,16 @@ namespace PrototypeForAnkiEsque.ViewModels
     public class FlashcardEntryViewModel : BaseViewModel
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly INavigationService _navigationService;
+        private readonly IFlashcardNavigationService _flashcardNavigationService;
         private string _front;
         private string _back;
         private string _savedMessage;
         private bool _isSavedMessageVisible;
 
-        public FlashcardEntryViewModel(ApplicationDbContext dbContext, INavigationService navigationService)
+        public FlashcardEntryViewModel(ApplicationDbContext dbContext, IFlashcardNavigationService flashcardNavigationService)
         {
             _dbContext = dbContext;
-            _navigationService = navigationService;
+            _flashcardNavigationService = flashcardNavigationService;
             SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
             OpenFlashcardDatabaseCommand = new AsyncRelayCommand(OpenFlashcardDatabaseAsync);
             IsSavedMessageVisible = false;
@@ -123,7 +123,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task OpenFlashcardDatabaseAsync()
         {
-            await _navigationService.GetFlashcardDatabaseViewAsync();
+            await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
         }
     }
 }

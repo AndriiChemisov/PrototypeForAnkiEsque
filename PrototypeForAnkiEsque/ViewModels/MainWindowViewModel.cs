@@ -4,12 +4,12 @@ namespace PrototypeForAnkiEsque.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly IMainMenuNavigationService _mainMenuNavigationService;
 
-        public MainWindowViewModel(INavigationService navigationService)
+        public MainWindowViewModel(IMainMenuNavigationService mainMenuNavigationService)
         {
-            _navigationService = navigationService;
-            _navigationService.GetMainMenuViewAsync(); 
+            _mainMenuNavigationService = mainMenuNavigationService;
+            _mainMenuNavigationService.GetMainMenuViewAsync(); 
         }
     }
 }

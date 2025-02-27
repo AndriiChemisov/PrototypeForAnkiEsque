@@ -11,7 +11,7 @@ namespace PrototypeForAnkiEsque.ViewModels
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IFlashcardService _flashcardService;
-        private readonly INavigationService _navigationService;
+        private readonly IFlashcardNavigationService _flashcardNavigationService;
         private Flashcard _flashcard;
         private string _front;
         private string _back;
@@ -20,11 +20,11 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _savedMessage;
         private bool _isSavedMessageVisible;
 
-        public FlashcardEditorViewModel(IFlashcardService flashcardService, INavigationService navigationService, ApplicationDbContext dbContext)
+        public FlashcardEditorViewModel(IFlashcardService flashcardService, IFlashcardNavigationService flashcardNavigationService, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _flashcardService = flashcardService;
-            _navigationService = navigationService;
+            _flashcardNavigationService = flashcardNavigationService;
             SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
             BackCommand = new AsyncRelayCommand(ReturnAsync);
             IsSavedMessageVisible = false;
@@ -169,7 +169,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task ReturnAsync()
         {
-            await _navigationService.GetFlashcardDatabaseViewAsync();
+            await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
         }
 
         public event Action<string> OnValidationError;

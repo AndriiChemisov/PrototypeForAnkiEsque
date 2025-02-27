@@ -10,7 +10,7 @@ namespace PrototypeForAnkiEsque.ViewModels
     public class FlashcardDeckEditorViewModel : BaseViewModel
     {
         private readonly IDeckService _deckService;
-        private readonly INavigationService _navigationService;
+        private readonly IDeckNavigationService _deckNavigationService;
         private readonly IFlashcardService _flashcardService;
         private FlashcardDeck _selectedDeck;
         private string _searchAvailableText;
@@ -125,10 +125,10 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
-        public FlashcardDeckEditorViewModel(IDeckService deckService, INavigationService navigationService, IFlashcardService flashcardService)
+        public FlashcardDeckEditorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService)
         {
             _deckService = deckService;
-            _navigationService = navigationService;
+            _deckNavigationService = deckNavigationService;
             _flashcardService = flashcardService;
 
             OpenDeckSelectionCommand = new AsyncRelayCommand(OpenDeckSelectionAsync);
@@ -247,7 +247,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task OpenDeckSelectionAsync()
         {
-            await _navigationService.GetFlashcardDeckSelectionViewAsync();
+            await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
         }
 
         public void Initialize(FlashcardDeck selectedDeck)

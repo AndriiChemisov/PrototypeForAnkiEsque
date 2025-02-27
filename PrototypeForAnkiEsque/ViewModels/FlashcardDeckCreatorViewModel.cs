@@ -11,7 +11,7 @@ namespace PrototypeForAnkiEsque.ViewModels
     public class FlashcardDeckCreatorViewModel : BaseViewModel
     {
         private readonly IDeckService _deckService;
-        private readonly INavigationService _navigationService;
+        private readonly IDeckNavigationService _deckNavigationService;
         private readonly IFlashcardService _flashcardService;
         private readonly IMessageService _messageService;
         private string _deckName;
@@ -115,10 +115,10 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
-        public FlashcardDeckCreatorViewModel(IDeckService deckService, INavigationService navigationService, IFlashcardService flashcardService, IMessageService messageService)
+        public FlashcardDeckCreatorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService, IMessageService messageService)
         {
             _deckService = deckService;
-            _navigationService = navigationService;
+            _deckNavigationService = deckNavigationService;
             _flashcardService = flashcardService;
             _messageService = messageService;
 
@@ -236,7 +236,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 // Auto-save logic or user prompt could be added here
             }
 
-            await _navigationService.GetFlashcardDeckSelectionViewAsync();
+            await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
         }
 
         private void UpdateFilteredAvailableFlashcards()

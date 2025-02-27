@@ -15,9 +15,8 @@ namespace PrototypeForAnkiEsque.Views
             // Resolve the FlashcardViewModel via DI
             DataContext = App.ServiceProvider.GetRequiredService<FlashcardViewModel>();
 
-            // Resolve the BooleanToVisibilityConverter and NavigationService from DI
+            // Resolve the BooleanToVisibilityConverter from DI
             var booleanToVisibilityConverter = App.ServiceProvider.GetRequiredService<Converters.BooleanToVisibilityConverter>();
-            var navigationService = App.ServiceProvider.GetRequiredService<NavigationService>();
 
             // Create and set up the binding for the visibility of the back of the card
             var backVisibilityBinding = new System.Windows.Data.Binding("IsAnswerVisible")

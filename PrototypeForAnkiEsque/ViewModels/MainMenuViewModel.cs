@@ -7,11 +7,13 @@ namespace PrototypeForAnkiEsque.ViewModels
 {
     public class MainMenuViewModel : BaseViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly IFlashcardNavigationService _flashcardNavigationService;
+        private readonly IDeckNavigationService _deckNavigationService;
 
-        public MainMenuViewModel(INavigationService navigationService)
+        public MainMenuViewModel(IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService)
         {
-            _navigationService = navigationService;
+            _flashcardNavigationService = flashcardNavigationService;
+            _deckNavigationService = deckNavigationService;
 
 
             // Commands for the buttons
@@ -25,12 +27,12 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task OpenFlashcardDatabaseViewAsync()
         {
-            await _navigationService.GetFlashcardDatabaseViewAsync();
+            await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
         }
 
         private async Task OpenFlashcardDeckSelectionViewAsync()
         {
-            await _navigationService.GetFlashcardDeckSelectionViewAsync();
+            await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
         }
     }
 }

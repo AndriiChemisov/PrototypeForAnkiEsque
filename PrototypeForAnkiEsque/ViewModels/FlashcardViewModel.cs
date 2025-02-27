@@ -8,9 +8,9 @@ namespace PrototypeForAnkiEsque.ViewModels
     public class FlashcardViewModel : BaseViewModel
     {
         private readonly IFlashcardService _flashcardService;
-        private readonly INavigationService _navigationService;
+        private readonly IMainMenuNavigationService _mainMenuNavigationService;
+        private readonly IDeckNavigationService _deckNavigationService;
         private readonly IDeckService _deckService;
-        private readonly MainMenuViewModel _mainMenuViewModel;
 
         private List<Flashcard> _flashcards;
         private int _currentCardIndex;
@@ -28,11 +28,11 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        public FlashcardViewModel(IFlashcardService flashcardService, INavigationService navigationService, IDeckService deckService, MainMenuViewModel mainMenuViewModel)
+        public FlashcardViewModel(IFlashcardService flashcardService, IMainMenuNavigationService mainMenuNavigationService, IDeckNavigationService deckNavigationService, IDeckService deckService, MainMenuViewModel mainMenuViewModel)
         {
             _flashcardService = flashcardService;
-            _navigationService = navigationService;
-            _mainMenuViewModel = mainMenuViewModel;
+            _mainMenuNavigationService = mainMenuNavigationService;
+            _deckNavigationService = deckNavigationService;
             _deckService = deckService;
 
             ShowAnswerCommand = new AsyncRelayCommand(ShowAnswerAsync);
@@ -110,7 +110,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 MotivationalMessage = "Well done - you finished the deck!";
                 TriggerFadeOutAnimationForMotivationalMessage();
                 await Task.Delay(2000);
-                await _navigationService.GetMainMenuViewAsync();
+                await _mainMenuNavigationService.GetMainMenuViewAsync();
                 return;
             }
 
@@ -181,7 +181,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task OpenDeckSelectionAsync()
         {
-            await _navigationService.GetFlashcardDeckSelectionViewAsync();
+            await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
         }
 
         // Method to set the selected deck when passed from navigation
