@@ -10,14 +10,11 @@ namespace PrototypeForAnkiEsque.Views
     /// </summary>
     public partial class FlashcardDeckCreatorUserControl : UserControl
     {
-        private FlashcardDeckCreatorViewModel _viewModel;
-
         public FlashcardDeckCreatorUserControl()
         {
             InitializeComponent();
 
-            _viewModel = App.ServiceProvider.GetRequiredService<FlashcardDeckCreatorViewModel>();
-            DataContext = _viewModel;
+            DataContext = App.ServiceProvider.GetRequiredService<FlashcardDeckCreatorViewModel>();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

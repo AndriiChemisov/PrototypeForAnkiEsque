@@ -35,10 +35,10 @@ namespace PrototypeForAnkiEsque.ViewModels
             _mainMenuViewModel = mainMenuViewModel;
             _deckService = deckService;
 
-            ShowAnswerCommand = new RelayCommand(ShowAnswer);
-            NextCommand = new RelayCommand(NextCard);
-            EaseCommand = new RelayCommand<string>(async (string easeString) => await SetEaseAsync(easeString));
-            OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
+            ShowAnswerCommand = new AsyncRelayCommand(ShowAnswerAsync);
+            NextCommand = new AsyncRelayCommand(NextCardAsync);
+            EaseCommand = new AsyncRelayCommand<string>(SetEaseAsync);
+            OpenDeckSelectionCommand = new AsyncRelayCommand(OpenDeckSelectionAsync);
 
             _flashcards = new List<Flashcard>(); // Initialize as empty
             _currentCardIndex = 0;
@@ -91,12 +91,12 @@ namespace PrototypeForAnkiEsque.ViewModels
             set => SetProperty(ref _isGridVisible, value);
         }
 
-        private void ShowAnswer()
+        private async Task ShowAnswerAsync()
         {
             IsAnswerVisible = !IsAnswerVisible;
         }
 
-        private async void NextCard()
+        private async Task NextCardAsync()
         {
             IsRatingClicked = false;
             IsAnswerVisible = false;
@@ -104,7 +104,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (_currentCardIndex >= _flashcards.Count - 1)
             {
                 IsGridVisible = !IsGridVisible;
-                SelectedDeck.EaseRating = _deckService.CalculateEaseRating(SelectedDeck.FlashcardFronts);
+                SelectedDeck.EaseRating = await _deckService.CalculateEaseRatingAsync(SelectedDeck.FlashcardFronts);
                 await _deckService.UpdateDeckAsync(SelectedDeck);
 
                 MotivationalMessage = "Well done - you finished the deck!";
@@ -179,7 +179,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         public event Action OnFadeOutMessage;
         public event Action OnFadeoutMotivationalMessage;
 
-        private async void OpenDeckSelectionAsync()
+        private async Task OpenDeckSelectionAsync()
         {
             await _navigationService.GetFlashcardDeckSelectionViewAsync();
         }

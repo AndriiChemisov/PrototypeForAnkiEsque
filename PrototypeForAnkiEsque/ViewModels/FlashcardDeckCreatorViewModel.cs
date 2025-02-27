@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
+using System.Windows;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
@@ -13,6 +13,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly IDeckService _deckService;
         private readonly INavigationService _navigationService;
         private readonly IFlashcardService _flashcardService;
+        private readonly IMessageService _messageService;
         private string _deckName;
         private string _searchAvailableText;
         private string _searchSelectedText;
@@ -114,11 +115,12 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
-        public FlashcardDeckCreatorViewModel(IDeckService deckService, INavigationService navigationService, IFlashcardService flashcardService)
+        public FlashcardDeckCreatorViewModel(IDeckService deckService, INavigationService navigationService, IFlashcardService flashcardService, IMessageService messageService)
         {
             _deckService = deckService;
             _navigationService = navigationService;
             _flashcardService = flashcardService;
+            _messageService = messageService;
 
             _debounceTimer = new DispatcherTimer
             {
@@ -126,12 +128,12 @@ namespace PrototypeForAnkiEsque.ViewModels
             };
             _debounceTimer.Tick += DebounceTimer_Tick;
 
-            OpenDeckSelectionCommand = new RelayCommand(async () => await OpenDeckSelectionAsync());
-            AddFlashcardsCommand = new RelayCommand(AddFlashcards);
-            RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
-            SaveDeckCommand = new RelayCommand(async () => await SaveDeckAsync());
-            ToggleAvailableFlashcardSelectionCommand = new RelayCommand<string>(ToggleAvailableFlashcardSelection);
-            ToggleDeckFlashcardSelectionCommand = new RelayCommand<string>(ToggleDeckFlashcardSelection);
+            OpenDeckSelectionCommand = new AsyncRelayCommand(async () => await OpenDeckSelectionAsync());
+            AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
+            RemoveFlashcardsCommand = new AsyncRelayCommand(RemoveFlashcardsAsync);
+            SaveDeckCommand = new AsyncRelayCommand(SaveDeckAsync);
+            ToggleAvailableFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleAvailableFlashcardSelectionAsync);
+            ToggleDeckFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleDeckFlashcardSelectionAsync);
 
             LoadFlashcardsAsync();
         }
@@ -155,7 +157,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private void AddFlashcards()
+        private async Task AddFlashcardsAsync()
         {
             var selected = SelectedAvailableFlashcards
                 .Where(x => x.Value)
@@ -175,7 +177,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private void RemoveFlashcards()
+        private async Task RemoveFlashcardsAsync()
         {
             var selected = SelectedDeckFlashcards
                 .Where(x => x.Value)
@@ -199,24 +201,24 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             if (string.IsNullOrWhiteSpace(DeckName))
             {
-                MessageBox.Show("The Deck name cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _messageService.ShowMessage("The Deck name cannot be blank!", "Validation Error", MessageBoxImage.Warning);
                 return;
             }
 
             if (!SelectedFlashcards.Any())
             {
-                MessageBox.Show("The Deck must contain at least one flashcard!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _messageService.ShowMessage("The Deck must contain at least one flashcard!", "Validation Error", MessageBoxImage.Warning);
                 return;
             }
 
-            if (_deckService.DeckExists(DeckName))
+            if (await _deckService.DeckExistsAsync(DeckName))
             {
-                MessageBox.Show("A deck with that name already exists!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _messageService.ShowMessage("A deck with that name already exists!", "Validation Error", MessageBoxImage.Warning);
                 return;
             }
 
             var flashcardFronts = SelectedFlashcards.Select(f => f.Front).ToList();
-            string easeRating = _deckService.CalculateEaseRating(flashcardFronts);
+            string easeRating = await _deckService.CalculateEaseRatingAsync(flashcardFronts);
 
             await _deckService.CreateDeckAsync(DeckName, flashcardFronts, easeRating);
 
@@ -224,7 +226,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             DeckName = string.Empty;
             AreChangesMade = false;
             await LoadFlashcardsAsync();
-            MessageBox.Show("Deck successfully created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            _messageService.ShowMessage("Deck successfully created!", "Success", MessageBoxImage.Information);
         }
 
         private async Task OpenDeckSelectionAsync()
@@ -261,7 +263,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        private void ToggleAvailableFlashcardSelection(string flashcardFront)
+        private async Task ToggleAvailableFlashcardSelectionAsync(string flashcardFront)
         {
             if (SelectedAvailableFlashcards.ContainsKey(flashcardFront))
                 SelectedAvailableFlashcards[flashcardFront] = !SelectedAvailableFlashcards[flashcardFront];
@@ -273,7 +275,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private void ToggleDeckFlashcardSelection(string flashcardFront)
+        private async Task ToggleDeckFlashcardSelectionAsync(string flashcardFront)
         {
             if (SelectedDeckFlashcards.ContainsKey(flashcardFront))
                 SelectedDeckFlashcards[flashcardFront] = !SelectedDeckFlashcards[flashcardFront];

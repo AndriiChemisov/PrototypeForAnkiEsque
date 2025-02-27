@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PrototypeForAnkiEsque.Services
 {
@@ -13,10 +16,10 @@ namespace PrototypeForAnkiEsque.Services
             _context = context;
         }
 
-        public bool DeckExists(string deckName)
+        public async Task<bool> DeckExistsAsync(string deckName)
         {
-            return _context.FlashcardDecks
-                .Any(d => d.Name.ToLower() == deckName.ToLower());
+            return await _context.FlashcardDecks
+                .AnyAsync(d => d.Name.ToLower() == deckName.ToLower());
         }
 
         public async Task CreateDeckAsync(string deckName, List<string> flashcardFronts, string easeRating)
@@ -29,25 +32,25 @@ namespace PrototypeForAnkiEsque.Services
             };
 
             _context.FlashcardDecks.Add(newDeck);
-            await _context.SaveChangesAsync();  // Persist changes to the database asynchronously
+            await _context.SaveChangesAsync();
         }
 
-        public List<FlashcardDeck> GetPagedDecks(int pageNumber, int pageSize)
+        public async Task<List<FlashcardDeck>> GetPagedDecksAsync(int pageNumber, int pageSize)
         {
-            return _context.FlashcardDecks
+            return await _context.FlashcardDecks
                            .Skip((pageNumber - 1) * pageSize)
                            .Take(pageSize)
-                           .ToList();
+                           .ToListAsync();
         }
 
-        public int GetTotalDeckCount()
+        public async Task<int> GetTotalDeckCountAsync()
         {
-            return _context.FlashcardDecks.Count();
+            return await _context.FlashcardDecks.CountAsync();
         }
 
-        public FlashcardDeck GetDeckById(int id)
+        public async Task<FlashcardDeck> GetDeckByIdAsync(int id)
         {
-            return _context.FlashcardDecks.FirstOrDefault(d => d.Id == id);
+            return await _context.FlashcardDecks.FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task UpdateDeckAsync(FlashcardDeck deck)
@@ -59,31 +62,24 @@ namespace PrototypeForAnkiEsque.Services
         public async Task DeleteDeckAsync(int deckId)
         {
             var deckToDelete = await _context.FlashcardDecks
-                .FirstOrDefaultAsync(d => d.Id == deckId);
+                .FindAsync(deckId);
 
             if (deckToDelete != null)
             {
                 _context.FlashcardDecks.Remove(deckToDelete);
-                await _context.SaveChangesAsync(); // Asynchronously save changes
+                await _context.SaveChangesAsync();
             }
         }
 
-        public string CalculateEaseRating(List<string> flashcardFronts)
+        public async Task<string> CalculateEaseRatingAsync(List<string> flashcardFronts)
         {
-            var flashcards = _context.Flashcards.Where(f => flashcardFronts.Contains(f.Front)).ToList();
+            var flashcards = await _context.Flashcards.Where(f => flashcardFronts.Contains(f.Front)).ToListAsync();
             if (!flashcards.Any()) return "100%";
 
             double averageEaseRating = flashcards.Average(f => f.EaseRating);
 
-            // Convert to percentage
             return Math.Round((100 - (averageEaseRating / 2) * 100), 2).ToString() + "%";
         }
 
-        public bool CheckIfDeckNameExists(string deckName)
-        {
-            // Check if any deck in the database has the same name, ignoring case
-            return _context.FlashcardDecks
-                .Any(d => d.Name.ToLower() == deckName.ToLower());
-        }
     }
 }

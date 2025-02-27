@@ -131,12 +131,12 @@ namespace PrototypeForAnkiEsque.ViewModels
             _navigationService = navigationService;
             _flashcardService = flashcardService;
 
-            OpenDeckSelectionCommand = new RelayCommand(OpenDeckSelectionAsync);
-            AddFlashcardsCommand = new RelayCommand(AddFlashcards);
-            RemoveFlashcardsCommand = new RelayCommand(RemoveFlashcards);
-            SaveDeckCommand = new RelayCommand(SaveDeck);
-            ToggleAvailableFlashcardSelectionCommand = new RelayCommand<string>(ToggleAvailableFlashcardSelection);
-            ToggleDeckFlashcardSelectionCommand = new RelayCommand<string>(ToggleDeckFlashcardSelection);
+            OpenDeckSelectionCommand = new AsyncRelayCommand(OpenDeckSelectionAsync);
+            AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
+            RemoveFlashcardsCommand = new AsyncRelayCommand(RemoveFlashcardsAsync);
+            SaveDeckCommand = new AsyncRelayCommand(SaveDeckAsync);
+            ToggleAvailableFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleAvailableFlashcardSelectionAsync);
+            ToggleDeckFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleDeckFlashcardSelectionAsync);
 
             // Initial states for buttons
             IsAddButtonEnabled = false;
@@ -177,7 +177,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private void AddFlashcards()
+        private async Task AddFlashcardsAsync()
         {
             var selected = SelectedAvailableFlashcards
                 .Where(x => x.Value)
@@ -197,7 +197,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private void RemoveFlashcards()
+        private async Task RemoveFlashcardsAsync()
         {
             var selected = SelectedDeckFlashcards
                 .Where(x => x.Value)
@@ -217,7 +217,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private async void SaveDeck()
+        private async Task SaveDeckAsync()
         {
             if (DeckFlashcards.Count == 0)
             {
@@ -231,7 +231,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 return;
             }
 
-            if (_originalDeckName != DeckName && _deckService.CheckIfDeckNameExists(DeckName))
+            if (_originalDeckName != DeckName && await _deckService.DeckExistsAsync(DeckName))
             {
                 MessageBox.Show("A deck with this name already exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -245,7 +245,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             IsSaveButtonEnabled = false;
         }
 
-        private async void OpenDeckSelectionAsync()
+        private async Task OpenDeckSelectionAsync()
         {
             await _navigationService.GetFlashcardDeckSelectionViewAsync();
         }
@@ -258,7 +258,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             LoadFlashcards();
         }
 
-        private void ToggleAvailableFlashcardSelection(string flashcardFront)
+        private async Task ToggleAvailableFlashcardSelectionAsync(string flashcardFront)
         {
             if (SelectedAvailableFlashcards.ContainsKey(flashcardFront))
                 SelectedAvailableFlashcards[flashcardFront] = !SelectedAvailableFlashcards[flashcardFront];
@@ -269,7 +269,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             UpdateButtonStates();
         }
 
-        private void ToggleDeckFlashcardSelection(string flashcardFront)
+        private async Task ToggleDeckFlashcardSelectionAsync(string flashcardFront)
         {
             if (SelectedDeckFlashcards.ContainsKey(flashcardFront))
                 SelectedDeckFlashcards[flashcardFront] = !SelectedDeckFlashcards[flashcardFront];

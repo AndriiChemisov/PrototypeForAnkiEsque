@@ -44,6 +44,7 @@ namespace PrototypeForAnkiEsque
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddTransient<IFlashcardService, FlashcardService>();
             services.AddTransient<IDeckService, DeckService>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<MainWindow>();
             services.AddTransient<MainMenuUserControl>();
             services.AddTransient<FlashcardEntryUserControl>();

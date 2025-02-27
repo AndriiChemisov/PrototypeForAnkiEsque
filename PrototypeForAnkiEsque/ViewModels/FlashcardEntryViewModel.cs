@@ -3,7 +3,6 @@ using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
-using System.Windows;
 using Microsoft.EntityFrameworkCore;
 
 namespace PrototypeForAnkiEsque.ViewModels
@@ -15,15 +14,15 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _front;
         private string _back;
         private string _savedMessage;
-        private Visibility _isSavedMessageVisible;
+        private bool _isSavedMessageVisible;
 
         public FlashcardEntryViewModel(ApplicationDbContext dbContext, INavigationService navigationService)
         {
             _dbContext = dbContext;
             _navigationService = navigationService;
-            SaveFlashcardCommand = new RelayCommand(SaveFlashcard);
-            OpenFlashcardDatabaseCommand = new RelayCommand(OpenFlashcardDatabaseAsync);
-            IsSavedMessageVisible = Visibility.Collapsed; // Initially hide the saved message
+            SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
+            OpenFlashcardDatabaseCommand = new AsyncRelayCommand(OpenFlashcardDatabaseAsync);
+            IsSavedMessageVisible = false;
         }
 
         public string Front
@@ -56,7 +55,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        public Visibility IsSavedMessageVisible
+        public bool IsSavedMessageVisible
         {
             get => _isSavedMessageVisible;
             set
@@ -69,24 +68,20 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand SaveFlashcardCommand { get; }
         public ICommand OpenFlashcardDatabaseCommand { get; }
 
-        private async void SaveFlashcard()
+        private async Task SaveFlashcardAsync()
         {
-            //Ensure that the flashcard is not blank
             if (string.IsNullOrWhiteSpace(Front) || string.IsNullOrWhiteSpace(Back))
             {
-                // Show alert if front or back are blank
-                MessageBox.Show("The flashcard cannot have blank sides!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                OnValidationError?.Invoke("The flashcard cannot have blank sides!");
                 return;
             }
 
-            // Check for duplicates (case insensitive due to how EntityFramework works)
             var existingFlashcard = await _dbContext.Flashcards
-                                .FirstOrDefaultAsync(f => f.Front.ToLower() == Front.ToLower());
+                .FirstOrDefaultAsync(f => f.Front.ToLower() == Front.ToLower());
 
             if (existingFlashcard != null)
             {
-                // If a duplicate is found, show a warning message
-                MessageBox.Show("This flashcard already exists!", "Duplicate Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                OnValidationError?.Invoke("This flashcard already exists!");
                 return;
             }
 
@@ -94,37 +89,42 @@ namespace PrototypeForAnkiEsque.ViewModels
             {
                 Front = Front,
                 Back = Back,
-                EaseRating = 2 // Default ease rating
+                EaseRating = 2
             };
 
-            _dbContext.Flashcards.Add(flashcard);
-            _dbContext.SaveChanges();
+            try
+            {
 
-            // Clear fields after saving
-            Front = string.Empty;
-            Back = string.Empty;
+                _dbContext.Flashcards.Add(flashcard);
+                _dbContext.SaveChanges();
 
-            // Show confirmation message
-            SavedMessage = "Flashcard saved successfully!";
-            IsSavedMessageVisible = Visibility.Visible;
+                Front = string.Empty;
+                Back = string.Empty;
 
-            // Start the fade-out animation
-            TriggerFadeOutAnimation();
+                SavedMessage = "Flashcard saved successfully!";
+                IsSavedMessageVisible = true;
+
+                TriggerFadeOutAnimation();
+            }
+
+            catch (Exception ex)
+            {
+                OnValidationError?.Invoke($"An error occurred while saving the flashcard: {ex.Message}");
+            }
         }
 
         private void TriggerFadeOutAnimation()
         {
-            // This calls the animation from the view
             OnFadeOutMessage?.Invoke();
         }
 
-        // Event for view to subscribe and trigger animation
+        public event Action<string> OnValidationError;
         public event Action OnFadeOutMessage;
 
-        private async void OpenFlashcardDatabaseAsync()
+        private async Task OpenFlashcardDatabaseAsync()
         {
             await _navigationService.GetFlashcardDatabaseViewAsync();
         }
-
     }
 }
+

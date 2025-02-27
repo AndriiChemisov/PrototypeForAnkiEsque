@@ -6,14 +6,13 @@ namespace PrototypeForAnkiEsque.Services
 {
     public interface IDeckService
     {
-        bool DeckExists(string deckName);
+        Task<bool> DeckExistsAsync(string deckName);
         Task CreateDeckAsync(string deckName, List<string> flashcardFronts, string easeRating);
-        List<FlashcardDeck> GetPagedDecks(int pageNumber, int pageSize);
-        int GetTotalDeckCount();
-        FlashcardDeck GetDeckById(int id);
+        Task<List<FlashcardDeck>> GetPagedDecksAsync(int pageNumber, int pageSize);
+        Task<int> GetTotalDeckCountAsync();
+        Task<FlashcardDeck> GetDeckByIdAsync(int id);
         Task UpdateDeckAsync(FlashcardDeck deck);
         Task DeleteDeckAsync(int deckId);
-        string CalculateEaseRating(List<string> flashcardFronts);
-        bool CheckIfDeckNameExists(string deckName);
+        Task<string> CalculateEaseRatingAsync(List<string> flashcardFronts);
     }
 }

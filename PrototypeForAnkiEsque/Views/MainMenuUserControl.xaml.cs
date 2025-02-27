@@ -10,8 +10,7 @@ namespace PrototypeForAnkiEsque.Views
         {
             InitializeComponent();
 
-            var viewModel = App.ServiceProvider.GetRequiredService<MainMenuViewModel>();
-            DataContext = viewModel;
+            DataContext = App.ServiceProvider.GetRequiredService<MainMenuViewModel>();
         }
 
     }
