@@ -34,7 +34,6 @@ namespace PrototypeForAnkiEsque
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(connectionString));
 
-            services.AddTransient<FlashcardService>();
             services.AddSingleton<BooleanToVisibilityConverter>();
             services.AddSingleton<DIValueConverterProvider>();
             services.AddSingleton<EaseRatingToStringConverter>();
@@ -42,8 +41,9 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<BooleanToDictionaryValueMultiConverter>();
 
             // Register services and views
-            services.AddSingleton<NavigationService>();
-            services.AddSingleton<DeckService>();
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddTransient<IFlashcardService, FlashcardService>();
+            services.AddTransient<IDeckService, DeckService>();
             services.AddTransient<MainWindow>();
             services.AddTransient<MainMenuUserControl>();
             services.AddTransient<FlashcardEntryUserControl>();
@@ -78,7 +78,7 @@ namespace PrototypeForAnkiEsque
                 ApplicationDbContext.Seed(dbContext);
 
                 // Create MainWindow and inject NavigationService
-                var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
+                var navigationService = ServiceProvider.GetRequiredService<INavigationService>();
                 var mainWindow = new MainWindow(navigationService);
 
                 // Set MainWindow and show it

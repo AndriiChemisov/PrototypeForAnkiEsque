@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace PrototypeForAnkiEsque.ViewModels
+namespace PrototypeForAnkiEsque.Commands
 {
     // RelayCommand without parameter
     public class RelayCommand : ICommand

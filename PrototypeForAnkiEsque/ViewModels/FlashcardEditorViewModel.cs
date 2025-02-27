@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Data;
+using PrototypeForAnkiEsque.Commands;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardEditorViewModel : BaseViewModel
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly FlashcardService _flashcardService;
-        private readonly NavigationService _navigationService;
+        private readonly IFlashcardService _flashcardService;
+        private readonly INavigationService _navigationService;
         private Flashcard _flashcard;
         private string _front;
         private string _back;
@@ -20,7 +21,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _savedMessage;
         private bool _isSavedMessageVisible;
 
-        public FlashcardEditorViewModel(FlashcardService flashcardService, NavigationService navigationService, ApplicationDbContext dbContext)
+        public FlashcardEditorViewModel(IFlashcardService flashcardService, INavigationService navigationService, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _flashcardService = flashcardService;

@@ -2,17 +2,18 @@
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
+using System.IO;
 using Microsoft.Win32;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using System.IO;
+using PrototypeForAnkiEsque.Commands;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckSelectionViewModel : BaseViewModel
     {
-        private readonly DeckService _deckService;
-        private readonly NavigationService _navigationService;
+        private readonly IDeckService _deckService;
+        private readonly INavigationService _navigationService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
         private string _searchText;
@@ -54,7 +55,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        public FlashcardDeckSelectionViewModel(DeckService deckService, NavigationService navigationService)
+        public FlashcardDeckSelectionViewModel(IDeckService deckService, INavigationService navigationService)
         {
             _deckService = deckService;
             _navigationService = navigationService;

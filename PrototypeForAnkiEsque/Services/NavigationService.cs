@@ -10,7 +10,7 @@ namespace PrototypeForAnkiEsque.Services
 {
 
 
-    public class NavigationService
+    public class NavigationService : INavigationService
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -60,8 +60,8 @@ namespace PrototypeForAnkiEsque.Services
         {
             var flashcardEditorView = _serviceProvider.GetRequiredService<FlashcardEditorUserControl>();
             var viewModel = new FlashcardEditorViewModel(
-                _serviceProvider.GetRequiredService<FlashcardService>(),
-                _serviceProvider.GetRequiredService<NavigationService>(),
+                _serviceProvider.GetRequiredService<IFlashcardService>(),
+                _serviceProvider.GetRequiredService<INavigationService>(),
                 _serviceProvider.GetRequiredService<ApplicationDbContext>()
             );
             viewModel.Initialize(flashcard);
@@ -87,9 +87,9 @@ namespace PrototypeForAnkiEsque.Services
         {
             var flashcardDeckEditorView = _serviceProvider.GetRequiredService<FlashcardDeckEditorUserControl>();
             var viewModel = new FlashcardDeckEditorViewModel(
-                _serviceProvider.GetRequiredService<DeckService>(),
-                _serviceProvider.GetRequiredService<NavigationService>(),
-                _serviceProvider.GetRequiredService<FlashcardService>()
+                _serviceProvider.GetRequiredService<IDeckService>(),
+                _serviceProvider.GetRequiredService<INavigationService>(),
+                _serviceProvider.GetRequiredService<IFlashcardService>()
             );
             viewModel.Initialize(selectedDeck);
             flashcardDeckEditorView.DataContext = viewModel; // Bind the ViewModel to the UserControl

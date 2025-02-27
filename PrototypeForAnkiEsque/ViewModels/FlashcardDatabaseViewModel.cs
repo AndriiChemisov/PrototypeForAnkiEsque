@@ -1,17 +1,18 @@
-﻿using PrototypeForAnkiEsque.Models;
-using PrototypeForAnkiEsque.Services;
-using PrototypeForAnkiEsque.ViewModels;
-using System.Collections.ObjectModel;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
-using System.Windows;
+using PrototypeForAnkiEsque.Models;
+using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.ViewModels;
+using System.Collections.ObjectModel;
+using PrototypeForAnkiEsque.Commands;
 
 public class FlashcardDatabaseViewModel : BaseViewModel
 {
-    private readonly FlashcardService _flashcardService;
-    private readonly NavigationService _navigationService;
+    private readonly IFlashcardService _flashcardService;
+    private readonly INavigationService _navigationService;
     private Flashcard _selectedFlashcard;
     private ObservableCollection<Flashcard> _allFlashcards;
     private ObservableCollection<Flashcard> _filteredFlashcards;
@@ -20,7 +21,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     private const int PageSize = 15;
     private int _currentPage = 1;
 
-    public FlashcardDatabaseViewModel(FlashcardService flashcardService, NavigationService navigationService)
+    public FlashcardDatabaseViewModel(IFlashcardService flashcardService, INavigationService navigationService)
     {
         _flashcardService = flashcardService;
         _navigationService = navigationService;

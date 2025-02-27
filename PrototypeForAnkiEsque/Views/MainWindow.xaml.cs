@@ -6,7 +6,7 @@ namespace PrototypeForAnkiEsque.Views
 {
     public partial class MainWindow : Window
     {
-        public MainWindow(NavigationService navigationService)
+        public MainWindow(INavigationService navigationService)
         {
             InitializeComponent();
 

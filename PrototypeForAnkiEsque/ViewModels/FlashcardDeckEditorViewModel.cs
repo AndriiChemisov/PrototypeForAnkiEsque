@@ -1,16 +1,17 @@
-﻿using PrototypeForAnkiEsque.Models;
-using PrototypeForAnkiEsque.Services;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using System.Windows;
+using PrototypeForAnkiEsque.Models;
+using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.Commands;
+using System.Collections.ObjectModel;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckEditorViewModel : BaseViewModel
     {
-        private readonly DeckService _deckService;
-        private readonly NavigationService _navigationService;
-        private readonly FlashcardService _flashcardService;
+        private readonly IDeckService _deckService;
+        private readonly INavigationService _navigationService;
+        private readonly IFlashcardService _flashcardService;
         private FlashcardDeck _selectedDeck;
         private string _searchAvailableText;
         private string _searchSelectedText;
@@ -124,7 +125,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
-        public FlashcardDeckEditorViewModel(DeckService deckService, NavigationService navigationService, FlashcardService flashcardService)
+        public FlashcardDeckEditorViewModel(IDeckService deckService, INavigationService navigationService, IFlashcardService flashcardService)
         {
             _deckService = deckService;
             _navigationService = navigationService;

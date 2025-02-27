@@ -4,7 +4,7 @@ using PrototypeForAnkiEsque.Models;
 
 namespace PrototypeForAnkiEsque.Services
 {
-    public class DeckService
+    public class DeckService : IDeckService
     {
         private readonly ApplicationDbContext _context;
 

@@ -2,6 +2,7 @@
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.Commands;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,13 @@ namespace PrototypeForAnkiEsque.ViewModels
     public class FlashcardEntryViewModel : BaseViewModel
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly NavigationService _navigationService;
+        private readonly INavigationService _navigationService;
         private string _front;
         private string _back;
         private string _savedMessage;
         private Visibility _isSavedMessageVisible;
 
-        public FlashcardEntryViewModel(ApplicationDbContext dbContext, NavigationService navigationService)
+        public FlashcardEntryViewModel(ApplicationDbContext dbContext, INavigationService navigationService)
         {
             _dbContext = dbContext;
             _navigationService = navigationService;

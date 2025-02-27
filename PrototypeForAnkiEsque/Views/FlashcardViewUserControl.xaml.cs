@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using PrototypeForAnkiEsque.Services;
 using System.Windows.Media.Animation;
+using PrototypeForAnkiEsque.ViewModels;
 
 namespace PrototypeForAnkiEsque.Views
 {

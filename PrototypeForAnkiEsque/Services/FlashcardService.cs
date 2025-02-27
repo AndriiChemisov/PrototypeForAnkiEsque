@@ -3,7 +3,7 @@ using PrototypeForAnkiEsque.Data;
 
 namespace PrototypeForAnkiEsque.Services
 {
-    public class FlashcardService
+    public class FlashcardService : IFlashcardService
     {
         private readonly ApplicationDbContext _context;
 

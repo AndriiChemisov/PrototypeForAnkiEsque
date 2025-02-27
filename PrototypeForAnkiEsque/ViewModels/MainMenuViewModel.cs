@@ -1,13 +1,15 @@
 ﻿using System.Windows.Input;
 using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.Commands;
+
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class MainMenuViewModel : BaseViewModel
     {
-        private readonly NavigationService _navigationService;
+        private readonly INavigationService _navigationService;
 
-        public MainMenuViewModel(NavigationService navigationService)
+        public MainMenuViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
 

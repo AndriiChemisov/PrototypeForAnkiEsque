@@ -4,9 +4,9 @@ namespace PrototypeForAnkiEsque.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private readonly NavigationService _navigationService;
+        private readonly INavigationService _navigationService;
 
-        public MainWindowViewModel(NavigationService navigationService)
+        public MainWindowViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             _navigationService.GetMainMenuViewAsync(); 

@@ -4,14 +4,15 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.Commands;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckCreatorViewModel : BaseViewModel
     {
-        private readonly DeckService _deckService;
-        private readonly NavigationService _navigationService;
-        private readonly FlashcardService _flashcardService;
+        private readonly IDeckService _deckService;
+        private readonly INavigationService _navigationService;
+        private readonly IFlashcardService _flashcardService;
         private string _deckName;
         private string _searchAvailableText;
         private string _searchSelectedText;
@@ -113,7 +114,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
 
-        public FlashcardDeckCreatorViewModel(DeckService deckService, NavigationService navigationService, FlashcardService flashcardService)
+        public FlashcardDeckCreatorViewModel(IDeckService deckService, INavigationService navigationService, IFlashcardService flashcardService)
         {
             _deckService = deckService;
             _navigationService = navigationService;
