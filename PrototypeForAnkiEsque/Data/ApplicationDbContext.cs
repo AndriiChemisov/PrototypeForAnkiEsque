@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Models;
 
 namespace PrototypeForAnkiEsque.Data
@@ -34,13 +28,22 @@ namespace PrototypeForAnkiEsque.Data
                     new Flashcard { Front = "羊", Back = "ひつじ ー Sheep", EaseRating = 2 },
                     new Flashcard { Front = "豚", Back = "ぶた ー Pig", EaseRating = 2 }
                     );
-                context.FlashcardDecks.AddRange(
-                    new FlashcardDeck { Name = "動物 ー Animals", FlashcardFronts = new List<string> {
-                        "犬", "猫", "鳥",
-                        "魚", "馬", "牛",
-                        "羊", "豚"},
-                        EaseRating = "100%" }
-                    );
+
+                if (!context.FlashcardDecks.Any())
+                {
+                    context.FlashcardDecks.AddRange(
+                        new FlashcardDeck
+                        {
+                            Name = "動物 ー Animals",
+                            FlashcardFronts = new List<string> {
+                            "犬", "猫", "鳥",
+                            "魚", "馬", "牛",
+                            "羊", "豚"},
+                            EaseRating = "100%"
+                        }
+                        );
+                }
+
                 context.SaveChanges();
             }
         }

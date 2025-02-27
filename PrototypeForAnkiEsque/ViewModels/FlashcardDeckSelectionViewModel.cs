@@ -1,20 +1,23 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32;
+using System.IO;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using System.IO;
+using PrototypeForAnkiEsque.Commands;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckSelectionViewModel : BaseViewModel
     {
-        private readonly DeckService _deckService;
-        private readonly NavigationService _navigationService;
+        private readonly IDeckService _deckService;
+        private readonly IMainMenuNavigationService _mainMenuNavigationService;
+        private readonly IFlashcardNavigationService _flashcardNavigationService;
+        private readonly IDeckNavigationService _deckNavigationService;
+        private readonly IMessageService _messageService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
         private string _searchText;
@@ -56,27 +59,37 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        public FlashcardDeckSelectionViewModel(DeckService deckService, NavigationService navigationService)
+        public FlashcardDeckSelectionViewModel(IDeckService deckService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService, IMessageService messageService)
         {
             _deckService = deckService;
-            _navigationService = navigationService;
+            _mainMenuNavigationService = mainMenuNavigationService;
+            _flashcardNavigationService = flashcardNavigationService;
+            _deckNavigationService = deckNavigationService;
+            _messageService = messageService;
 
-            ReviewDeckCommand = new RelayCommand(ReviewDeckAsync);
-            EditDeckCommand = new RelayCommand(EditDeck);
-            DeleteDeckCommand = new RelayCommand(DeleteDeckAsync);
-            OpenMainMenuCommand = new RelayCommand(OpenMainMenuAsync);
-            OpenDeckCreatorCommand = new RelayCommand(OpenDeckCreatorAsync);
-            ImportDecksCommand = new RelayCommand(async () => await ImportDecksAsync());
-            ExportDecksCommand = new RelayCommand(async () => await ExportDecksAsync());
+            ReviewDeckCommand = new AsyncRelayCommand(ReviewDeckAsync);
+            EditDeckCommand = new AsyncRelayCommand(EditDeckAsync);
+            DeleteDeckCommand = new AsyncRelayCommand(DeleteDeckAsync);
+            OpenMainMenuCommand = new AsyncRelayCommand(OpenMainMenuAsync);
+            OpenDeckCreatorCommand = new AsyncRelayCommand(OpenDeckCreatorAsync);
+            ImportDecksCommand = new AsyncRelayCommand<string>(ImportDecksAsync);
+            ExportDecksCommand = new AsyncRelayCommand<string>(ExportDecksAsync);
 
             LoadDecksAsync();
         }
 
         private async void LoadDecksAsync()
         {
-            var decks = await Task.Run(() => _deckService.GetPagedDecks(1, int.MaxValue).ToList());
-            Decks = new ObservableCollection<FlashcardDeck>(decks);
-            UpdateFilteredDecks();
+            try
+            {
+                var decks = await _deckService.GetPagedDecksAsync(1, int.MaxValue);
+                Decks = new ObservableCollection<FlashcardDeck>(decks);
+                UpdateFilteredDecks();
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowMessage($"An error occurred while loading decks: {ex.Message}", "Error", MessageBoxImage.Error);
+            }
         }
 
         private void UpdateFilteredDecks()
@@ -88,60 +101,57 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
-        private async void ReviewDeckAsync()
+        private async Task ReviewDeckAsync()
         {
             if (SelectedDeck == null)
             {
-                ShowErrorMessage("Please select a deck to review.");
+                _messageService.ShowMessage("Please select a deck to review.", "Warning", MessageBoxImage.Warning);
                 return;
             }
 
-            await _navigationService.GetFlashcardViewAsync(SelectedDeck);
+            await _flashcardNavigationService.GetFlashcardViewAsync(SelectedDeck);
         }
 
-        private async void EditDeck()
+        private async Task EditDeckAsync()
         {
             if (SelectedDeck == null)
             {
-                ShowErrorMessage("Please select a deck to edit.");
+                _messageService.ShowMessage("Please select a deck to edit.", "Warning", MessageBoxImage.Warning);
                 return;
             }
 
-            await _navigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
+            await _deckNavigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
         }
 
-        private async void DeleteDeckAsync()
+        private async Task DeleteDeckAsync()
         {
             if (SelectedDeck == null)
             {
-                ShowErrorMessage("Please select a deck to delete.");
+                _messageService.ShowMessage("Please select a deck to delete.", "Warning", MessageBoxImage.Warning);
                 return;
             }
 
-            if (MessageBox.Show("Are you sure you want to delete this deck?",
-                "Confirm Deletion", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            var result = _messageService.ShowMessageWithButton("Are you sure you want to delete this deck?", "Confirm Deletion", MessageBoxImage.Question, MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
             {
                 await _deckService.DeleteDeckAsync(SelectedDeck.Id);
-                LoadDecksAsync();
+                Decks.Remove(SelectedDeck); // Remove the deck from the Decks collection
+                UpdateFilteredDecks(); // Update the filtered decks after deletion
             }
         }
 
-        private async void OpenMainMenuAsync()
+
+        private async Task OpenMainMenuAsync()
         {
-            await _navigationService.GetMainMenuViewAsync();
+            await _mainMenuNavigationService.GetMainMenuViewAsync();
         }
 
-        private async void OpenDeckCreatorAsync()
+        private async Task OpenDeckCreatorAsync()
         {
-            await _navigationService.GetFlashcardDeckCreatorViewAsync();
+            await _deckNavigationService.GetFlashcardDeckCreatorViewAsync();
         }
 
-        private void ShowErrorMessage(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        public async Task ExportDecksAsync()
+        public async Task ExportDecksAsync(string filePath)
         {
             var decksToExport = SelectedDeck != null ? new List<FlashcardDeck> { SelectedDeck } : Decks.ToList();
             var deckDtos = decksToExport.Select(d => new FlashcardDeckDto
@@ -151,54 +161,36 @@ namespace PrototypeForAnkiEsque.ViewModels
                 EaseRating = d.EaseRating
             }).ToList();
 
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "JSON files (*.json)|*.json",
-                FileName = "FlashcardDecks.json",
-                InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Exports")
-            };
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                var json = JsonSerializer.Serialize(deckDtos);
-                await File.WriteAllTextAsync(saveFileDialog.FileName, json);
-            }
+            var json = JsonSerializer.Serialize(deckDtos);
+            await File.WriteAllTextAsync(filePath, json);
         }
 
+        public async Task ImportDecksAsync(string filePath)
 
-        public async Task ImportDecksAsync()
         {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "JSON files (*.json)|*.json"
-            };
+            var json = await File.ReadAllTextAsync(filePath);
+            var deckDtos = JsonSerializer.Deserialize<List<FlashcardDeckDto>>(json);
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                var json = await File.ReadAllTextAsync(openFileDialog.FileName);
-                var deckDtos = JsonSerializer.Deserialize<List<FlashcardDeckDto>>(json);
-
-                var existingDecks = _deckService.GetPagedDecks(1, int.MaxValue);
-                var newDecks = deckDtos
-                    .Where(dto => !existingDecks.Any(d => d.Name == dto.DeckName))
-                    .Select(dto => new FlashcardDeck
-                    {
-                        Name = dto.DeckName,
-                        FlashcardFronts = dto.Flashcards.Select(f => f.Front).ToList(),
-                        EaseRating = dto.EaseRating ?? "Hard"
-                    })
-                    .ToList();
-
-                if (newDecks.Any())
+            var existingDecks = await _deckService.GetPagedDecksAsync(1, int.MaxValue);
+            var newDecks = deckDtos
+                .Where(dto => !existingDecks.Any(d => d.Name == dto.DeckName))
+                .Select(dto => new FlashcardDeck
                 {
-                    foreach (var deck in newDecks)
-                    {
-                        await _deckService.CreateDeckAsync(deck.Name, deck.FlashcardFronts, deck.EaseRating);
-                    }
-                    LoadDecksAsync();
+                    Name = dto.DeckName,
+                    FlashcardFronts = dto.Flashcards.Select(f => f.Front).ToList(),
+                    EaseRating = dto.EaseRating ?? "Hard"
+                })
+                .ToList();
+
+            if (newDecks.Any())
+            {
+                foreach (var deck in newDecks)
+                {
+                    await _deckService.CreateDeckAsync(deck.Name, deck.FlashcardFronts, deck.EaseRating);
                 }
+                LoadDecksAsync();
             }
         }
     }
 }
-

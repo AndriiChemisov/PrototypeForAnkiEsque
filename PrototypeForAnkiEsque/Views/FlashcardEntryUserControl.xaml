@@ -1,37 +1,34 @@
 <UserControl x:Class="PrototypeForAnkiEsque.Views.FlashcardEntryUserControl"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="300" Width="526"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:PrototypeForAnkiEsque.Converters"
+             Height="450" Width="800">
     <UserControl.Resources>
-        <!-- Storyboard for the fade-out animation -->
         <Storyboard x:Key="FadeOutAnimation" AutoReverse="False" Completed="FadeOutAnimation_Completed">
             <DoubleAnimation
             Storyboard.TargetName="SavedMessageText"
             Storyboard.TargetProperty="Opacity"
             From="1" To="0" Duration="0:0:2" />
         </Storyboard>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
+
     <Grid>
-        <!-- Front TextBox -->
-        <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,10,0,249" >Enter Front</TextBlock>
-        <TextBox Name="FrontTextBox" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 40, 0, 0" FontSize="16"
-                 Text="{Binding Front, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,177,0,243">Enter Front</TextBlock>
+        <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,207,0,0" FontSize="16"
+                 Text="{Binding Front, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <!-- Back TextBox -->
-        <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Center" Margin="0,102,0,157" >Enter Back</TextBlock>
-        <TextBox Name="BackTextBox" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 0, 0, 0" FontSize="16"
-                 Text="{Binding Back, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Left" Margin="371,242,0,185">Enter Back</TextBlock>
+        <TextBox Name="BackTextBox" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,270,0,0" FontSize="16"
+                 Text="{Binding Back, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <!-- Save Button -->
-        <Button Content="Save Flashcard" Width="150" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 40"
+        <Button Content="Save changes" Width="150" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"
                 Command="{Binding SaveFlashcardCommand}" />
 
-        <!-- Navigation Buttons -->
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenFlashcardDatabaseCommand}" />
 
-        <!-- Confirmation Message (Saved) -->
         <TextBlock Name="SavedMessageText" Text="{Binding SavedMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 60, 0, 10"
-                   FontSize="16" Foreground="Green" Visibility="{Binding IsSavedMessageVisible}" />
+           FontSize="16" Foreground="Green" Visibility="{Binding IsSavedMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>
+

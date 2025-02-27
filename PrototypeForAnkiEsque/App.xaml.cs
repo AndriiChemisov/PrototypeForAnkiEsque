@@ -22,7 +22,7 @@ namespace PrototypeForAnkiEsque
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -32,9 +32,8 @@ namespace PrototypeForAnkiEsque
             var connectionString = config.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlite(connectionString));
 
-            services.AddTransient<FlashcardService>();
             services.AddSingleton<BooleanToVisibilityConverter>();
             services.AddSingleton<DIValueConverterProvider>();
             services.AddSingleton<EaseRatingToStringConverter>();
@@ -42,8 +41,13 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<BooleanToDictionaryValueMultiConverter>();
 
             // Register services and views
-            services.AddSingleton<Services.NavigationService>();
-            services.AddSingleton<Services.DeckService>();
+            services.AddSingleton<IMainMenuNavigationService, NavigationService>();
+            services.AddSingleton<IFlashcardNavigationService, NavigationService>();
+            services.AddSingleton<IDeckNavigationService, NavigationService>();
+            services.AddSingleton<ILastNavigatedViewService, NavigationService>();
+            services.AddTransient<IFlashcardService, FlashcardService>();
+            services.AddTransient<IDeckService, DeckService>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<MainWindow>();
             services.AddTransient<MainMenuUserControl>();
             services.AddTransient<FlashcardEntryUserControl>();
@@ -68,20 +72,26 @@ namespace PrototypeForAnkiEsque
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
+            try
+            {
+                base.OnStartup(e);
 
-            // Ensure that the database is created and seeded
-            var dbContext = ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            dbContext.Database.EnsureCreated();
-            ApplicationDbContext.Seed(dbContext);
+                // Ensure that the database is created and seeded
+                var dbContext = ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
+                ApplicationDbContext.Seed(dbContext);
 
-            // Create MainWindow and inject NavigationService
-            var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
-            var mainWindow = new MainWindow(navigationService);
+                // Create MainWindow and inject NavigationService
+                var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
 
-            // Set MainWindow and show it
-            Application.Current.MainWindow = mainWindow;
-            mainWindow.Show();
+                // Set MainWindow and show it
+                Application.Current.MainWindow = mainWindow;
+                mainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

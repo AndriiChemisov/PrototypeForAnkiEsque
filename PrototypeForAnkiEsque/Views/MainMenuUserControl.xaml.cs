@@ -1,9 +1,6 @@
-﻿using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PrototypeForAnkiEsque.ViewModels;
-using PrototypeForAnkiEsque.Services;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 
 namespace PrototypeForAnkiEsque.Views
 {
@@ -13,8 +10,7 @@ namespace PrototypeForAnkiEsque.Views
         {
             InitializeComponent();
 
-            var viewModel = App.ServiceProvider.GetRequiredService<MainMenuViewModel>();
-            DataContext = viewModel;
+            DataContext = App.ServiceProvider.GetRequiredService<MainMenuViewModel>();
         }
 
     }

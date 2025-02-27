@@ -1,47 +1,55 @@
-﻿using PrototypeForAnkiEsque.Models;
-using PrototypeForAnkiEsque.Services;
-using PrototypeForAnkiEsque.ViewModels;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
-using System.Threading.Tasks;
-using System.Windows;
+using PrototypeForAnkiEsque.Models;
+using PrototypeForAnkiEsque.Services;
+using PrototypeForAnkiEsque.ViewModels;
+using System.Collections.ObjectModel;
+using PrototypeForAnkiEsque.Commands;
 
 public class FlashcardDatabaseViewModel : BaseViewModel
 {
-    private readonly FlashcardService _flashcardService;
-    private readonly NavigationService _navigationService;
-    private Flashcard _selectedFlashcard;
-    private ObservableCollection<Flashcard> _allFlashcards;
-    private ObservableCollection<Flashcard> _filteredFlashcards;
+    private readonly IFlashcardService _flashcardService;
+    private readonly IMainMenuNavigationService _mainMenuNavigationService;
+    private readonly IFlashcardNavigationService _flashcardNavigationService;
+    private readonly IMessageService _messageService;
+    private Flashcard _selectedFlashcard = null!;
+    private ObservableCollection<Flashcard> _allFlashcards = new();
+    private ObservableCollection<Flashcard> _filteredFlashcards = new();
     private string _searchText = string.Empty;
 
     private const int PageSize = 15;
     private int _currentPage = 1;
 
-    public FlashcardDatabaseViewModel(FlashcardService flashcardService, NavigationService navigationService)
+    public FlashcardDatabaseViewModel(IFlashcardService flashcardService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IMessageService messageService)
     {
         _flashcardService = flashcardService;
-        _navigationService = navigationService;
+        _mainMenuNavigationService = mainMenuNavigationService;
+        _messageService = messageService;
+        _flashcardNavigationService = flashcardNavigationService;
 
-        _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
-        _filteredFlashcards = new ObservableCollection<Flashcard>(_allFlashcards);
+        LoadFlashcardsAsync().Wait();
+
         Flashcards = new ObservableCollection<Flashcard>();
 
         LoadPage(1);
 
-        EditCommand = new RelayCommand(EditFlashcard, CanEditFlashcard);
-        DeleteCommand = new RelayCommand(DeleteFlashcard, CanDeleteFlashcard);
-        OpenMainMenuCommand = new RelayCommand(OpenMainMenu);
-        PreviousPageCommand = new RelayCommand(PreviousPage, CanGoToPreviousPage);
-        NextPageCommand = new RelayCommand(NextPage, CanGoToNextPage);
-        OpenFlashcardEntryCommand = new RelayCommand(OpenFlashcardEntryAsync);
-        ImportFlashcardsCommand = new RelayCommand(async () => await ImportFlashcardsAsync());
-        ExportFlashcardsCommand = new RelayCommand(async () => await ExportFlashcardsAsync());
+        EditCommand = new AsyncRelayCommand(EditFlashcardAsync, CanEditFlashcard);
+        DeleteCommand = new AsyncRelayCommand(DeleteFlashcardAsync, CanDeleteFlashcard);
+        OpenMainMenuCommand = new AsyncRelayCommand(OpenMainMenuAsync);
+        PreviousPageCommand = new AsyncRelayCommand(PreviousPageAsync, CanGoToPreviousPage);
+        NextPageCommand = new AsyncRelayCommand(NextPageAsync, CanGoToNextPage);
+        OpenFlashcardEntryCommand = new AsyncRelayCommand(OpenFlashcardEntryAsync);
+        _messageService = messageService;
+    }
+
+    private async Task LoadFlashcardsAsync()
+    {
+        var flashcards = await _flashcardService.GetFlashcardsAsync();
+        _allFlashcards = new ObservableCollection<Flashcard>(flashcards);
+        _filteredFlashcards = new ObservableCollection<Flashcard>(_allFlashcards);
     }
 
     public ObservableCollection<Flashcard> Flashcards { get; set; }
@@ -93,8 +101,8 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         set
         {
             SetProperty(ref _selectedFlashcard, value);
-            (EditCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            (EditCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+            (DeleteCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         }
     }
 
@@ -104,8 +112,6 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     public ICommand PreviousPageCommand { get; }
     public ICommand NextPageCommand { get; }
     public ICommand OpenFlashcardEntryCommand { get; }
-    public ICommand ImportFlashcardsCommand { get; }
-    public ICommand ExportFlashcardsCommand { get; }
 
     private void LoadPage(int pageNumber)
     {
@@ -119,48 +125,51 @@ public class FlashcardDatabaseViewModel : BaseViewModel
         UpdatePaginationButtons();
     }
 
-    private void EditFlashcard()
+    private async Task EditFlashcardAsync()
     {
         if (SelectedFlashcard != null)
         {
-            _navigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
+            await _flashcardNavigationService.GetFlashcardEditorViewAsync(SelectedFlashcard);
         }
     }
 
     private bool CanEditFlashcard() => SelectedFlashcard != null;
 
-    private async void DeleteFlashcard()
+    public async Task DeleteFlashcardAsync()
     {
-        if (SelectedFlashcard != null)
-        {
-            var result = MessageBox.Show(
-                "Are you sure you want to delete this flashcard?",
-                "Confirm Delete",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+        var result = _messageService.ShowMessageWithButton("Are you sure you want to delete this flashcard?", "Delete Flashcard", MessageBoxImage.Question, MessageBoxButton.YesNo);
 
-            if (result == MessageBoxResult.Yes)
+        if (result == MessageBoxResult.Yes)
+        {
+            try
             {
-                await _flashcardService.DeleteFlashcardAsync(SelectedFlashcard.Id);
-                _allFlashcards.Remove(SelectedFlashcard);
-                ApplySearchFilter();
+
+            await _flashcardService.DeleteFlashcardAsync(SelectedFlashcard.Id);
+            _allFlashcards.Remove(SelectedFlashcard);
+            ApplySearchFilter();
             }
+            catch(Exception ex)
+            {
+                _messageService.ShowMessage(ex.Message, "Error deleting flashcard!", MessageBoxImage.Error);
+            }
+
         }
+        
     }
 
     private bool CanDeleteFlashcard() => SelectedFlashcard != null;
 
-    private async void OpenMainMenu()
+    private async Task OpenMainMenuAsync()
     {
-        await _navigationService.GetMainMenuViewAsync();
+        await _mainMenuNavigationService.GetMainMenuViewAsync();
     }
 
-    private async void OpenFlashcardEntryAsync()
+    private async Task OpenFlashcardEntryAsync()
     {
-        await _navigationService.GetFlashcardEntryViewAsync();
+        await _flashcardNavigationService.GetFlashcardEntryViewAsync();
     }
 
-    private void PreviousPage()
+    private async Task PreviousPageAsync()
     {
         if (_currentPage > 1)
         {
@@ -170,7 +179,7 @@ public class FlashcardDatabaseViewModel : BaseViewModel
 
     private bool CanGoToPreviousPage() => _currentPage > 1;
 
-    private void NextPage()
+    private async Task NextPageAsync()
     {
         int totalPages = (_filteredFlashcards.Count + PageSize - 1) / PageSize;
         if (_currentPage < totalPages)
@@ -187,56 +196,43 @@ public class FlashcardDatabaseViewModel : BaseViewModel
 
     private void UpdatePaginationButtons()
     {
-        (PreviousPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (NextPageCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        (PreviousPageCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        (NextPageCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
     }
 
-    public async Task ExportFlashcardsAsync()
+    public async Task ExportFlashcardsAsync(string filePath)
     {
         var flashcardDtos = _allFlashcards.Select(f => new FlashcardDto { Front = f.Front, Back = f.Back }).ToList();
 
-        var saveFileDialog = new SaveFileDialog
-        {
-            Filter = "JSON files (*.json)|*.json",
-            FileName = "Flashcards.json",
-            InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Exports")
-        };
-
-        if (saveFileDialog.ShowDialog() == true)
-        {
-            var json = JsonSerializer.Serialize(flashcardDtos);
-            await File.WriteAllTextAsync(saveFileDialog.FileName, json);
-        }
+        var json = JsonSerializer.Serialize(flashcardDtos);
+        await File.WriteAllTextAsync(filePath, json);
     }
 
+    public async Task ImportFlashcardsAsync(string filePath)
 
-    public async Task ImportFlashcardsAsync()
     {
-        var openFileDialog = new OpenFileDialog
+        var json = await File.ReadAllTextAsync(filePath);
+        var flashcardDtos = JsonSerializer.Deserialize<List<FlashcardDto>>(json);
+
+        if (flashcardDtos == null)
         {
-            Filter = "JSON files (*.json)|*.json"
-        };
+            return;
+        }
 
-        if (openFileDialog.ShowDialog() == true)
+        var existingFlashcards = await _flashcardService.GetFlashcardsAsync();
+        var newFlashcards = flashcardDtos
+            .Where(dto => !existingFlashcards.Any(f => f.Front == dto.Front && f.Back == dto.Back))
+            .Select(dto => new Flashcard { Front = dto.Front, Back = dto.Back })
+            .ToList();
+
+        if (newFlashcards.Any())
         {
-            var json = await File.ReadAllTextAsync(openFileDialog.FileName);
-            var flashcardDtos = JsonSerializer.Deserialize<List<FlashcardDto>>(json);
-
-            var existingFlashcards = _flashcardService.GetFlashcards();
-            var newFlashcards = flashcardDtos
-                .Where(dto => !existingFlashcards.Any(f => f.Front == dto.Front && f.Back == dto.Back))
-                .Select(dto => new Flashcard { Front = dto.Front, Back = dto.Back })
-                .ToList();
-
-            if (newFlashcards.Any())
+            foreach (var flashcard in newFlashcards)
             {
-                foreach (var flashcard in newFlashcards)
-                {
-                    _flashcardService.AddFlashcard(flashcard);
-                }
-                _allFlashcards = new ObservableCollection<Flashcard>(_flashcardService.GetFlashcards());
-                ApplySearchFilter();
+                await _flashcardService.AddFlashcardAsync(flashcard);
             }
+            _allFlashcards = new ObservableCollection<Flashcard>(await _flashcardService.GetFlashcardsAsync());
+            ApplySearchFilter();
         }
     }
 }

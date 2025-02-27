@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.IO;
 
 namespace PrototypeForAnkiEsque.Data
@@ -22,7 +20,7 @@ namespace PrototypeForAnkiEsque.Data
 
             // Create a DbContextOptionsBuilder to configure the DbContext
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
 
             // Return the DbContext instance with options
             return new ApplicationDbContext(optionsBuilder.Options);

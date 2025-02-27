@@ -1,19 +1,17 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
-using System.Linq;
 using PrototypeForAnkiEsque.Data;
+using PrototypeForAnkiEsque.Commands;
 
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardEditorViewModel : BaseViewModel
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly FlashcardService _flashcardService;
-        private readonly NavigationService _navigationService;
+        private readonly IFlashcardService _flashcardService;
+        private readonly IFlashcardNavigationService _flashcardNavigationService;
         private Flashcard _flashcard;
         private string _front;
         private string _back;
@@ -22,13 +20,13 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _savedMessage;
         private bool _isSavedMessageVisible;
 
-        public FlashcardEditorViewModel(FlashcardService flashcardService, NavigationService navigationService, ApplicationDbContext dbContext)
+        public FlashcardEditorViewModel(IFlashcardService flashcardService, IFlashcardNavigationService flashcardNavigationService, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _flashcardService = flashcardService;
-            _navigationService = navigationService;
-            SaveFlashcardCommand = new RelayCommand(SaveFlashcard);
-            BackCommand = new RelayCommand(Return);
+            _flashcardNavigationService = flashcardNavigationService;
+            SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
+            BackCommand = new AsyncRelayCommand(ReturnAsync);
             IsSavedMessageVisible = false;
         }
 
@@ -43,7 +41,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 if (_front != value)
                 {
                     _front = value;
-                    OnPropertyChanged(nameof(Front));  // Set a breakpoint here
+                    OnPropertyChanged(nameof(Front));
                 }
             }
         }
@@ -56,7 +54,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 if (_back != value)
                 {
                     _back = value;
-                    OnPropertyChanged(nameof(Front));  // Set a breakpoint here
+                    OnPropertyChanged(nameof(Back));
                 }
             }
         }
@@ -69,7 +67,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 if (_editableFront != value)
                 {
                     _editableFront = value;
-                    OnPropertyChanged(); // Notify the UI that EditableFront changed
+                    OnPropertyChanged();
                 }
             }
         }
@@ -82,7 +80,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 if (_editableBack != value)
                 {
                     _editableBack = value;
-                    OnPropertyChanged(); // Notify the UI that EditableBack changed
+                    OnPropertyChanged();
                 }
             }
         }
@@ -114,16 +112,14 @@ namespace PrototypeForAnkiEsque.ViewModels
             EditableBack = _back;
         }
 
-        private async void SaveFlashcard()
+        private async Task SaveFlashcardAsync()
         {
             if (string.IsNullOrWhiteSpace(EditableFront) || string.IsNullOrWhiteSpace(EditableBack))
             {
-                // Show alert if front or back are blank
-                MessageBox.Show("The flashcard cannot be blank!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                OnValidationError?.Invoke("The flashcard cannot have blank sides!");
                 return;
             }
 
-            // If the front value is changed, check for duplicates
             if (!string.Equals(EditableFront, Front, StringComparison.OrdinalIgnoreCase))
             {
                 var existingFlashcard = await _dbContext.Flashcards
@@ -131,27 +127,31 @@ namespace PrototypeForAnkiEsque.ViewModels
 
                 if (existingFlashcard != null)
                 {
-                    // If a duplicate is found, show a warning message
-                    MessageBox.Show("This flashcard already exists!", "Duplicate Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    OnValidationError?.Invoke("This flashcard already exists!");
                     return;
                 }
             }
 
-            // Update the flashcard fields with the edited values
             if (_flashcard != null)
             {
-                _flashcard.Front = EditableFront;
-                _flashcard.Back = EditableBack;
+                try
+                {
 
-                // Save the updated flashcard
-                _flashcardService.UpdateFlashcard(_flashcard);
+                    _flashcard.Front = EditableFront;
+                    _flashcard.Back = EditableBack;
 
-                // Show confirmation message and trigger animation
-                ShowSaveMessage();
+                    await _flashcardService.UpdateFlashcardAsync(_flashcard);
+
+                    ShowSaveMessage();
+                }
+                catch (Exception ex)
+                {
+                    OnValidationError?.Invoke($"An error occurred while saving the flashcard: {ex.Message}");
+                }
             }
             else
             {
-                MessageBox.Show("No flashcard to save!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                OnValidationError?.Invoke("No flashcard to save!");
             }
         }
 
@@ -164,16 +164,15 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private void TriggerFadeOutAnimation()
         {
-            // This calls the animation from the view
             OnFadeOutMessage?.Invoke();
         }
-        private async void Return()
+
+        private async Task ReturnAsync()
         {
-            // Navigate back without saving
-            await _navigationService.GetFlashcardDatabaseViewAsync(); // Go back to FlashcardDatabaseView
+            await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
         }
 
+        public event Action<string> OnValidationError;
         public event Action OnFadeOutMessage;
     }
-
 }

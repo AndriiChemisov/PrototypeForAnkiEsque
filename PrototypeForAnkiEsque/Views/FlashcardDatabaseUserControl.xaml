@@ -57,7 +57,7 @@
         </StackPanel>
 
         <!-- Import and Export buttons -->
-        <Button Content="Import Flashcards" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Command="{Binding ImportFlashcardsCommand}"/>
-        <Button Content="Export Flashcards" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding ExportFlashcardsCommand}"/>
+        <Button Content="Import Flashcards" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Click="ImportFlashcards"/>
+        <Button Content="Export Flashcards" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Click="ExportFlashcards"/>
     </Grid>
 </UserControl>

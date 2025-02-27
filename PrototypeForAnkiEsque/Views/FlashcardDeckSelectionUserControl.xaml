@@ -18,14 +18,14 @@
                 <DataGridTextColumn Header="Deck Name" Binding="{Binding Name}" Width="*"/>
 
                 <!-- Column for Ease Rating -->
-                <DataGridTextColumn Header="Ease Rating" Binding="{Binding EaseRating}" Width="2*"/>
+                <DataGridTextColumn Header="Current progress" Binding="{Binding EaseRating}" Width="2*"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <Button Content="Review Deck" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" />
         <Button Content="Edit Deck" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" />
         <Button Content="Delete Deck" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" />
-        <Button Content="Import Decks" Command="{Binding ImportDecksCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,10" />
-        <Button Content="Export Decks" Command="{Binding ExportDecksCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" />
+        <Button Content="Import Decks" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,10" />
+        <Button Content="Export Decks" Click="ExportDecks" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" />
     </Grid>
 </UserControl>
