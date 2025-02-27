@@ -161,11 +161,13 @@ namespace PrototypeForAnkiEsque.ViewModels
                 EaseRating = d.EaseRating
             }).ToList();
 
+
             var json = JsonSerializer.Serialize(deckDtos);
             await File.WriteAllTextAsync(filePath, json);
         }
 
         public async Task ImportDecksAsync(string filePath)
+
         {
             var json = await File.ReadAllTextAsync(filePath);
             var deckDtos = JsonSerializer.Deserialize<List<FlashcardDeckDto>>(json);

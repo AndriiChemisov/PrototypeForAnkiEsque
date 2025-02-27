@@ -203,11 +203,13 @@ public class FlashcardDatabaseViewModel : BaseViewModel
     public async Task ExportFlashcardsAsync(string filePath)
     {
         var flashcardDtos = _allFlashcards.Select(f => new FlashcardDto { Front = f.Front, Back = f.Back }).ToList();
+
         var json = JsonSerializer.Serialize(flashcardDtos);
         await File.WriteAllTextAsync(filePath, json);
     }
 
     public async Task ImportFlashcardsAsync(string filePath)
+
     {
         var json = await File.ReadAllTextAsync(filePath);
         var flashcardDtos = JsonSerializer.Deserialize<List<FlashcardDto>>(json);

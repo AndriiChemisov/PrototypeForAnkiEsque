@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -23,16 +24,30 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="AssemblyInfo.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
 
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="AssemblyInfo.cs">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>misc\AssemblyInfo.cs</TargetPath>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<TargetPath>appsettings.json</TargetPath>
+		</None>
+	</ItemGroup>
+
+	<Target Name="MoveDlls" AfterTargets="Publish">
+		<ItemGroup>
+			<DllFiles Include="$(OutputPath)**\*.dll" />
+		</ItemGroup>
+		<Move SourceFiles="@(DllFiles)" DestinationFolder="$(SolutionDir)publish\dlls\" />
+	</Target>
+
+	<Target Name="CreateExportsFolder" AfterTargets="Publish">
+		<MakeDir Directories="$(SolutionDir)publish\Exports" />
+	</Target>
 
 </Project>
