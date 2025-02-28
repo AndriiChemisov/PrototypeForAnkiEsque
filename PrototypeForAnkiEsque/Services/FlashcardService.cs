@@ -1,7 +1,10 @@
 ﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Data;
 using Microsoft.EntityFrameworkCore;
-
+// This file is used to define the FlashcardService class, which implements the IFlashcardService interface. The FlashcardService class is used to interact with the database and perform CRUD operations on the Flashcards table.
+// The FlashcardService class defines a constructor that takes an instance of the ApplicationDbContext class as a parameter. This allows the FlashcardService class to interact
+// with the database using the ApplicationDbContext class.
+// Simple explanation: This class is used to interact with the database and perform CRUD operations on the Flashcards table so that we do not violate the Single Responsibility Principle.
 namespace PrototypeForAnkiEsque.Services
 {
     public class FlashcardService : IFlashcardService

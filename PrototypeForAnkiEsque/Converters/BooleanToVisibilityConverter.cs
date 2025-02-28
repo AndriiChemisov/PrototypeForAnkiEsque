@@ -2,6 +2,11 @@
 using System.Windows;
 using System.Windows.Data;
 
+// This converter is used to bind a boolean value to a Visibility value. The converter is used in the following way:
+// <CheckBox IsChecked="{Binding Path=IsChecked}"/>
+// <TextBlock Visibility="{Binding Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+// Simple explanation: The TextBlock is visible if the CheckBox is checked.
+
 namespace PrototypeForAnkiEsque.Converters
 {
     public class BooleanToVisibilityConverter : IValueConverter

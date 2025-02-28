@@ -5,11 +5,15 @@ using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
 using System.Windows;
-
+// This file is used to define the FlashcardDeckCreatorViewModel class. The FlashcardDeckCreatorViewModel class is used to handle the logic for the FlashcardDeckCreatorView.
+// The FlashcardDeckCreatorViewModel class contains properties and methods that are used to interact with the FlashcardDeckCreatorView.
+// The FlashcardDeckCreatorViewModel class inherits from the BaseViewModel class, which implements the INotifyPropertyChanged interface.
+// Simple explanation: This class is used to handle the logic for the FlashcardDeckCreatorView.
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckCreatorViewModel : BaseViewModel
     {
+        #region FIELD DECLARATIONS
         private readonly IDeckService _deckService;
         private readonly IDeckNavigationService _deckNavigationService;
         private readonly IFlashcardService _flashcardService;
@@ -21,7 +25,34 @@ namespace PrototypeForAnkiEsque.ViewModels
         private bool _isRemoveButtonEnabled;
         private bool _areChangesMade;
         private readonly DispatcherTimer _debounceTimer;
+        #endregion
 
+        #region CONSTRUCTOR
+        public FlashcardDeckCreatorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService, IMessageService messageService)
+        {
+            _deckService = deckService;
+            _deckNavigationService = deckNavigationService;
+            _flashcardService = flashcardService;
+            _messageService = messageService;
+
+            _debounceTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(300)
+            };
+            _debounceTimer.Tick += DebounceTimer_Tick;
+
+            OpenDeckSelectionCommand = new AsyncRelayCommand(async () => await OpenDeckSelectionAsync());
+            AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
+            RemoveFlashcardsCommand = new AsyncRelayCommand(RemoveFlashcardsAsync);
+            SaveDeckCommand = new AsyncRelayCommand(SaveDeckAsync);
+            ToggleAvailableFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleAvailableFlashcardSelectionAsync);
+            ToggleDeckFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleDeckFlashcardSelectionAsync);
+
+            LoadFlashcardsAsync();
+        }
+        #endregion
+
+        #region PROPERTIES
         public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
         public ObservableCollection<Flashcard> SelectedFlashcards { get; } = new();
 
@@ -107,37 +138,18 @@ namespace PrototypeForAnkiEsque.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region COMMANDS
         public ICommand AddFlashcardsCommand { get; }
         public ICommand RemoveFlashcardsCommand { get; }
         public ICommand SaveDeckCommand { get; }
         public ICommand OpenDeckSelectionCommand { get; }
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
+        #endregion
 
-        public FlashcardDeckCreatorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService, IMessageService messageService)
-        {
-            _deckService = deckService;
-            _deckNavigationService = deckNavigationService;
-            _flashcardService = flashcardService;
-            _messageService = messageService;
-
-            _debounceTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(300)
-            };
-            _debounceTimer.Tick += DebounceTimer_Tick;
-
-            OpenDeckSelectionCommand = new AsyncRelayCommand(async () => await OpenDeckSelectionAsync());
-            AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
-            RemoveFlashcardsCommand = new AsyncRelayCommand(RemoveFlashcardsAsync);
-            SaveDeckCommand = new AsyncRelayCommand(SaveDeckAsync);
-            ToggleAvailableFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleAvailableFlashcardSelectionAsync);
-            ToggleDeckFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleDeckFlashcardSelectionAsync);
-
-            LoadFlashcardsAsync();
-        }
-
+        #region METHODS
         private async Task LoadFlashcardsAsync()
         {
             AvailableFlashcards.Clear();
@@ -292,5 +304,6 @@ namespace PrototypeForAnkiEsque.ViewModels
             IsAddButtonEnabled = SelectedAvailableFlashcards.Any(x => x.Value);
             IsRemoveButtonEnabled = SelectedDeckFlashcards.Any(x => x.Value);
         }
+        #endregion
     }
 }

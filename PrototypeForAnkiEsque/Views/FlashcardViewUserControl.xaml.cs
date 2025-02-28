@@ -3,7 +3,11 @@ using System.Windows.Controls;
 using PrototypeForAnkiEsque.Services;
 using System.Windows.Media.Animation;
 using PrototypeForAnkiEsque.ViewModels;
-
+// This file is used to define the FlashcardEntryUserControl class, which inherits from UserControl.
+// The FlashcardEntryUserControl class is used to display the flashcard entry view in the application.
+// The FlashcardEntryUserControl class defines a constructor that initializes the DataContext property with an instance of the FlashcardEntryViewModel class.
+// The FlashcardEntryUserControl class also subscribes to events in the FlashcardEntryViewModel class to handle fade out animations and validation errors.
+// Simple explanation: This class is used to display the flashcard entry view in the application.
 namespace PrototypeForAnkiEsque.Views
 {
     public partial class FlashcardViewUserControl : UserControl
@@ -12,20 +16,16 @@ namespace PrototypeForAnkiEsque.Views
         {
             InitializeComponent();
 
-            // Resolve the FlashcardViewModel via DI
             DataContext = App.ServiceProvider.GetRequiredService<FlashcardViewModel>();
 
-            // Resolve the BooleanToVisibilityConverter from DI
             var booleanToVisibilityConverter = App.ServiceProvider.GetRequiredService<Converters.BooleanToVisibilityConverter>();
 
-            // Create and set up the binding for the visibility of the back of the card
             var backVisibilityBinding = new System.Windows.Data.Binding("IsAnswerVisible")
             {
                 Source = DataContext,
                 Converter = booleanToVisibilityConverter
             };
 
-            // Apply the binding to the visibility of the back TextBox
             BackTextBox.SetBinding(TextBox.VisibilityProperty, backVisibilityBinding);
 
             var gridVisibilityBinding = new System.Windows.Data.Binding("IsGridVisible")
@@ -36,31 +36,27 @@ namespace PrototypeForAnkiEsque.Views
 
             MainGrid.SetBinding(VisibilityProperty, gridVisibilityBinding);
 
-            // Subscribe to the ViewModel event for triggering the fade-out animation
             var viewModel = (FlashcardViewModel)DataContext;
             viewModel.OnFadeOutMessage += ViewModel_OnFadeOutMessage;
             viewModel.OnFadeoutMotivationalMessage += ViewModel_OnFadeoutMotivationalMessage;
         }
 
-        // Trigger the fade-out animation when the event is called from the ViewModel
         private void ViewModel_OnFadeOutMessage()
         {
             var fadeOutStoryboard = (Storyboard)Resources["FadeOutAnimation"];
-            var animation = fadeOutStoryboard.Children[0] as DoubleAnimation; // Assuming RatingMessageTextBlock is the 1st child
+            var animation = fadeOutStoryboard.Children[0] as DoubleAnimation; 
             animation.To = 0; // Update opacity to 0 for fading out
             fadeOutStoryboard.Begin();
         }
 
-        // Trigger the fade-out animation for MotivationalMessageBlock
         private void ViewModel_OnFadeoutMotivationalMessage()
         {
             var fadeOutStoryboard = (Storyboard)Resources["FadeOutAnimation"];
-            var animation = fadeOutStoryboard.Children[1] as DoubleAnimation; // Assuming MotivationalMessageBlock is the 2nd child
+            var animation = fadeOutStoryboard.Children[1] as DoubleAnimation; 
             animation.To = 0; // Update opacity to 0 for fading out
             fadeOutStoryboard.Begin();
         }
 
-        // Handle the completion of the fade-out animation
         private void FadeOutAnimation_Completed(object sender, System.EventArgs e)
         {
             // Reset the opacity after the fade-out is complete

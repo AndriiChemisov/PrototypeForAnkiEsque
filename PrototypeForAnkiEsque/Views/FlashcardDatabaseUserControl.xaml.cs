@@ -2,7 +2,11 @@
 using System.Windows;
 using Microsoft.Win32;
 using PrototypeForAnkiEsque.ViewModels;
-
+// This file is used to define the FlashcardDatabaseUserControl class, which inherits from UserControl.
+// The FlashcardDatabaseUserControl class is used to display the flashcard database view in the application.
+// The FlashcardDatabaseUserControl class defines a constructor that takes an instance of the FlashcardDatabaseViewModel class as a parameter.
+// This allows the FlashcardDatabaseUserControl class to set its DataContext to the FlashcardDatabaseViewModel instance.
+// Simple explanation: This class is used to display the flashcard database view in the application.
 namespace PrototypeForAnkiEsque.Views
 {
     public partial class FlashcardDatabaseUserControl : UserControl

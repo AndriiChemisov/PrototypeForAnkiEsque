@@ -2,11 +2,13 @@
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.ViewModels;
 using PrototypeForAnkiEsque.Views;
-using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+// This file is used to define the NavigationService class, which implements the IMainMenuNavigationService, IFlashcardNavigationService, IDeckNavigationService, and ILastNavigatedViewService interfaces.
+// The NavigationService class is used to navigate between different views in the application.
+// The NavigationService class defines a constructor that takes an instance of the IServiceProvider interface as a parameter. This allows the NavigationService class to get instances of the required services from the DI container.
+// Simple explanation: This class is used to navigate between different views in the application.
+// Ensure that with each new interface, this class inherits from it and implements the required methods.
 namespace PrototypeForAnkiEsque.Services
 {
     public class NavigationService : IMainMenuNavigationService, IFlashcardNavigationService, IDeckNavigationService, ILastNavigatedViewService

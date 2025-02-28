@@ -4,11 +4,15 @@ using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
 using System.Collections.ObjectModel;
-
+// This file is used to define the FlashcardDeckEditorViewModel class, which inherits from the BaseViewModel class.
+// The FlashcardDeckEditorViewModel class is used to provide the logic for the FlashcardDeckEditorView.
+// The FlashcardDeckEditorViewModel class defines properties and methods that are used to interact with the FlashcardDeckEditorView.
+// Simple explanation: This class is used to provide the logic for the FlashcardDeckEditorView.
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckEditorViewModel : BaseViewModel
     {
+        #region FILEDS DECLARATION
         private readonly IDeckService _deckService;
         private readonly IDeckNavigationService _deckNavigationService;
         private readonly IFlashcardService _flashcardService;
@@ -16,14 +20,6 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _searchAvailableText;
         private string _searchSelectedText;
 
-        public ObservableCollection<Flashcard> DeckFlashcards { get; } = new();
-        public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
-
-        // Track selected flashcards by their Front for Available and Deck lists
-        public Dictionary<string, bool> SelectedAvailableFlashcards { get; set; } = new();
-        public Dictionary<string, bool> SelectedDeckFlashcards { get; set; } = new();
-        public ObservableCollection<Flashcard> FilteredAvailableFlashcards { get; set; } = new();
-        public ObservableCollection<Flashcard> FilteredSelectedFlashcards { get; set; } = new();
 
         // Button enable/disable states
         private bool _isAddButtonEnabled;
@@ -31,6 +27,38 @@ namespace PrototypeForAnkiEsque.ViewModels
         private bool _isSaveButtonEnabled;
         private string _tempDeckName;
         private string _originalDeckName;
+        #endregion
+
+        #region CONSTRUCTOR
+        public FlashcardDeckEditorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService)
+        {
+            _deckService = deckService;
+            _deckNavigationService = deckNavigationService;
+            _flashcardService = flashcardService;
+
+            OpenDeckSelectionCommand = new AsyncRelayCommand(OpenDeckSelectionAsync);
+            AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
+            RemoveFlashcardsCommand = new AsyncRelayCommand(RemoveFlashcardsAsync);
+            SaveDeckCommand = new AsyncRelayCommand(SaveDeckAsync);
+            ToggleAvailableFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleAvailableFlashcardSelectionAsync);
+            ToggleDeckFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleDeckFlashcardSelectionAsync);
+
+            // Initial states for buttons
+            IsAddButtonEnabled = false;
+            IsRemoveButtonEnabled = false;
+            IsSaveButtonEnabled = false;
+
+            LoadFlashcards();
+        }
+        #endregion
+
+        #region PROPERTIES
+        public ObservableCollection<Flashcard> DeckFlashcards { get; } = new();
+        public ObservableCollection<Flashcard> AvailableFlashcards { get; } = new();
+        public Dictionary<string, bool> SelectedAvailableFlashcards { get; set; } = new();
+        public Dictionary<string, bool> SelectedDeckFlashcards { get; set; } = new();
+        public ObservableCollection<Flashcard> FilteredAvailableFlashcards { get; set; } = new();
+        public ObservableCollection<Flashcard> FilteredSelectedFlashcards { get; set; } = new();
 
         public bool IsAddButtonEnabled
         {
@@ -117,37 +145,19 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
             }
         }
+        public bool AreChangesMade { get; set; }
+        #endregion
 
+        #region COMMANDS
         public ICommand AddFlashcardsCommand { get; }
         public ICommand RemoveFlashcardsCommand { get; }
         public ICommand SaveDeckCommand { get; }
         public ICommand OpenDeckSelectionCommand { get; }
         public ICommand ToggleAvailableFlashcardSelectionCommand { get; }
         public ICommand ToggleDeckFlashcardSelectionCommand { get; }
+        #endregion
 
-        public FlashcardDeckEditorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService)
-        {
-            _deckService = deckService;
-            _deckNavigationService = deckNavigationService;
-            _flashcardService = flashcardService;
-
-            OpenDeckSelectionCommand = new AsyncRelayCommand(OpenDeckSelectionAsync);
-            AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
-            RemoveFlashcardsCommand = new AsyncRelayCommand(RemoveFlashcardsAsync);
-            SaveDeckCommand = new AsyncRelayCommand(SaveDeckAsync);
-            ToggleAvailableFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleAvailableFlashcardSelectionAsync);
-            ToggleDeckFlashcardSelectionCommand = new AsyncRelayCommand<string>(ToggleDeckFlashcardSelectionAsync);
-
-            // Initial states for buttons
-            IsAddButtonEnabled = false;
-            IsRemoveButtonEnabled = false;
-            IsSaveButtonEnabled = false;
-
-            LoadFlashcards();
-        }
-
-        public bool AreChangesMade { get; set; }
-
+        #region METHODS
         private async void LoadFlashcards()
         {
             if (_selectedDeck == null) return;
@@ -309,5 +319,6 @@ namespace PrototypeForAnkiEsque.ViewModels
                 FilteredSelectedFlashcards.Add(flashcard);
             }
         }
+        #endregion
     }
 }

@@ -4,7 +4,10 @@ using PrototypeForAnkiEsque.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+// This file is used to define the DeckService class, which implements the IDeckService interface. The DeckService class is used to interact with the database and perform CRUD operations on the FlashcardDecks table.
+// The DeckService class defines a constructor that takes an instance of the ApplicationDbContext class as a parameter. This allows the DeckService class to interact
+// with the database using the ApplicationDbContext class.
+// Simple explanation: This class is used to interact with the database and perform CRUD operations on the FlashcardDecks table so that we do not violate the Single Responsibility Principle.
 namespace PrototypeForAnkiEsque.Services
 {
     public class DeckService : IDeckService

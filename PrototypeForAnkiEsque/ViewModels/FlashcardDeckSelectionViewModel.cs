@@ -8,11 +8,14 @@ using PrototypeForAnkiEsque.Commands;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-
+// This file is used to define the FlashcardDeckSelectionViewModel class. The FlashcardDeckSelectionViewModel class is used to handle the logic for the FlashcardDeckSelectionView.
+// The FlashcardDeckSelectionViewModel class defines the properties, commands, and methods that are used to interact with the FlashcardDeckSelectionView.
+// Simple explanation: This class is used to handle the logic for the FlashcardDeckSelectionView.
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckSelectionViewModel : BaseViewModel
     {
+        #region FIELD DECLARATIONS
         private readonly IDeckService _deckService;
         private readonly IMainMenuNavigationService _mainMenuNavigationService;
         private readonly IFlashcardNavigationService _flashcardNavigationService;
@@ -21,18 +24,32 @@ namespace PrototypeForAnkiEsque.ViewModels
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
         private string _searchText;
+        #endregion
 
+        #region CONSTRUCTOR
+        public FlashcardDeckSelectionViewModel(IDeckService deckService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService, IMessageService messageService)
+        {
+            _deckService = deckService;
+            _mainMenuNavigationService = mainMenuNavigationService;
+            _flashcardNavigationService = flashcardNavigationService;
+            _deckNavigationService = deckNavigationService;
+            _messageService = messageService;
+
+            ReviewDeckCommand = new AsyncRelayCommand(ReviewDeckAsync);
+            EditDeckCommand = new AsyncRelayCommand(EditDeckAsync);
+            DeleteDeckCommand = new AsyncRelayCommand(DeleteDeckAsync);
+            OpenMainMenuCommand = new AsyncRelayCommand(OpenMainMenuAsync);
+            OpenDeckCreatorCommand = new AsyncRelayCommand(OpenDeckCreatorAsync);
+            ImportDecksCommand = new AsyncRelayCommand<string>(ImportDecksAsync);
+            ExportDecksCommand = new AsyncRelayCommand<string>(ExportDecksAsync);
+
+            LoadDecksAsync();
+        }
+        #endregion
+
+        #region PROPERTIES
         public ObservableCollection<FlashcardDeck> Decks { get; private set; } = new();
         public ObservableCollection<FlashcardDeck> FilteredDecks { get; private set; } = new();
-
-        public ICommand ReviewDeckCommand { get; }
-        public ICommand EditDeckCommand { get; }
-        public ICommand DeleteDeckCommand { get; }
-        public ICommand OpenMainMenuCommand { get; }
-        public ICommand OpenDeckCreatorCommand { get; }
-        public ICommand ImportDecksCommand { get; }
-        public ICommand ExportDecksCommand { get; }
-
         public FlashcardDeck SelectedDeck
         {
             get => _selectedDeck;
@@ -58,26 +75,19 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
             }
         }
+        #endregion
 
-        public FlashcardDeckSelectionViewModel(IDeckService deckService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService, IMessageService messageService)
-        {
-            _deckService = deckService;
-            _mainMenuNavigationService = mainMenuNavigationService;
-            _flashcardNavigationService = flashcardNavigationService;
-            _deckNavigationService = deckNavigationService;
-            _messageService = messageService;
+        #region COMMANDS
+        public ICommand ReviewDeckCommand { get; }
+        public ICommand EditDeckCommand { get; }
+        public ICommand DeleteDeckCommand { get; }
+        public ICommand OpenMainMenuCommand { get; }
+        public ICommand OpenDeckCreatorCommand { get; }
+        public ICommand ImportDecksCommand { get; }
+        public ICommand ExportDecksCommand { get; }
+        #endregion
 
-            ReviewDeckCommand = new AsyncRelayCommand(ReviewDeckAsync);
-            EditDeckCommand = new AsyncRelayCommand(EditDeckAsync);
-            DeleteDeckCommand = new AsyncRelayCommand(DeleteDeckAsync);
-            OpenMainMenuCommand = new AsyncRelayCommand(OpenMainMenuAsync);
-            OpenDeckCreatorCommand = new AsyncRelayCommand(OpenDeckCreatorAsync);
-            ImportDecksCommand = new AsyncRelayCommand<string>(ImportDecksAsync);
-            ExportDecksCommand = new AsyncRelayCommand<string>(ExportDecksAsync);
-
-            LoadDecksAsync();
-        }
-
+        #region METHODS
         private async void LoadDecksAsync()
         {
             try
@@ -167,7 +177,6 @@ namespace PrototypeForAnkiEsque.ViewModels
         }
 
         public async Task ImportDecksAsync(string filePath)
-
         {
             var json = await File.ReadAllTextAsync(filePath);
             var deckDtos = JsonSerializer.Deserialize<List<FlashcardDeckDto>>(json);
@@ -192,5 +201,6 @@ namespace PrototypeForAnkiEsque.ViewModels
                 LoadDecksAsync();
             }
         }
+        #endregion
     }
 }

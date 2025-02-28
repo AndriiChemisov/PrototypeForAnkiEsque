@@ -1,5 +1,8 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+// This converter is used to bind an integer value to a string value. The converter is used in the following way:
+// <TextBlock Text="{Binding Path=EaseRating, Converter={StaticResource EaseRatingToStringConverter}}"/>
+// Simple explanation: The TextBlock will display the string representation of the ease rating.
 
 namespace PrototypeForAnkiEsque.Converters
 {

@@ -2,11 +2,15 @@
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
 using System.Windows.Input;
-
+// This file is used to define the FlashcardViewModel class, which inherits from the BaseViewModel class.
+// The FlashcardViewModel class defines a constructor that takes instances of the IFlashcardService, IMainMenuNavigationService, IDeckNavigationService, and IDeckService interfaces as parameters.
+// This allows the FlashcardViewModel class to interact with the FlashcardService, MainMenuNavigationService, DeckNavigationService, and DeckService classes.
+// Simple explanation: This class is used to handle the logic for the FlashcardViewUserControl view.
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardViewModel : BaseViewModel
     {
+        #region FIELD DECLARATIONS
         private readonly IFlashcardService _flashcardService;
         private readonly IMainMenuNavigationService _mainMenuNavigationService;
         private readonly IDeckNavigationService _deckNavigationService;
@@ -14,20 +18,16 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private List<Flashcard> _flashcards;
         private int _currentCardIndex;
-
+        private Flashcard _currentCard;
         private FlashcardDeck _selectedDeck;
-        public FlashcardDeck SelectedDeck
-        {
-            get => _selectedDeck;
-            set
-            {
-                if (SetProperty(ref _selectedDeck, value))
-                {
-                    LoadFlashcardsFromDeck();
-                }
-            }
-        }
+        private string _ratingMessage;
+        private string _motivationalMessage;
+        private bool _isRatingClicked;
+        private bool _isAnswerVisible = false;
+        private bool _isGridVisible = true;
+        #endregion
 
+        #region CONSTRUCTOR
         public FlashcardViewModel(IFlashcardService flashcardService, IMainMenuNavigationService mainMenuNavigationService, IDeckNavigationService deckNavigationService, IDeckService deckService, MainMenuViewModel mainMenuViewModel)
         {
             _flashcardService = flashcardService;
@@ -43,54 +43,66 @@ namespace PrototypeForAnkiEsque.ViewModels
             _flashcards = new List<Flashcard>(); // Initialize as empty
             _currentCardIndex = 0;
         }
+        #endregion
 
-        public ICommand ShowAnswerCommand { get; }
-        public ICommand NextCommand { get; }
-        public ICommand EaseCommand { get; }
-        public ICommand OpenDeckSelectionCommand { get; }
+        #region PROPERTIES
+        public FlashcardDeck SelectedDeck
+        {
+            get => _selectedDeck;
+            set
+            {
+                if (SetProperty(ref _selectedDeck, value))
+                {
+                    LoadFlashcardsFromDeck();
+                }
+            }
+        }
 
-        private Flashcard _currentCard;
         public Flashcard CurrentCard
         {
             get => _currentCard;
             set => SetProperty(ref _currentCard, value);
         }
 
-        private string _ratingMessage;
         public string RatingMessage
         {
             get => _ratingMessage;
             set => SetProperty(ref _ratingMessage, value);
         }
 
-        private string _motivationalMessage;
         public string MotivationalMessage
         {
             get => _motivationalMessage;
             set => SetProperty(ref _motivationalMessage, value);
         }
 
-        private bool _isRatingClicked;
         public bool IsRatingClicked
         {
             get => _isRatingClicked;
             set => SetProperty(ref _isRatingClicked, value);
         }
 
-        private bool _isAnswerVisible = false;
         public bool IsAnswerVisible
         {
             get => _isAnswerVisible;
             set => SetProperty(ref _isAnswerVisible, value);
         }
 
-        private bool _isGridVisible = true;
         public bool IsGridVisible
         {
             get => _isGridVisible;
             set => SetProperty(ref _isGridVisible, value);
         }
+        #endregion
 
+        #region COMMANDS
+        public ICommand ShowAnswerCommand { get; }
+        public ICommand NextCommand { get; }
+        public ICommand EaseCommand { get; }
+        public ICommand OpenDeckSelectionCommand { get; }
+        #endregion  
+
+        #region METHODS
         private async Task ShowAnswerAsync()
         {
             IsAnswerVisible = !IsAnswerVisible;
@@ -184,11 +196,10 @@ namespace PrototypeForAnkiEsque.ViewModels
             await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
         }
 
-        // Method to set the selected deck when passed from navigation
         public void SetSelectedDeck(FlashcardDeck selectedDeck)
         {
-            SelectedDeck = selectedDeck; // This triggers the loading of the flashcards from the deck
+            SelectedDeck = selectedDeck;
         }
+        #endregion
     }
-
 }

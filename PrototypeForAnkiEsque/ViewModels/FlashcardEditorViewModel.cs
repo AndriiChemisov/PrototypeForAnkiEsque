@@ -4,11 +4,18 @@ using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Commands;
-
+// This file is used to define the FlashcardEditorViewModel class. The FlashcardEditorViewModel class is used to handle the logic for the FlashcardEditorUserControl view.
+// The FlashcardEditorViewModel class inherits from the BaseViewModel class and implements the INotifyPropertyChanged interface.
+// The FlashcardEditorViewModel class defines properties for the Flashcard, Front, Back, EditableFront, EditableBack, SavedMessage, and IsSavedMessageVisible.
+// The FlashcardEditorViewModel class defines a SaveFlashcardCommand and a BackCommand property, which are used to save the flashcard and return to the previous view, respectively.
+// The FlashcardEditorViewModel class defines methods to save the flashcard, show a save message, and trigger a fade-out animation.
+// The FlashcardEditorViewModel class also defines events for validation errors and fading out the save message.
+// Simple explanation: This class is used to handle the logic for the FlashcardEditorUserControl view.
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardEditorViewModel : BaseViewModel
     {
+        #region FIELD DECLARATIONS
         private readonly ApplicationDbContext _dbContext;
         private readonly IFlashcardService _flashcardService;
         private readonly IFlashcardNavigationService _flashcardNavigationService;
@@ -19,7 +26,9 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _editableBack;
         private string _savedMessage;
         private bool _isSavedMessageVisible;
+        #endregion
 
+        #region CONSTRUCTOR
         public FlashcardEditorViewModel(IFlashcardService flashcardService, IFlashcardNavigationService flashcardNavigationService, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -29,10 +38,14 @@ namespace PrototypeForAnkiEsque.ViewModels
             BackCommand = new AsyncRelayCommand(ReturnAsync);
             IsSavedMessageVisible = false;
         }
+        #endregion
 
-        public ICommand SaveFlashcardCommand { get; }
-        public ICommand BackCommand { get; }
+        #region EVENTS
+        public event Action<string> OnValidationError;
+        public event Action OnFadeOutMessage;
+        #endregion
 
+        #region PROPERTIES
         public string Front
         {
             get => Flashcard?.Front;
@@ -45,7 +58,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
             }
         }
-
+        
         public string Back
         {
             get => Flashcard?.Back;
@@ -102,7 +115,14 @@ namespace PrototypeForAnkiEsque.ViewModels
             get => _isSavedMessageVisible;
             set => SetProperty(ref _isSavedMessageVisible, value);
         }
+        #endregion
 
+        #region COMMANDS
+        public ICommand SaveFlashcardCommand { get; }
+        public ICommand BackCommand { get; }
+        #endregion
+
+        #region METHODS
         public void Initialize(Flashcard flashcard)
         {
             Flashcard = flashcard;
@@ -171,8 +191,6 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
         }
-
-        public event Action<string> OnValidationError;
-        public event Action OnFadeOutMessage;
+        #endregion
     }
 }

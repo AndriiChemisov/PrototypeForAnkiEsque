@@ -1,5 +1,9 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+// This converter is used to bind a boolean value to its inverse. The converter is used in the following way:
+// <CheckBox IsChecked="{Binding Path=IsChecked}"/>
+// <TextBlock Visibility="{Binding Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"/>
+// Simple explanation: The TextBlock is visible if the CheckBox is not checked.
 
 namespace PrototypeForAnkiEsque.Converters
 {

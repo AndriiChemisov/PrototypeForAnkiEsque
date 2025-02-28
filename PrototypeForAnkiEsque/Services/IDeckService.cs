@@ -1,7 +1,9 @@
 using PrototypeForAnkiEsque.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+// This file is used to define the IDeckService interface. The IDeckService interface defines the methods that the DeckService class must implement.
+// This file should be added to first, before DeckService is modified, as we use the interface to define the methods that the DeckService class must implement.
+// Furthermore, we use objects of this interface type as per the Dependency Inversion Principle.
 namespace PrototypeForAnkiEsque.Services
 {
     public interface IDeckService
