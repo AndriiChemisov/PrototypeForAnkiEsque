@@ -12,7 +12,6 @@ namespace PrototypeForAnkiEsque.ViewModels
     {
         #region FIELD DECLARATIONS
         private readonly IFlashcardService _flashcardService;
-        private readonly IMainMenuNavigationService _mainMenuNavigationService;
         private readonly IDeckNavigationService _deckNavigationService;
         private readonly IDeckService _deckService;
 
@@ -28,10 +27,9 @@ namespace PrototypeForAnkiEsque.ViewModels
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardViewModel(IFlashcardService flashcardService, IMainMenuNavigationService mainMenuNavigationService, IDeckNavigationService deckNavigationService, IDeckService deckService, MainMenuViewModel mainMenuViewModel)
+        public FlashcardViewModel(IFlashcardService flashcardService, IDeckNavigationService deckNavigationService, IDeckService deckService, MainMenuViewModel mainMenuViewModel)
         {
             _flashcardService = flashcardService;
-            _mainMenuNavigationService = mainMenuNavigationService;
             _deckNavigationService = deckNavigationService;
             _deckService = deckService;
 
@@ -122,7 +120,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 MotivationalMessage = "Well done - you finished the deck!";
                 TriggerFadeOutAnimationForMotivationalMessage();
                 await Task.Delay(2000);
-                await _mainMenuNavigationService.GetMainMenuViewAsync();
+                await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
                 return;
             }
 

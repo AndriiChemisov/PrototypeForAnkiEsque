@@ -15,6 +15,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         #region FIELD DECLARATIONS
         private readonly ApplicationDbContext _dbContext;
         private readonly IFlashcardNavigationService _flashcardNavigationService;
+        private readonly IMessageService _messageService;
         private string _front;
         private string _back;
         private string _savedMessage;
@@ -22,10 +23,11 @@ namespace PrototypeForAnkiEsque.ViewModels
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardEntryViewModel(ApplicationDbContext dbContext, IFlashcardNavigationService flashcardNavigationService)
+        public FlashcardEntryViewModel(ApplicationDbContext dbContext, IFlashcardNavigationService flashcardNavigationService, IMessageService messageService)
         {
             _dbContext = dbContext;
             _flashcardNavigationService = flashcardNavigationService;
+            _messageService = messageService;
             SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
             OpenFlashcardDatabaseCommand = new AsyncRelayCommand(OpenFlashcardDatabaseAsync);
             IsSavedMessageVisible = false;
@@ -89,7 +91,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Front) || string.IsNullOrWhiteSpace(Back))
             {
-                OnValidationError?.Invoke("The flashcard cannot have blank sides!");
+                _messageService.ShowMessage("The flashcard cannot have blank sides!", "Validation Error!", System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -98,7 +100,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             if (existingFlashcard != null)
             {
-                OnValidationError?.Invoke("This flashcard already exists!");
+                _messageService.ShowMessage("This flashcard already exists!", "Validation Error!", System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -126,7 +128,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             catch (Exception ex)
             {
-                OnValidationError?.Invoke($"An error occurred while saving the flashcard: {ex.Message}");
+                _messageService.ShowMessage($"An error occurred while saving the flashcard: {ex.Message}", "Validation Error!", System.Windows.MessageBoxImage.Error);
             }
         }
 

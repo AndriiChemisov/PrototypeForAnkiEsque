@@ -19,18 +19,12 @@ namespace PrototypeForAnkiEsque.Views
             DataContext = App.ServiceProvider.GetRequiredService<FlashcardEntryViewModel>();
             var viewModel = (FlashcardEntryViewModel)DataContext;
             viewModel.OnFadeOutMessage += ViewModel_OnFadeOutMessage;
-            viewModel.OnValidationError += ViewModel_OnValidationError;
         }
 
         private void ViewModel_OnFadeOutMessage()
         {
             var fadeOutStoryboard = (Storyboard)Resources["FadeOutAnimation"];
             fadeOutStoryboard.Begin();
-        }
-
-        private void ViewModel_OnValidationError(string message)
-        {
-            MessageBox.Show(message, "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void FadeOutAnimation_Completed(object sender, System.EventArgs e)

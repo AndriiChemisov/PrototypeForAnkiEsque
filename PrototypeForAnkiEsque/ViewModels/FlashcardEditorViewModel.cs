@@ -19,6 +19,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly ApplicationDbContext _dbContext;
         private readonly IFlashcardService _flashcardService;
         private readonly IFlashcardNavigationService _flashcardNavigationService;
+        private readonly IMessageService _messageService;
         private Flashcard _flashcard;
         private string _front;
         private string _back;
@@ -29,11 +30,12 @@ namespace PrototypeForAnkiEsque.ViewModels
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardEditorViewModel(IFlashcardService flashcardService, IFlashcardNavigationService flashcardNavigationService, ApplicationDbContext dbContext)
+        public FlashcardEditorViewModel(IFlashcardService flashcardService, IFlashcardNavigationService flashcardNavigationService, IMessageService messageService, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _flashcardService = flashcardService;
             _flashcardNavigationService = flashcardNavigationService;
+            _messageService = messageService;
             SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
             BackCommand = new AsyncRelayCommand(ReturnAsync);
             IsSavedMessageVisible = false;
@@ -136,7 +138,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             if (string.IsNullOrWhiteSpace(EditableFront) || string.IsNullOrWhiteSpace(EditableBack))
             {
-                OnValidationError?.Invoke("The flashcard cannot have blank sides!");
+                _messageService.ShowMessage("The flashcard cannot have blank sides!",  "Validation Error!", System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -147,7 +149,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
                 if (existingFlashcard != null)
                 {
-                    OnValidationError?.Invoke("This flashcard already exists!");
+                    _messageService.ShowMessage("This flashcard already exists!", "Validation Error!", System.Windows.MessageBoxImage.Error);
                     return;
                 }
             }
@@ -166,12 +168,12 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    OnValidationError?.Invoke($"An error occurred while saving the flashcard: {ex.Message}");
+                    _messageService.ShowMessage($"An error occurred while saving the flashcard: {ex.Message}", "Validation Error!", System.Windows.MessageBoxImage.Error);
                 }
             }
             else
             {
-                OnValidationError?.Invoke("No flashcard to save!");
+                _messageService.ShowMessage("No flashcard to save!", "Validation Error!", System.Windows.MessageBoxImage.Error);
             }
         }
 

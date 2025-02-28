@@ -24,8 +24,6 @@ namespace PrototypeForAnkiEsque.Views
             {
                 viewModel.OnFadeOutMessage -= ViewModel_OnFadeOutMessage;
                 viewModel.OnFadeOutMessage += ViewModel_OnFadeOutMessage;
-                viewModel.OnValidationError -= ViewModel_OnValidationError;
-                viewModel.OnValidationError += ViewModel_OnValidationError;
             }
         }
 
@@ -33,11 +31,6 @@ namespace PrototypeForAnkiEsque.Views
         {
             var fadeOutStoryboard = (Storyboard)Resources["FadeOutAnimation"];
             fadeOutStoryboard.Begin();
-        }
-
-        private void ViewModel_OnValidationError(string message)
-        {
-            MessageBox.Show(message, "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void FadeOutAnimation_Completed(object sender, EventArgs e)

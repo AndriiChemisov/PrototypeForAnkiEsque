@@ -17,10 +17,5 @@ namespace PrototypeForAnkiEsque.Views
 
             DataContext = App.ServiceProvider.GetRequiredService<FlashcardDeckCreatorViewModel>();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
