@@ -4,7 +4,7 @@
     <Style TargetType="{x:Type Button}" x:Key="StandartButton">
         <Setter Property="Background"  Value="Black"/>
         <Setter Property="Foreground" Value="LightGray"/>
-        <Setter Property="BorderBrush" Value="Purple"/>
+        <Setter Property="BorderBrush" Value="#4b004b"/>
         <Setter Property="FontFamily" Value="Georgia"/>
         
         <Setter Property="Template">
