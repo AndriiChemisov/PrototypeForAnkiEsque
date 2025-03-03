@@ -7,6 +7,8 @@
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Foreground" Value="LightGray"/>
         <Setter Property="AlternatingRowBackground" Value="DarkGray"/>
+        <Setter Property="FontFamily" Value="Georgia"/>
+
 
         <!-- RowStyle: Style the rows in the DataGrid -->
         <Setter Property="RowStyle">

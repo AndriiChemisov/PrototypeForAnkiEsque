@@ -16,7 +16,7 @@
                 Style="{DynamicResource StandartButton}"/>
         <TextBlock Text="Deck Name" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <TextBox Text="{Binding DeckName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                  Margin="0,20,0,10" Width="200" Height="25"
+                  Margin="0,20,0,10" Width="200" Height="30"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top"
                   Style="{DynamicResource StyledTextBox}"/>
@@ -31,7 +31,7 @@
             <StackPanel Grid.Column="0" Margin="0,50,0,29">
                 <!-- Search Available Flashcards-->
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
-                <TextBox Width="200" Height="25" Margin="0,0,0,5"
+                <TextBox Width="200" Height="30" Margin="0,0,0,5"
                          Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}"
                           Style="{DynamicResource StyledTextBox}"/>
                 <!-- Available Flashcards -->
@@ -83,7 +83,7 @@
             <StackPanel Grid.Column="2" Margin="0,48,0,28">
                 <!-- Search Deck Flashcards -->
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
-                <TextBox Width="200" Height="25" Margin="0,0,0,5"
+                <TextBox Width="200" Height="30" Margin="0,0,0,5"
                          Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}"
                           Style="{DynamicResource StyledTextBox}"/>
                 <!-- DataGrid for Deck Flashcards -->

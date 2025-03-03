@@ -20,7 +20,7 @@
         <!-- Search Bar -->
         <TextBox x:Name="SearchBox"
                  Width="300"
-                 Height="20"
+                 Height="30"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top"
                  Margin="0,50,0,0"
