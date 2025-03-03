@@ -24,11 +24,13 @@
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top"
                  Margin="0,50,0,0"
-                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{DynamicResource StyledTextBox}"/>
         <TextBlock Text="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,52,0,0"/>
 
         <!-- DataGrid to show flashcards -->
         <DataGrid x:Name="FlashcardDataGrid" 
+                  Style="{DynamicResource StyledGrid}"
                   AutoGenerateColumns="False"  
                   CanUserAddRows="False"
                   IsReadOnly="True"

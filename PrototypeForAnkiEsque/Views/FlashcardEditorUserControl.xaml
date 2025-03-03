@@ -14,11 +14,13 @@
     <Grid>
         <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,177,0,243">Enter Front</TextBlock>
         <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,207,0,0" FontSize="16"
-                 Text="{Binding EditableFront, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding EditableFront, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{DynamicResource StyledTextBox}"/>
 
         <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Left" Margin="371,242,0,185">Enter Back</TextBlock>
         <TextBox Name="BackTextBox" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,270,0,0" FontSize="16"
-                 Text="{Binding EditableBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding EditableBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  Style="{DynamicResource StyledTextBox}"/>
 
         <Button Content="Save changes" Width="150" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"
                 Command="{Binding SaveFlashcardCommand}" 

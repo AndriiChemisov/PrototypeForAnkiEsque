@@ -19,7 +19,8 @@
         <TextBox Text="{Binding DeckName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  Margin="0,20,0,10" Width="200" Height="25"
                  HorizontalAlignment="Center"
-                 VerticalAlignment="Top"/>
+                 VerticalAlignment="Top"
+                  Style="{DynamicResource StyledTextBox}"/>
 
         <!-- Grid with Column Definitions -->
         <Grid Margin="10,30,10,10">
@@ -33,11 +34,13 @@
             <StackPanel Grid.Column="0" Margin="0,50,0,29">
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="25" Margin="0,0,0,5"
-                         Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{DynamicResource StyledTextBox}"/>
                 <DataGrid ItemsSource="{Binding FilteredAvailableFlashcards}"
                           AutoGenerateColumns="False" 
                           SelectionMode="Extended" 
-                          IsReadOnly="True" Margin="0,5,0,20">
+                          IsReadOnly="True" Margin="0,5,0,20"
+                          Style="{DynamicResource StyledGrid}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Select" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
@@ -78,12 +81,14 @@
             <StackPanel Grid.Column="2" Margin="0,50,0,29">
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="25" Margin="0,0,0,5"
-                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" 
+                          Style="{DynamicResource StyledTextBox}"/>
                 <DataGrid ItemsSource="{Binding FilteredSelectedFlashcards}"
                           AutoGenerateColumns="False" 
                           SelectionMode="Extended" 
                           IsReadOnly="True"
-                          Margin="0, 5, 0, 20">
+                          Margin="0, 5, 0, 20"
+                          Style="{DynamicResource StyledGrid}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Select" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>

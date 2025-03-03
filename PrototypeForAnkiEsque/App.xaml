@@ -6,7 +6,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="/Styles/Grids.xaml"/>
+                <ResourceDictionary Source="/Styles/TextBoxes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="LightGray"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
