@@ -29,19 +29,21 @@
         <Grid x:Name="MainGrid" Visibility="{Binding IsGridVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}">
             <!-- TextBox for front of the card, visibility bound to IsAnswerVisible -->
             <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Margin="20" FontSize="75" IsReadOnly="True" Background="Black"
-                     BorderBrush="Purple" BorderThickness="1" Foreground="LightGray"
+                     Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
+                     BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
                      MinWidth="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=False}"/>
+                     Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
+                     ConverterParameter=False}" FocusVisualStyle="{x:Null}"/>
 
             <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
             <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Margin="20" FontSize="75" IsReadOnly="True" Background="Black"
-                     BorderBrush="Purple" BorderThickness="1" Foreground="LightGray"
+                     Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
+                     BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
                      MinWidth="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                     Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
+                     ConverterParameter=True}" FocusVisualStyle="{x:Null}"/>
 
             <!-- Button to toggle visibility between front and back -->
             <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Width="50" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>

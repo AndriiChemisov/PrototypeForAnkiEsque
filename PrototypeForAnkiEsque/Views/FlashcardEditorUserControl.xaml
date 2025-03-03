@@ -13,12 +13,12 @@
 
     <Grid>
         <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,177,0,243">Enter Front</TextBlock>
-        <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,207,0,0" FontSize="16"
+        <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,207,0,0" FontSize="16"
                  Text="{Binding EditableFront, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Style="{DynamicResource StyledTextBox}"/>
 
         <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Left" Margin="371,242,0,185">Enter Back</TextBlock>
-        <TextBox Name="BackTextBox" Width="200" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,270,0,0" FontSize="16"
+        <TextBox Name="BackTextBox" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,270,0,0" FontSize="16"
                  Text="{Binding EditableBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   Style="{DynamicResource StyledTextBox}"/>
 

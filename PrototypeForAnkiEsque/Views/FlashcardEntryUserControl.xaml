@@ -16,7 +16,8 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" Height="200">
             <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,10">Enter Front</TextBlock>
-        <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10"
+        <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200"  
+                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10"
                  Text="{Binding Front, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Style="{DynamicResource StyledTextBox}"/>
 
