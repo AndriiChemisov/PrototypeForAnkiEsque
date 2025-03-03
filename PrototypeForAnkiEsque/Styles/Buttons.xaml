@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="{x:Type Button}" x:Key="StandartButton">
-        <Setter Property="Background"  Value="Black"/>
+        <Setter Property="Background"  Value="#1d1d1d"/>
         <Setter Property="Foreground" Value="LightGray"/>
-        <Setter Property="BorderBrush" Value="#4b004b"/>
+        <Setter Property="BorderBrush" Value="#515ff9"/>
         <Setter Property="FontFamily" Value="Georgia"/>
         
         <Setter Property="Template">
@@ -12,7 +12,7 @@
             <ControlTemplate TargetType="{x:Type Button}">
                 <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1"
+                                BorderThickness="2"
                                 CornerRadius="15">
                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                 </Border>

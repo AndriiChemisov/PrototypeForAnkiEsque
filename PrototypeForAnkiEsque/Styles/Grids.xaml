@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="{x:Type DataGrid}" x:Key="StyledGrid">
         <!-- Set the background, border, and text color for the entire DataGrid -->
-        <Setter Property="Background" Value="Black"/>
-        <Setter Property="BorderBrush" Value="#690069"/>
+        <Setter Property="Background" Value="#1d1d1d"/>
+        <Setter Property="BorderBrush" Value="#515ff9"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Foreground" Value="LightGray"/>
         <Setter Property="AlternatingRowBackground" Value="DarkGray"/>
@@ -16,7 +16,7 @@
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter Property="Background" Value="Purple"/>
+                            <Setter Property="Background" Value="#515ff9"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -27,7 +27,7 @@
         <Setter Property="ColumnHeaderStyle">
             <Setter.Value>
                 <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="#690069"/>
+                    <Setter Property="Background" Value="#515ff9"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="FontWeight" Value="Bold"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -42,11 +42,11 @@
                     <Style.Triggers>
                         <!-- Change background and foreground when the cell is selected -->
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#690069"/>
+                            <Setter Property="Background" Value="#515ff9"/>
                         </Trigger>
                         <!-- Default state when the cell is not selected -->
                         <Trigger Property="IsSelected" Value="False">
-                            <Setter Property="Background" Value="Black"/>
+                            <Setter Property="Background" Value="#1d1d1d"/>
                             <Setter Property="Foreground" Value="LightGray"/>
                         </Trigger>
                     </Style.Triggers>

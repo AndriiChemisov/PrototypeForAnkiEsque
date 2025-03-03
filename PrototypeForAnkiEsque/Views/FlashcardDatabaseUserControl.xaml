@@ -34,7 +34,7 @@
                   AutoGenerateColumns="False"  
                   CanUserAddRows="False"
                   IsReadOnly="True"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 90, 0, 50"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 90, 0, 60"
                   ItemsSource="{Binding Flashcards}"
                   SelectedItem="{Binding SelectedFlashcard, Mode=TwoWay}">
             <DataGrid.Columns>

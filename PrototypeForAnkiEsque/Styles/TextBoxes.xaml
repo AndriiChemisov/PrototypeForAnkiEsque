@@ -3,10 +3,10 @@
     
     <Style TargetType="{x:Type TextBox}" x:Key="StyledTextBox">
         <!-- Default appearance -->
-        <Setter Property="Background" Value="Black"/>
+        <Setter Property="Background" Value="#1d1d1d"/>
         <Setter Property="Foreground" Value="LightGray"/>
-        <Setter Property="BorderBrush" Value="#690069"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#515ff9"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="1"/>
         <Setter Property="CaretBrush" Value="White"/>
@@ -30,8 +30,7 @@
         <Style.Triggers>
             <!-- When TextBox is focused -->
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                <Setter Property="BorderBrush" Value="#690069"/>
-                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Background" Value="#515ff9"/>
             </Trigger>
 
             <!-- When TextBox is disabled -->
