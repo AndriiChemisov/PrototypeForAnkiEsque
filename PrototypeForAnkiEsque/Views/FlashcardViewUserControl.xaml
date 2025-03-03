@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:PrototypeForAnkiEsque.ViewModels"
         xmlns:converters="clr-namespace:PrototypeForAnkiEsque.Converters"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        Height="500" Width="800">
 
     <UserControl.Resources>
         <Storyboard x:Key="FadeOutAnimation" AutoReverse="False" Completed="FadeOutAnimation_Completed">
@@ -28,11 +28,19 @@
     <Grid>
         <Grid x:Name="MainGrid" Visibility="{Binding IsGridVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}">
             <!-- TextBox for front of the card, visibility bound to IsAnswerVisible -->
-            <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True" Background="Silver"
+            <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     Margin="20" FontSize="75" IsReadOnly="True" Background="Black"
+                     BorderBrush="Purple" BorderThickness="1" Foreground="LightGray"
+                     MinWidth="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
+                     VerticalContentAlignment="Center"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=False}"/>
 
             <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
-            <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" FontSize="75" IsReadOnly="True" Background="Silver"
+            <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     Margin="20" FontSize="75" IsReadOnly="True" Background="Black"
+                     BorderBrush="Purple" BorderThickness="1" Foreground="LightGray"
+                     MinWidth="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
+                     VerticalContentAlignment="Center"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
 
             <!-- Button to toggle visibility between front and back -->
@@ -64,8 +72,8 @@
             <!-- Rating message -->
             <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="60" FontSize="16" Foreground="Green"/>
         </Grid>
-            <!--Motivational message -->
-        <TextBlock x:Name="MotivationalMessageBlock" Text="{Binding MotivationalMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="60" FontSize="32" Foreground="Green"/>
+        <!--Motivational message -->
+        <TextBlock x:Name="MotivationalMessageBlock" Text="{Binding MotivationalMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" FontSize="27" Foreground="Green"/>
     </Grid>
 </UserControl>
 
