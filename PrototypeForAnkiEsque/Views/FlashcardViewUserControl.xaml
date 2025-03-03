@@ -36,26 +36,29 @@
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
 
             <!-- Button to toggle visibility between front and back -->
-            <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Command="{Binding ShowAnswerCommand}" />
+            <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Width="50" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
 
             <!-- Button to go to the next card -->
-            <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Command="{Binding NextCommand}"/>
+            <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Width="50" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>
 
-            <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenDeckSelectionCommand}"/>
+            <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="50" Command="{Binding OpenDeckSelectionCommand}" Style="{DynamicResource StandartButton}"/>
 
             <!-- Rating Buttons -->
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20" >
                 <Button Content="Easy" Width="75" Command="{Binding EaseCommand}" 
                     CommandParameter="0" 
-                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
+                        Style="{DynamicResource StandartButton}"/>
 
                 <Button Content="Good" Width="75" Command="{Binding EaseCommand}" 
                     CommandParameter="1" 
-                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
+                        Style="{DynamicResource StandartButton}"/>
 
                 <Button Content="Hard" Width="75" Command="{Binding EaseCommand}" 
                     CommandParameter="2" 
-                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"/>
+                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
+                        Style="{DynamicResource StandartButton}"/>
             </StackPanel>
 
             <!-- Rating message -->

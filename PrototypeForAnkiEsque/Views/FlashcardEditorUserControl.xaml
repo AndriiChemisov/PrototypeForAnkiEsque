@@ -21,9 +21,10 @@
                  Text="{Binding EditableBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button Content="Save changes" Width="150" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"
-                Command="{Binding SaveFlashcardCommand}" />
+                Command="{Binding SaveFlashcardCommand}" 
+                Style="{DynamicResource StandartButton}"/>
 
-        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding BackCommand}" />
+        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="50" Command="{Binding BackCommand}" Style="{DynamicResource StandartButton}"/>
 
         <TextBlock Name="SavedMessageText" Text="{Binding SavedMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 60, 0, 10"
            FontSize="16" Foreground="Green" Visibility="{Binding IsSavedMessageVisible}" />
