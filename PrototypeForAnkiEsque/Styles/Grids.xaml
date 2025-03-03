@@ -30,6 +30,7 @@
                     <Setter Property="Background" Value="#690069"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 </Style>
             </Setter.Value>
         </Setter>
