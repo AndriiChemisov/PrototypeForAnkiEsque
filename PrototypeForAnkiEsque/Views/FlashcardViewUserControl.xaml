@@ -49,11 +49,11 @@
             <Button Content="Flip" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0,60" Width="75" Height="35" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
 
             <!-- Button to go to the next card -->
-            <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Width="50" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>
 
-            <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="50" Command="{Binding OpenDeckSelectionCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" Style="{DynamicResource StandartButton}"/>
 
-            <Border BorderBrush="#515ff9" BorderThickness="2" CornerRadius="15" Height="40" 
+            <Border BorderBrush="#515ff9" BorderThickness="2" CornerRadius="15" Height="35" 
         HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" >
                 <Grid>
                     <Grid.ColumnDefinitions>
