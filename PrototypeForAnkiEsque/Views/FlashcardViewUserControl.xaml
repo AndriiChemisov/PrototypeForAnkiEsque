@@ -31,7 +31,7 @@
             <TextBox x:Name="FrontTextBox" Text="{Binding CurrentCard.Front}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                      Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
                      BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
-                     MinWidth="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
+                     Width="300" Height="300" TextWrapping="Wrap" TextAlignment="Center"
                      VerticalContentAlignment="Center"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
                      ConverterParameter=False}" FocusVisualStyle="{x:Null}"/>
@@ -40,36 +40,79 @@
             <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                      Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
                      BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
-                     Width="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
+                     Width="300" Height="300" TextWrapping="Wrap" TextAlignment="Center"
                      VerticalContentAlignment="Center" 
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
                      ConverterParameter=True}" FocusVisualStyle="{x:Null}"/>
 
             <!-- Button to toggle visibility between front and back -->
-            <Button Content="Flip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" Width="50" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="Flip" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0,60" Width="75" Height="35" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
 
             <!-- Button to go to the next card -->
             <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Width="50" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>
 
             <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="50" Command="{Binding OpenDeckSelectionCommand}" Style="{DynamicResource StandartButton}"/>
 
-            <!-- Rating Buttons -->
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20" >
-                <Button Content="Easy" Width="75" Command="{Binding EaseCommand}" 
-                    CommandParameter="0" 
-                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
-                        Style="{DynamicResource StandartButton}"/>
+            <Border BorderBrush="#515ff9" BorderThickness="2" CornerRadius="15" Height="40" 
+        HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Button 1 (Easy) -->
+                        <ColumnDefinition Width="2"/>
+                        <!-- Separator -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Button 2 (Good) -->
+                        <ColumnDefinition Width="2"/>
+                        <!-- Separator -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Button 3 (Hard) -->
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="Good" Width="75" Command="{Binding EaseCommand}" 
-                    CommandParameter="1" 
-                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
-                        Style="{DynamicResource StandartButton}"/>
+                    <!-- Easy Button (Left-most button with rounded corners) -->
+                    <Button Grid.Column="0" Content="Easy" Width="75" Command="{Binding EaseCommand}" 
+                CommandParameter="0" 
+                IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
+                Style="{DynamicResource EaseButton}" Panel.ZIndex="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                            BorderThickness="0" CornerRadius="15,0,0,15">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
 
-                <Button Content="Hard" Width="75" Command="{Binding EaseCommand}" 
-                    CommandParameter="2" 
-                    IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
-                        Style="{DynamicResource StandartButton}"/>
-            </StackPanel>
+                    <!-- Vertical Separator -->
+                    <Rectangle Grid.Column="1" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
+
+                    <!-- Good Button (No rounded corners) -->
+                    <Button Grid.Column="2" Content="Good" Width="75" Command="{Binding EaseCommand}" 
+                CommandParameter="1" Panel.ZIndex="0"
+                IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
+                Style="{DynamicResource EaseButton}"/>
+
+                    <!-- Vertical Separator -->
+                    <Rectangle Grid.Column="3" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
+
+                    <!-- Hard Button (Right-most button with rounded corners) -->
+                    <Button Grid.Column="4" Content="Hard" Width="75" Command="{Binding EaseCommand}" 
+                CommandParameter="2" Panel.ZIndex="0"
+                IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
+                Style="{DynamicResource EaseButton}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                            BorderThickness="0" CornerRadius="0,15,15,0">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
 
             <!-- Rating message -->
             <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="60" FontSize="16" Foreground="Green"/>

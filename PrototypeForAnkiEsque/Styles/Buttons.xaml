@@ -32,4 +32,20 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Ease Button Style (Without Border, BorderBrush, and Rounded Corners) -->
+    <Style TargetType="{x:Type Button}" x:Key="EaseButton" BasedOn="{StaticResource StandartButton}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
