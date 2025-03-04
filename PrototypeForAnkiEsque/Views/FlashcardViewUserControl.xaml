@@ -37,7 +37,7 @@
                      ConverterParameter=False}" FocusVisualStyle="{x:Null}"/>
 
             <!-- TextBox for back of the card, visibility bound to IsAnswerVisible -->
-            <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+            <TextBox x:Name="BackTextBox" Text="{Binding FormattedBack}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                      Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
                      BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
                      Width="300" Height="300" TextWrapping="Wrap" TextAlignment="Center"
@@ -115,7 +115,7 @@
 
 
             <!-- Rating message -->
-            <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="60" FontSize="16" Foreground="Green"/>
+            <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="60" FontSize="16" Foreground="Green"/>
         </Grid>
         <!--Motivational message -->
         <TextBlock x:Name="MotivationalMessageBlock" Text="{Binding MotivationalMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" FontSize="27" Foreground="Green"/>
