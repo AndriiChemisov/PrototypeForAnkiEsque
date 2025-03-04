@@ -133,6 +133,14 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (_flashcards.Any())
             {
                 CurrentCard = _flashcards[_currentCardIndex];
+
+                CurrentCard = new Flashcard
+                {
+                    Id = CurrentCard.Id,
+                    Front = CurrentCard.Front,
+                    Back = CurrentCard.Back.Replace(" ", "\n"),
+                    EaseRating = CurrentCard.EaseRating
+                };
             }
         }
 

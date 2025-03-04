@@ -40,8 +40,8 @@
             <TextBox x:Name="BackTextBox" Text="{Binding CurrentCard.Back}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                      Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
                      BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
-                     MinWidth="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
-                     VerticalContentAlignment="Center"
+                     Width="300" MinHeight="300" TextWrapping="Wrap" TextAlignment="Center"
+                     VerticalContentAlignment="Center" 
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
                      ConverterParameter=True}" FocusVisualStyle="{x:Null}"/>
 
