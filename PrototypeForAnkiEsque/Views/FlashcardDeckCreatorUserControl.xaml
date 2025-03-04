@@ -12,7 +12,7 @@
     <Grid>
         <!-- Navigation Button -->
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Margin="10" Width="50" Command="{Binding OpenDeckSelectionCommand}" 
+                Margin="10" Width="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" 
                 Style="{DynamicResource StandartButton}"/>
 
         <TextBlock Text="Deck Name" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Available Flashcards Section -->
-            <StackPanel Grid.Column="0" Margin="0,50,0,29">
+            <StackPanel Grid.Column="0" Margin="0,50,0,41">
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="30" Margin="0,0,0,5"
                          Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}"
@@ -78,7 +78,7 @@
             </StackPanel>
 
             <!-- Selected Flashcards Section -->
-            <StackPanel Grid.Column="2" Margin="0,50,0,29">
+            <StackPanel Grid.Column="2" Margin="0,50,0,41">
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="30" Margin="0,0,0,5"
                          Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" 
@@ -115,7 +115,7 @@
 
         <!-- Save Deck Button -->
         <Button Content="Save Deck" Command="{Binding SaveDeckCommand}"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" 
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35"
                 IsEnabled="{Binding IsSaveButtonEnabled}" 
                 Style="{DynamicResource StandartButton}"/>
     </Grid>
