@@ -45,5 +45,10 @@ namespace PrototypeForAnkiEsque.Views
                 await viewmodel.ImportFlashcardsAsync(openFileDialog.FileName);
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

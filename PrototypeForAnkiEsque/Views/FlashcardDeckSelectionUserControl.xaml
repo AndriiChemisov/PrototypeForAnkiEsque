@@ -4,8 +4,8 @@
              Height="450" Width="800">
 
     <Grid>
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Command="{Binding OpenMainMenuCommand}" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Create a new Deck" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Command="{Binding OpenDeckCreatorCommand}" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="75" Height="35" Command="{Binding OpenMainMenuCommand}" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Create a new Deck" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20"  Height="35" Command="{Binding OpenDeckCreatorCommand}" Style="{DynamicResource StandartButton}"/>
         <!-- Search TextBox -->
         <TextBlock Text="Search Decks:" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" />
         <TextBox Width="200" Height="30" Margin="20,20,20,0" VerticalAlignment="Top" HorizontalAlignment="Center"
@@ -24,10 +24,10 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="Review Deck" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Edit Deck" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Delete Deck" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Import Decks" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,10" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Export Decks" Click="ExportDecks" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Review Deck" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"  Height="35" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Edit Deck" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10"  Height="35" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Delete Deck" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"  Height="35" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Import Decks" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,10"  Height="35" Style="{DynamicResource StandartButton}"/>
+        <Button Content="Export Decks" Click="ExportDecks" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10"  Height="35" Style="{DynamicResource StandartButton}"/>
     </Grid>
 </UserControl>

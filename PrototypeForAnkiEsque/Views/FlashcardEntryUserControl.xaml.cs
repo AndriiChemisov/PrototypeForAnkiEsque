@@ -33,6 +33,11 @@ namespace PrototypeForAnkiEsque.Views
             var viewModel = (FlashcardEntryViewModel)DataContext;
             viewModel.IsSavedMessageVisible = false;
         }
+
+        private void FrontTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
 
