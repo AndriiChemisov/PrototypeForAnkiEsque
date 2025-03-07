@@ -4,6 +4,7 @@ using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Commands;
+using PrototypeForAnkiEsque.Resources;
 // This file is used to define the FlashcardEditorViewModel class. The FlashcardEditorViewModel class is used to handle the logic for the FlashcardEditorUserControl view.
 // The FlashcardEditorViewModel class inherits from the BaseViewModel class and implements the INotifyPropertyChanged interface.
 // The FlashcardEditorViewModel class defines properties for the Flashcard, Front, Back, EditableFront, EditableBack, SavedMessage, and IsSavedMessageVisible.
@@ -27,6 +28,11 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _editableBack;
         private string _savedMessage;
         private bool _isSavedMessageVisible;
+        private string _backButtonContext;
+        private string _saveButtonContext;
+        private string _enterFrontTextBoxContext;
+        private string _enterBackTextBoxContext;
+
         #endregion
 
         #region CONSTRUCTOR
@@ -39,6 +45,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
             BackCommand = new AsyncRelayCommand(ReturnAsync);
             IsSavedMessageVisible = false;
+            LoadLocalizedTexts();
         }
         #endregion
 
@@ -117,6 +124,30 @@ namespace PrototypeForAnkiEsque.ViewModels
             get => _isSavedMessageVisible;
             set => SetProperty(ref _isSavedMessageVisible, value);
         }
+
+        public string BackButtonContext
+        {
+            get => _backButtonContext;
+            set => SetProperty(ref _backButtonContext, value);
+        }
+
+        public string SaveButtonContext
+        {
+            get => _saveButtonContext;
+            set => SetProperty(ref _saveButtonContext, value);
+        }
+
+        public string EnterFrontTextBoxContext
+        {
+            get => _enterFrontTextBoxContext;
+            set => SetProperty(ref _enterFrontTextBoxContext, value);
+        }
+
+        public string EnterBackTextBoxContext
+        {
+            get => _enterBackTextBoxContext;
+            set => SetProperty(ref _enterBackTextBoxContext, value);
+        }
         #endregion
 
         #region COMMANDS
@@ -192,6 +223,14 @@ namespace PrototypeForAnkiEsque.ViewModels
         private async Task ReturnAsync()
         {
             await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
+        }
+
+        public void LoadLocalizedTexts()
+        {
+            BackButtonContext = Strings.BttnBack;
+            SaveButtonContext = Strings.BttnSave;
+            EnterFrontTextBoxContext = Strings.TxtBlkEnterFront;
+            EnterBackTextBoxContext = Strings.TxtBlkEnterBack;
         }
         #endregion
     }
