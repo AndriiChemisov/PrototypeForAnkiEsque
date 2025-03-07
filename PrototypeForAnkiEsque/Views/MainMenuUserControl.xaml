@@ -4,20 +4,20 @@
              Height="200" Width="400">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
 
             <!-- All Flashcards Button -->
             <Button Content="All Flashcards" 
                     HorizontalAlignment="Stretch" 
-                    Width="150" Height="20" 
                     Command="{Binding OpenFlashcardDatabaseViewCommand}" 
-                    Margin="0,0,0,10" />
+                    Margin="0,0,0,10" 
+                    Style="{DynamicResource StandartButton}"/>
 
             <Button Content="Select Deck" 
                     HorizontalAlignment="Stretch" 
-                    Width="150" Height="20" 
                     Command="{Binding OpenFlashcardDeckSelectionViewCommand}" 
-                    Margin="0,0,0,10" />
+                    Margin="0,0,0,10" 
+                    Style="{DynamicResource StandartButton}"/>
         </StackPanel>
     </Grid>
 </UserControl>

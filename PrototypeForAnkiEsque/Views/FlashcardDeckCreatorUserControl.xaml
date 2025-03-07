@@ -12,13 +12,15 @@
     <Grid>
         <!-- Navigation Button -->
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Margin="10" Command="{Binding OpenDeckSelectionCommand}" />
+                Margin="10" Width="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" 
+                Style="{DynamicResource StandartButton}"/>
 
         <TextBlock Text="Deck Name" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <TextBox Text="{Binding DeckName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                 Margin="0,20,0,10" Width="200" Height="25"
+                 Margin="0,20,0,10" Width="200" Height="30"
                  HorizontalAlignment="Center"
-                 VerticalAlignment="Top"/>
+                 VerticalAlignment="Top"
+                  Style="{DynamicResource StyledTextBox}"/>
 
         <!-- Grid with Column Definitions -->
         <Grid Margin="10,30,10,10">
@@ -29,14 +31,16 @@
             </Grid.ColumnDefinitions>
 
             <!-- Available Flashcards Section -->
-            <StackPanel Grid.Column="0" Margin="0,50,0,29">
+            <StackPanel Grid.Column="0" Margin="0,50,0,41">
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
-                <TextBox Width="200" Height="25" Margin="0,0,0,5"
-                         Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Width="200" Height="30" Margin="0,0,0,5"
+                         Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{DynamicResource StyledTextBox}"/>
                 <DataGrid ItemsSource="{Binding FilteredAvailableFlashcards}"
                           AutoGenerateColumns="False" 
                           SelectionMode="Extended" 
-                          IsReadOnly="True" Margin="0,5,0,20">
+                          IsReadOnly="True" Margin="0,5,0,20"
+                          Style="{DynamicResource StyledGrid}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Select" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
@@ -64,23 +68,27 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
                 <Button Content="&lt;-" Width="50" Height="30" Margin="5"
                         Command="{Binding RemoveFlashcardsCommand}" 
-                        IsEnabled="{Binding IsRemoveButtonEnabled}" />
+                        IsEnabled="{Binding IsRemoveButtonEnabled}" 
+                        Style="{DynamicResource StandartButton}"/>
 
                 <Button Content="-&gt;" Width="50" Height="30" Margin="5"
                         Command="{Binding AddFlashcardsCommand}" 
-                        IsEnabled="{Binding IsAddButtonEnabled}" />
+                        IsEnabled="{Binding IsAddButtonEnabled}" 
+                        Style="{DynamicResource StandartButton}"/>
             </StackPanel>
 
             <!-- Selected Flashcards Section -->
-            <StackPanel Grid.Column="2" Margin="0,50,0,29">
+            <StackPanel Grid.Column="2" Margin="0,50,0,41">
                 <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
-                <TextBox Width="200" Height="25" Margin="0,0,0,5"
-                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Width="200" Height="30" Margin="0,0,0,5"
+                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" 
+                          Style="{DynamicResource StyledTextBox}"/>
                 <DataGrid ItemsSource="{Binding FilteredSelectedFlashcards}"
                           AutoGenerateColumns="False" 
                           SelectionMode="Extended" 
                           IsReadOnly="True"
-                          Margin="0, 5, 0, 20">
+                          Margin="0, 5, 0, 20"
+                          Style="{DynamicResource StyledGrid}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Select" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
@@ -107,7 +115,8 @@
 
         <!-- Save Deck Button -->
         <Button Content="Save Deck" Command="{Binding SaveDeckCommand}"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" 
-                IsEnabled="{Binding IsSaveButtonEnabled}" />
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35"
+                IsEnabled="{Binding IsSaveButtonEnabled}" 
+                Style="{DynamicResource StandartButton}"/>
     </Grid>
 </UserControl>

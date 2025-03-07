@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="{x:Type DataGrid}" x:Key="StyledGrid">
+        <!-- Set the background, border, and text color for the entire DataGrid -->
+        <Setter Property="Background" Value="#1d1d1d"/>
+        <Setter Property="BorderBrush" Value="#515ff9"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Foreground" Value="LightGray"/>
+        <Setter Property="AlternatingRowBackground" Value="DarkGray"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+
+
+        <!-- RowStyle: Style the rows in the DataGrid -->
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="Background" Value="#515ff9"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <!-- ColumnHeaderStyle: Style the column headers -->
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#515ff9"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+         <!--CellStyle: Style the individual cells in the DataGrid-->
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <!-- Change background and foreground when the cell is selected -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#515ff9"/>
+                        </Trigger>
+                        <!-- Default state when the cell is not selected -->
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Background" Value="#1d1d1d"/>
+                            <Setter Property="Foreground" Value="LightGray"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+</ResourceDictionary>

@@ -18,6 +18,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private List<Flashcard> _flashcards;
         private int _currentCardIndex;
         private Flashcard _currentCard;
+        private string _formattedBack;
         private FlashcardDeck _selectedDeck;
         private string _ratingMessage;
         private string _motivationalMessage;
@@ -91,6 +92,19 @@ namespace PrototypeForAnkiEsque.ViewModels
             get => _isGridVisible;
             set => SetProperty(ref _isGridVisible, value);
         }
+
+        public string FormattedBack
+        {
+            get => _formattedBack;
+            set
+            {
+                if (_formattedBack != value)
+                {
+                    _formattedBack = value.Replace(" ", "\n");  // Automatically replace spaces with new lines
+                    OnPropertyChanged(nameof(FormattedBack));  // Notify property changed
+                }
+            }
+        }
         #endregion
 
         #region COMMANDS
@@ -133,6 +147,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (_flashcards.Any())
             {
                 CurrentCard = _flashcards[_currentCardIndex];
+                FormattedBack = CurrentCard.Back;
             }
         }
 
