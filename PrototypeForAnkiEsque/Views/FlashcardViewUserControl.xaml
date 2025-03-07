@@ -32,7 +32,7 @@
                      Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
                      BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
                      Width="300" Height="300" TextWrapping="Wrap" TextAlignment="Center"
-                     VerticalContentAlignment="Center"
+                     VerticalContentAlignment="Center" FontFamily="Tahoma"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
                      ConverterParameter=False}" FocusVisualStyle="{x:Null}"/>
 
@@ -41,7 +41,7 @@
                      Margin="20" FontSize="75" IsReadOnly="True" Background="#1d1d1d"
                      BorderBrush="#515ff9" BorderThickness="1" Foreground="LightGray"
                      Width="300" Height="300" TextWrapping="Wrap" TextAlignment="Center"
-                     VerticalContentAlignment="Center" 
+                     VerticalContentAlignment="Center" FontFamily="Tahoma"
                      Visibility="{Binding IsAnswerVisible, Converter={StaticResource BooleanToVisibilityConverter},
                      ConverterParameter=True}" FocusVisualStyle="{x:Null}"/>
 

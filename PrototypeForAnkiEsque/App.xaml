@@ -11,7 +11,7 @@
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type TextBlock}">
                 <Setter Property="Foreground" Value="LightGray"/>
-                <Setter Property="FontFamily" Value="Georgia"/>
+                <Setter Property="FontFamily" Value="Tahoma"/>
             </Style>
 
         </ResourceDictionary>
