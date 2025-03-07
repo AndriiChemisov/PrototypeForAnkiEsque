@@ -195,6 +195,12 @@
   <data name="GrdHdrFront" xml:space="preserve">
     <value>Лицьова сторона</value>
   </data>
+  <data name="TxtBlkEnterBack" xml:space="preserve">
+    <value>Введіть зворотну сторону</value>
+  </data>
+  <data name="TxtBlkEnterFront" xml:space="preserve">
+    <value>Введіть лицьову сторону</value>
+  </data>
   <data name="TxtBlkSearch" xml:space="preserve">
     <value>Пошук</value>
   </data>

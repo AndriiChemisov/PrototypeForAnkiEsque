@@ -295,6 +295,24 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter back.
+        /// </summary>
+        internal static string TxtBlkEnterBack {
+            get {
+                return ResourceManager.GetString("TxtBlkEnterBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter front.
+        /// </summary>
+        internal static string TxtBlkEnterFront {
+            get {
+                return ResourceManager.GetString("TxtBlkEnterFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string TxtBlkSearch {

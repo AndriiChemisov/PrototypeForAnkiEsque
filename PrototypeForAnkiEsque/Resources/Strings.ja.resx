@@ -195,6 +195,12 @@
   <data name="GrdHdrFront" xml:space="preserve">
     <value>表面</value>
   </data>
+  <data name="TxtBlkEnterBack" xml:space="preserve">
+    <value>カード裏面をご入力ください</value>
+  </data>
+  <data name="TxtBlkEnterFront" xml:space="preserve">
+    <value>カード表面をご入力ください</value>
+  </data>
   <data name="TxtBlkSearch" xml:space="preserve">
     <value>サーチ</value>
   </data>
