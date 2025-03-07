@@ -65,6 +65,7 @@ namespace PrototypeForAnkiEsque
             services.AddTransient<IFlashcardService, FlashcardService>();
             services.AddTransient<IDeckService, DeckService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddSingleton<ILocalizationService, LocalizationService>();
             #endregion
 
             #region VIEWS

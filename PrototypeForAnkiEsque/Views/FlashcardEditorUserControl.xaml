@@ -17,7 +17,7 @@
                  Text="{Binding EditableFront, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Style="{DynamicResource StyledTextBox}"/>
 
-        <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Left" Margin="371,242,0,185">Enter Back</TextBlock>
+        <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Left" Margin="371,247,0,185">Enter Back</TextBlock>
         <TextBox Name="BackTextBox" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,270,0,0" FontSize="16"
                  Text="{Binding EditableBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   Style="{DynamicResource StyledTextBox}"/>
