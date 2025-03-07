@@ -12,5 +12,8 @@ namespace PrototypeForAnkiEsque.Services
     {
         string GetString(string key);
         void ChangeLanguage(string culture);
+
+        event EventHandler LanguageChanged; // Event to notify language change
+
     }
 }

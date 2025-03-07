@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Globalization;
-using System.Resources;
+using System.Windows;
 using System.Windows.Data;
 using PrototypeForAnkiEsque.Resources;
 
-public class LocalizationExtension : Binding
+namespace PrototypeForAnkiEsque.Services
 {
-    public LocalizationExtension(string name) : base($"[{name}]")
+    public class LocalizationExtension : Binding
     {
-        this.Source = Strings.ResourceManager;
+        public LocalizationExtension() : base()
+        {
+            // Default constructor.
+        }
+
+        public LocalizationExtension(string name) : base()
+        {
+            // Set the path for localized values
+            this.Source = Strings.ResourceManager;
+            this.Path = new PropertyPath($"[{name}]");
+        }
     }
 }
-

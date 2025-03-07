@@ -46,12 +46,12 @@
                      ConverterParameter=True}" FocusVisualStyle="{x:Null}"/>
 
             <!-- Button to toggle visibility between front and back -->
-            <Button Content="Flip" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0,60" Width="75" Height="35" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="{Binding FlipButtonContext}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0,60" Width="75" Height="35" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
 
             <!-- Button to go to the next card -->
-            <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="{Binding NextButtonContext}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>
 
-            <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="{Binding BackButtonContext}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" Style="{DynamicResource StandartButton}"/>
 
             <Border BorderBrush="#515ff9" BorderThickness="2" CornerRadius="15" Height="35" 
         HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" >
@@ -70,7 +70,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Easy Button (Left-most button with rounded corners) -->
-                    <Button Grid.Column="0" Content="Easy" Width="75" Command="{Binding EaseCommand}" 
+                    <Button Grid.Column="0" Content="{Binding EaseButtonEasyContext}" Width="75" Command="{Binding EaseCommand}" 
                 CommandParameter="0" 
                 IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
                 Style="{DynamicResource EaseButton}" Panel.ZIndex="0">
@@ -88,7 +88,7 @@
                     <Rectangle Grid.Column="1" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
 
                     <!-- Good Button (No rounded corners) -->
-                    <Button Grid.Column="2" Content="Good" Width="75" Command="{Binding EaseCommand}" 
+                    <Button Grid.Column="2" Content="{Binding EaseButtonGoodContext}" Width="75" Command="{Binding EaseCommand}" 
                 CommandParameter="1" Panel.ZIndex="0"
                 IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
                 Style="{DynamicResource EaseButton}"/>
@@ -97,7 +97,7 @@
                     <Rectangle Grid.Column="3" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
 
                     <!-- Hard Button (Right-most button with rounded corners) -->
-                    <Button Grid.Column="4" Content="Hard" Width="75" Command="{Binding EaseCommand}" 
+                    <Button Grid.Column="4" Content="{Binding EaseButtonHardContext}" Width="75" Command="{Binding EaseCommand}" 
                 CommandParameter="2" Panel.ZIndex="0"
                 IsEnabled="{Binding IsRatingClicked, Converter={StaticResource InverseBooleanConverter}}"
                 Style="{DynamicResource EaseButton}">

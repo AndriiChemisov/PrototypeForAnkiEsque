@@ -79,11 +79,11 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a new Flashcard.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
-        internal static string BttnCreateFlashcard {
+        internal static string BttnDelete {
             get {
-                return ResourceManager.GetString("BttnCreateFlashcard", resourceCulture);
+                return ResourceManager.GetString("BttnDelete", resourceCulture);
             }
         }
         
@@ -124,6 +124,15 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string BttnEdit {
+            get {
+                return ResourceManager.GetString("BttnEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Deck.
         /// </summary>
         internal static string BttnEditDeck {
@@ -147,6 +156,15 @@ namespace PrototypeForAnkiEsque.Resources {
         internal static string BttnExportFlashcards {
             get {
                 return ResourceManager.GetString("BttnExportFlashcards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flip card.
+        /// </summary>
+        internal static string BttnFlip {
+            get {
+                return ResourceManager.GetString("BttnFlip", resourceCulture);
             }
         }
         
@@ -187,11 +205,38 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a new Flashcard.
+        /// </summary>
+        internal static string BttnNewFlashcard {
+            get {
+                return ResourceManager.GetString("BttnNewFlashcard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         internal static string BttnNext {
             get {
                 return ResourceManager.GetString("BttnNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next page.
+        /// </summary>
+        internal static string BttnNextPage {
+            get {
+                return ResourceManager.GetString("BttnNextPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous page.
+        /// </summary>
+        internal static string BttnPreviousPage {
+            get {
+                return ResourceManager.GetString("BttnPreviousPage", resourceCulture);
             }
         }
         
@@ -219,6 +264,15 @@ namespace PrototypeForAnkiEsque.Resources {
         internal static string BttnSelectDeck {
             get {
                 return ResourceManager.GetString("BttnSelectDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string TxtBlkSearch {
+            get {
+                return ResourceManager.GetString("TxtBlkSearch", resourceCulture);
             }
         }
     }

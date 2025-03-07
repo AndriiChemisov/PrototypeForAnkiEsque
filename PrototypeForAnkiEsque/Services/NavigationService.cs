@@ -81,7 +81,22 @@ namespace PrototypeForAnkiEsque.Services
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
+                // Get the current language setting
+                var localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
+                var settingsManager = _serviceProvider.GetRequiredService<ISettingsManager>();
+                string savedLanguage = settingsManager.GetSavedLanguage();
+
+                // Ensure language is changed immediately
+                localizationService.ChangeLanguage(savedLanguage);
+
+                // Force the language to be reflected in the UI elements before the navigation
+                userControl.Language = System.Windows.Markup.XmlLanguage.GetLanguage(savedLanguage);
+                userControl.UpdateLayout(); // Force layout update to apply language
+
+                // Update window title
                 Application.Current.MainWindow.Title = title;
+
+                // Set the content of the main window
                 Application.Current.MainWindow.Content = userControl;
                 _lastNavigatedView = userControl;
             });

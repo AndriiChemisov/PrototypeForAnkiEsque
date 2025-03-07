@@ -123,8 +123,8 @@
   <data name="BttnBack" xml:space="preserve">
     <value>戻る</value>
   </data>
-  <data name="BttnCreateFlashcard" xml:space="preserve">
-    <value>フラッシュカードを追加</value>
+  <data name="BttnDelete" xml:space="preserve">
+    <value>消す</value>
   </data>
   <data name="BttnDeleteDeck" xml:space="preserve">
     <value>デッキを削除</value>
@@ -138,6 +138,9 @@
   <data name="BttnEaseHard" xml:space="preserve">
     <value>難しい</value>
   </data>
+  <data name="BttnEdit" xml:space="preserve">
+    <value>編集する</value>
+  </data>
   <data name="BttnEditDeck" xml:space="preserve">
     <value>デッキを編集する</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="BttnExportFlashcards" xml:space="preserve">
     <value>カードをエクスポートする</value>
+  </data>
+  <data name="BttnFlip" xml:space="preserve">
+    <value>カードをめくります</value>
   </data>
   <data name="BttnImportDeck" xml:space="preserve">
     <value>デッキをインポートする</value>
@@ -159,8 +165,17 @@
   <data name="BttnNewDeck" xml:space="preserve">
     <value>デッキを追加</value>
   </data>
+  <data name="BttnNewFlashcard" xml:space="preserve">
+    <value>フラッシュカードを作る</value>
+  </data>
   <data name="BttnNext" xml:space="preserve">
     <value>次</value>
+  </data>
+  <data name="BttnNextPage" xml:space="preserve">
+    <value>次のページ</value>
+  </data>
+  <data name="BttnPreviousPage" xml:space="preserve">
+    <value>前のページ</value>
   </data>
   <data name="BttnReview" xml:space="preserve">
     <value>デッキを復習</value>
@@ -169,6 +184,9 @@
     <value>変更を保存する</value>
   </data>
   <data name="BttnSelectDeck" xml:space="preserve">
-    <value>デッキを選ぶ</value>
+    <value>デッキ</value>
+  </data>
+  <data name="TxtBlkSearch" xml:space="preserve">
+    <value>サーチ</value>
   </data>
 </root>
