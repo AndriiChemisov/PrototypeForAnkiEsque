@@ -33,6 +33,9 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _editButtonContext;
         private string _deleteButtonContext;
         private string _searchTextBlockContext;
+        private string _gridHeaderFrontContext;
+        private string _gridHeaderBackContext;
+        private string _gridHeaderEaseContext;
 
         private const int PageSize = 15;
         private int _currentPage = 1;
@@ -155,6 +158,24 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             get => _deleteButtonContext;
             set => SetProperty(ref _deleteButtonContext, value);
+        }
+
+        public string GridHeaderFrontContext
+        {
+            get => _gridHeaderFrontContext;
+            set => SetProperty(ref _gridHeaderFrontContext, value);
+        }
+
+        public string GridHeaderBackContext
+        {
+            get => _gridHeaderBackContext;
+            set => SetProperty(ref _gridHeaderBackContext, value);
+        }
+
+        public string GridHeaderEaseContext
+        {
+            get => _gridHeaderEaseContext;
+            set => SetProperty(ref _gridHeaderEaseContext, value);
         }
 
         public string SearchTextBlockContext
@@ -348,6 +369,9 @@ namespace PrototypeForAnkiEsque.ViewModels
             EditButtonContext = Strings.BttnEdit;
             DeleteButtonContext = Strings.BttnDelete;
             SearchTextBlockContext = Strings.TxtBlkSearch;
+            GridHeaderFrontContext = Strings.GrdHdrFront;
+            GridHeaderBackContext = Strings.GrdHdrBack;
+            GridHeaderEaseContext = Strings.GrdHdrEase;
         }
             #endregion
     }

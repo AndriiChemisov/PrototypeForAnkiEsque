@@ -46,7 +46,7 @@
                      ConverterParameter=True}" FocusVisualStyle="{x:Null}"/>
 
             <!-- Button to toggle visibility between front and back -->
-            <Button Content="{Binding FlipButtonContext}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0,60" Width="75" Height="35" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
+            <Button Content="{Binding FlipButtonContext}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0,60" MinWidth="75" Height="35" Command="{Binding ShowAnswerCommand}" Style="{DynamicResource StandartButton}"/>
 
             <!-- Button to go to the next card -->
             <Button Content="{Binding NextButtonContext}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35" Command="{Binding NextCommand}" Style="{DynamicResource StandartButton}"/>

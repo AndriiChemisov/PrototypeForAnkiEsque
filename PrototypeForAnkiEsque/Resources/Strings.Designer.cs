@@ -268,6 +268,33 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string GrdHdrBack {
+            get {
+                return ResourceManager.GetString("GrdHdrBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ease rating.
+        /// </summary>
+        internal static string GrdHdrEase {
+            get {
+                return ResourceManager.GetString("GrdHdrEase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Front.
+        /// </summary>
+        internal static string GrdHdrFront {
+            get {
+                return ResourceManager.GetString("GrdHdrFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string TxtBlkSearch {

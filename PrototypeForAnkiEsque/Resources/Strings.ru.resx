@@ -186,6 +186,15 @@
   <data name="BttnSelectDeck" xml:space="preserve">
     <value>Выбрать колоду</value>
   </data>
+  <data name="GrdHdrBack" xml:space="preserve">
+    <value>Обратная сторона</value>
+  </data>
+  <data name="GrdHdrEase" xml:space="preserve">
+    <value>Сложность</value>
+  </data>
+  <data name="GrdHdrFront" xml:space="preserve">
+    <value>Лицевая сторона</value>
+  </data>
   <data name="TxtBlkSearch" xml:space="preserve">
     <value>Поиск</value>
   </data>

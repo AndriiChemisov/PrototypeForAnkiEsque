@@ -186,6 +186,15 @@
   <data name="BttnSelectDeck" xml:space="preserve">
     <value>Select Deck</value>
   </data>
+  <data name="GrdHdrBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="GrdHdrEase" xml:space="preserve">
+    <value>Ease rating</value>
+  </data>
+  <data name="GrdHdrFront" xml:space="preserve">
+    <value>Front</value>
+  </data>
   <data name="TxtBlkSearch" xml:space="preserve">
     <value>Search</value>
   </data>

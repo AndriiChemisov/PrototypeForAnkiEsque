@@ -37,12 +37,44 @@
                   ItemsSource="{Binding Flashcards}"
                   SelectedItem="{Binding SelectedFlashcard, Mode=TwoWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Front" Binding="{Binding Front}" Width="*" />
-                <DataGridTextColumn Header="Back" Binding="{Binding Back}" Width="*" />
-                <DataGridTemplateColumn Header="Rating" Width="*">
+                <!-- Front Column -->
+                <DataGridTemplateColumn Width="*" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.GridHeaderFrontContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding EaseRating, Converter={StaticResource EaseRatingToStringConverter}}"/>
+                            <TextBlock Text="{Binding Front}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- Back Column -->
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.GridHeaderBackContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Back}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- Ease Rating Column -->
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.GridHeaderEaseContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding EaseRating, Converter={StaticResource EaseRatingToStringConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
