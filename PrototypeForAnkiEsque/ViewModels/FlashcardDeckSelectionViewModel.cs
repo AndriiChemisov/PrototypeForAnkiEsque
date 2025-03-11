@@ -24,6 +24,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
         private string _searchText;
+
         private string _mainMenuButtonContent;
         private string _deckCreatorButtonContent;
         private string _importDecksButtonContent;
@@ -61,9 +62,6 @@ namespace PrototypeForAnkiEsque.ViewModels
             OpenDeckCreatorCommand = new AsyncRelayCommand(OpenDeckCreatorAsync);
             ImportDecksCommand = new AsyncRelayCommand<string>(ImportDecksAsync);
             ExportDecksCommand = new AsyncRelayCommand<string>(ExportDecksAsync);
-
-            LoadLocalizedTexts();
-
 
             LoadDecksAsync();
         }

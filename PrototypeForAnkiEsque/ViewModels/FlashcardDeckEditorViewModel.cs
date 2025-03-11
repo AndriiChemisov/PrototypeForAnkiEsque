@@ -16,6 +16,8 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly IDeckService _deckService;
         private readonly IDeckNavigationService _deckNavigationService;
         private readonly IFlashcardService _flashcardService;
+        private readonly ILocalizationService _localizationService;
+
         private FlashcardDeck _selectedDeck;
         private string _searchAvailableText;
         private string _searchSelectedText;
@@ -25,16 +27,30 @@ namespace PrototypeForAnkiEsque.ViewModels
         private bool _isAddButtonEnabled;
         private bool _isRemoveButtonEnabled;
         private bool _isSaveButtonEnabled;
+
         private string _tempDeckName;
         private string _originalDeckName;
+
+        private string _backButtonContext;
+        private string _saveButtonContext;
+        private string _deckNameTextBlockContext;
+        private string _searchFlashcardsTextBlockContext;
+        private string _gridSelectHeaderContext;
+        private string _gridFrontHeaderContext;
+        private string _gridBackHeaderContext;
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardDeckEditorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService)
+        public FlashcardDeckEditorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, 
+                                            IFlashcardService flashcardService, ILocalizationService localizationService)
         {
             _deckService = deckService;
             _deckNavigationService = deckNavigationService;
             _flashcardService = flashcardService;
+            _localizationService = localizationService;
+
+            _localizationService.LanguageChanged += OnLanguageChanged;
+
 
             OpenDeckSelectionCommand = new AsyncRelayCommand(OpenDeckSelectionAsync);
             AddFlashcardsCommand = new AsyncRelayCommand(AddFlashcardsAsync);
@@ -49,6 +65,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             IsSaveButtonEnabled = false;
 
             LoadFlashcards();
+            _localizationService = localizationService;
         }
         #endregion
 
@@ -143,6 +160,76 @@ namespace PrototypeForAnkiEsque.ViewModels
                     OnPropertyChanged();
                     UpdateFilteredSelectedFlashcards();
                 }
+            }
+        }
+
+        public string BackButtonContext
+        {
+            get => _backButtonContext;
+            set
+            {
+                _backButtonContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SaveButtonContext
+        {
+            get => _saveButtonContext;
+            set
+            {
+                _saveButtonContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeckNameTextBlockContext
+        {
+            get => _deckNameTextBlockContext;
+            set
+            {
+                _deckNameTextBlockContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SearchFlashcardsTextBlockContext
+        {
+            get => _searchFlashcardsTextBlockContext;
+            set
+            {
+                _searchFlashcardsTextBlockContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GridSelectHeaderContext
+        {
+            get => _gridSelectHeaderContext;
+            set
+            {
+                _gridSelectHeaderContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GridFrontHeaderContext
+        {
+            get => _gridFrontHeaderContext;
+            set
+            {
+                _gridFrontHeaderContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GridBackHeaderContext
+        {
+            get => _gridBackHeaderContext;
+            set
+            {
+                _gridBackHeaderContext = value;
+                OnPropertyChanged();
             }
         }
         public bool AreChangesMade { get; set; }
@@ -319,6 +406,23 @@ namespace PrototypeForAnkiEsque.ViewModels
                 FilteredSelectedFlashcards.Add(flashcard);
             }
         }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LoadLocalizedText();
+        }
+
+        private void LoadLocalizedText()
+        {
+            BackButtonContext = _localizationService.GetString("BttnBack");
+            SaveButtonContext = _localizationService.GetString("BttnSave");
+            DeckNameTextBlockContext = _localizationService.GetString("GrdHdrDeckName") + ":";
+            SearchFlashcardsTextBlockContext = _localizationService.GetString("TxtBlkSearch");
+            GridSelectHeaderContext = _localizationService.GetString("GrdHdrSelection");
+            GridFrontHeaderContext = _localizationService.GetString("GrdHdrFront");
+            GridBackHeaderContext = _localizationService.GetString("GrdHdrBack");
+        }
+
         #endregion
     }
 }
