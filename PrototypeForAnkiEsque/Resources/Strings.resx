@@ -210,4 +210,7 @@
   <data name="TxtBlkSearch" xml:space="preserve">
     <value>Search:</value>
   </data>
+  <data name="GrdHdrSelection" xml:space="preserve">
+    <value>Select</value>
+  </data>
 </root>

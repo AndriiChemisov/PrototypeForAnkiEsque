@@ -67,12 +67,12 @@
 
             <!-- Add/Remove Buttons -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
-                <Button Content="&lt;-" Width="50" Height="30" Margin="5"
+                <Button Content="⇐" Width="50" Height="30" Margin="5"
                         Command="{Binding RemoveFlashcardsCommand}" 
                         IsEnabled="{Binding IsRemoveButtonEnabled}" 
                         Style="{DynamicResource StandartButton}"/>
 
-                <Button Content="-&gt;" Width="50" Height="30" Margin="5"
+                <Button Content="⇒" Width="50" Height="30" Margin="5"
                         Command="{Binding AddFlashcardsCommand}" 
                         IsEnabled="{Binding IsAddButtonEnabled}" 
                         Style="{DynamicResource StandartButton}"/>

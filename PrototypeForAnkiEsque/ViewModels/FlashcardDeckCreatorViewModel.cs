@@ -18,6 +18,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly IDeckNavigationService _deckNavigationService;
         private readonly IFlashcardService _flashcardService;
         private readonly IMessageService _messageService;
+        private readonly ILocalizationService _localizationService;
         private string _deckName;
         private string _searchAvailableText;
         private string _searchSelectedText;
@@ -25,15 +26,27 @@ namespace PrototypeForAnkiEsque.ViewModels
         private bool _isRemoveButtonEnabled;
         private bool _areChangesMade;
         private readonly DispatcherTimer _debounceTimer;
+        private string _backButtonContext;
+        private string _saveButtonContext;
+        private string _deckNameTextBlockContext;
+        private string _searchFlashcardsTextBlockContext;
+        private string _gridSelectHeaderContext;
+        private string _gridFrontHeaderContext;
+        private string _gridBackHeaderContext;
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardDeckCreatorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService, IFlashcardService flashcardService, IMessageService messageService)
+        public FlashcardDeckCreatorViewModel(IDeckService deckService, IDeckNavigationService deckNavigationService,
+                                             IFlashcardService flashcardService, IMessageService messageService,
+                                             ILocalizationService localizationservice)
         {
             _deckService = deckService;
             _deckNavigationService = deckNavigationService;
             _flashcardService = flashcardService;
             _messageService = messageService;
+            _localizationService = localizationservice;
+
+            _localizationService.LanguageChanged += OnLanguageChanged;
 
             _debounceTimer = new DispatcherTimer
             {
@@ -135,6 +148,76 @@ namespace PrototypeForAnkiEsque.ViewModels
             set
             {
                 _areChangesMade = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BackButtonContext
+        {
+            get => _backButtonContext;
+            set
+            {
+                _backButtonContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SaveButtonContext
+        {
+            get => _saveButtonContext;
+            set
+            {
+                _saveButtonContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeckNameTextBlockContext
+        {
+            get => _deckNameTextBlockContext;
+            set
+            {
+                _deckNameTextBlockContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SearchFlashcardsTextBlockContext
+        {
+            get => _searchFlashcardsTextBlockContext;
+            set
+            {
+                _searchFlashcardsTextBlockContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GridSelectHeaderContext
+        {
+            get => _gridSelectHeaderContext;
+            set
+            {
+                _gridSelectHeaderContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GridFrontHeaderContext
+        {
+            get => _gridFrontHeaderContext;
+            set
+            {
+                _gridFrontHeaderContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string GridBackHeaderContext
+        {
+            get => _gridBackHeaderContext;
+            set
+            {
+                _gridBackHeaderContext = value;
                 OnPropertyChanged();
             }
         }
@@ -303,6 +386,22 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             IsAddButtonEnabled = SelectedAvailableFlashcards.Any(x => x.Value);
             IsRemoveButtonEnabled = SelectedDeckFlashcards.Any(x => x.Value);
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LoadLocalizedText();
+        }
+
+        private void LoadLocalizedText()
+        {
+            BackButtonContext = _localizationService.GetString("BttnBack");
+            SaveButtonContext = _localizationService.GetString("BttnSave");
+            DeckNameTextBlockContext = _localizationService.GetString("GrdHdrDeckName") + ":";
+            SearchFlashcardsTextBlockContext = _localizationService.GetString("TxtBlkSearch");
+            GridSelectHeaderContext = _localizationService.GetString("GrdHdrSelection");
+            GridFrontHeaderContext = _localizationService.GetString("GrdHdrFront");
+            GridBackHeaderContext = _localizationService.GetString("GrdHdrBack");
         }
         #endregion
     }

@@ -313,6 +313,15 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string GrdHdrSelection {
+            get {
+                return ResourceManager.GetString("GrdHdrSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter back:.
         /// </summary>
         internal static string TxtBlkEnterBack {

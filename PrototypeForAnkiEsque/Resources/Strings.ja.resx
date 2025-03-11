@@ -151,7 +151,7 @@
     <value>カードをエクスポートする</value>
   </data>
   <data name="BttnFlip" xml:space="preserve">
-    <value>カードをめくります</value>
+    <value>カードをめくる</value>
   </data>
   <data name="BttnImportDeck" xml:space="preserve">
     <value>デッキをインポートする</value>
@@ -181,7 +181,7 @@
     <value>デッキを復習</value>
   </data>
   <data name="BttnSave" xml:space="preserve">
-    <value>変更を保存する</value>
+    <value>保存する</value>
   </data>
   <data name="BttnSelectDeck" xml:space="preserve">
     <value>デッキ</value>
@@ -209,5 +209,8 @@
   </data>
   <data name="TxtBlkSearch" xml:space="preserve">
     <value>サーチ:</value>
+  </data>
+  <data name="GrdHdrSelection" xml:space="preserve">
+    <value>選ぶ</value>
   </data>
 </root>
