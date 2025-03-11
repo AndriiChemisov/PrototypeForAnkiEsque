@@ -25,6 +25,11 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _saveButtonContext;
         private string _enterFrontTextBoxContext;
         private string _enterBackTextBoxContext;
+        private string _validationErrorContext;
+        private string _flashcardExistsErrorContext;
+        private string _flashcardBlankErrorContext;
+        private string _flashcardSavedMessageContext;
+        private string _flashcardSaveErrorContext;
         #endregion
 
         #region CONSTRUCTOR
@@ -109,6 +114,36 @@ namespace PrototypeForAnkiEsque.ViewModels
             get => _enterBackTextBoxContext;
             set => SetProperty(ref _enterBackTextBoxContext, value);
         }
+
+        public string ValidationErrorContext
+        {
+            get => _validationErrorContext;
+            set => SetProperty(ref _validationErrorContext, value);
+        }
+
+        public string FlashcardExistsErrorContext
+        {
+            get => _flashcardExistsErrorContext;
+            set => SetProperty(ref _flashcardExistsErrorContext, value);
+        }
+
+        public string FlashcardBlankErrorContext
+        {
+            get => _flashcardBlankErrorContext;
+            set => SetProperty(ref _flashcardBlankErrorContext, value);
+        }
+
+        public string FlashcardSavedMessageContext
+        {
+            get => _flashcardSavedMessageContext;
+            set => SetProperty(ref _flashcardSavedMessageContext, value);
+        }
+
+        public string FlashcardSaveErrorContext
+        {
+            get => _flashcardSaveErrorContext;
+            set => SetProperty(ref _flashcardSaveErrorContext, value);
+        }
         #endregion
 
         #region COMMANDS
@@ -121,7 +156,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Front) || string.IsNullOrWhiteSpace(Back))
             {
-                _messageService.ShowMessage("The flashcard cannot have blank sides!", "Validation Error!", System.Windows.MessageBoxImage.Error);
+                _messageService.ShowMessage(FlashcardBlankErrorContext, ValidationErrorContext, System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -130,7 +165,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             if (existingFlashcard != null)
             {
-                _messageService.ShowMessage("This flashcard already exists!", "Validation Error!", System.Windows.MessageBoxImage.Error);
+                _messageService.ShowMessage(FlashcardExistsErrorContext, ValidationErrorContext, System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -150,7 +185,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 Front = string.Empty;
                 Back = string.Empty;
 
-                SavedMessage = "Flashcard saved successfully!";
+                SavedMessage = FlashcardSavedMessageContext;
                 IsSavedMessageVisible = true;
 
                 TriggerFadeOutAnimation();
@@ -158,7 +193,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             catch (Exception ex)
             {
-                _messageService.ShowMessage($"An error occurred while saving the flashcard: {ex.Message}", "Validation Error!", System.Windows.MessageBoxImage.Error);
+                _messageService.ShowMessage( ex.Message, FlashcardSaveErrorContext, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -179,6 +214,11 @@ namespace PrototypeForAnkiEsque.ViewModels
             SaveButtonContext = Strings.BttnSave;
             EnterFrontTextBoxContext = Strings.TxtBlkEnterFront;
             EnterBackTextBoxContext = Strings.TxtBlkEnterBack;
+            ValidationErrorContext = Strings.MssgValidationError;
+            FlashcardExistsErrorContext = Strings.MssgFlashcardDuplicateError;
+            FlashcardBlankErrorContext = Strings.MssgFlashcardBlankError;
+            FlashcardSavedMessageContext = Strings.MssgFlashcardSaveSuccess;
+            FlashcardSaveErrorContext = Strings.MssgSaveFlashcardError;
 
         }
 

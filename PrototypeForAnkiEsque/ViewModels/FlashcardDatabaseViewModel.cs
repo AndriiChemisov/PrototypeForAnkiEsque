@@ -37,7 +37,8 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _gridHeaderBackContext;
         private string _gridHeaderEaseContext;
         private string _deleteFlashcardMessageContext;
-        private string _deleteFlashcardConfirmationCOntext;
+        private string _deleteFlashcardConfirmationContext;
+        private string _deleteFlashcardErrorContext;
 
         private const int PageSize = 15;
         private int _currentPage = 1;
@@ -202,8 +203,14 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         public string DeleteFlashcardConfirmationContext
         {
-            get => _deleteFlashcardConfirmationCOntext;
-            set => SetProperty(ref _deleteFlashcardConfirmationCOntext, value);
+            get => _deleteFlashcardConfirmationContext;
+            set => SetProperty(ref _deleteFlashcardConfirmationContext, value);
+        }
+
+        public string DeleteFlashcardErrorContext
+        {
+            get => _deleteFlashcardErrorContext;
+            set => SetProperty(ref _deleteFlashcardErrorContext, value);
         }
         #endregion
 
@@ -281,7 +288,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    _messageService.ShowMessage(ex.Message, "Error deleting flashcard!", MessageBoxImage.Error);
+                    _messageService.ShowMessage(ex.Message, DeleteFlashcardErrorContext, MessageBoxImage.Error);
                 }
 
             }
@@ -388,6 +395,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             GridHeaderEaseContext = Strings.GrdHdrEase;
             DeleteFlashcardMessageContext = Strings.MsgDeleteFlashcard;
             DeleteFlashcardConfirmationContext = Strings.MsgDeleteFlashcardConfirmation;
+            DeleteFlashcardErrorContext = Strings.MsgDeleteFlashcardError;
         }
             #endregion
     }

@@ -231,4 +231,22 @@
   <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
     <value>Видалити карту</value>
   </data>
+  <data name="MssgFlashcardBlankError" xml:space="preserve">
+    <value>Картка не може мати пустих сторін!</value>
+  </data>
+  <data name="MssgFlashcardDuplicateError" xml:space="preserve">
+    <value>Ця картка вже існує!</value>
+  </data>
+  <data name="MsgDeleteFlashcardError" xml:space="preserve">
+    <value>Помилка при видаленні картки!</value>
+  </data>
+  <data name="MssgValidationError" xml:space="preserve">
+    <value>Помилка валідації!</value>
+  </data>
+  <data name="MssgFlashcardSaveSuccess" xml:space="preserve">
+    <value>Картка успішно збережена!</value>
+  </data>
+  <data name="MssgSaveFlashcardError" xml:space="preserve">
+    <value>Помилка при збереженні картки!</value>
+  </data>
 </root>

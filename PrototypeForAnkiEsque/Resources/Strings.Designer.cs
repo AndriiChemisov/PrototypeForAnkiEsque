@@ -340,6 +340,15 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error deleting flashcard!.
+        /// </summary>
+        internal static string MsgDeleteFlashcardError {
+            get {
+                return ResourceManager.GetString("MsgDeleteFlashcardError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Great! You&apos;re mastering this card..
         /// </summary>
         internal static string MssgEaseButtonEasy {
@@ -367,11 +376,56 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The flashcard cannot have blank sides!.
+        /// </summary>
+        internal static string MssgFlashcardBlankError {
+            get {
+                return ResourceManager.GetString("MssgFlashcardBlankError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This flashcard already exists!.
+        /// </summary>
+        internal static string MssgFlashcardDuplicateError {
+            get {
+                return ResourceManager.GetString("MssgFlashcardDuplicateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flashcard saved successfully!.
+        /// </summary>
+        internal static string MssgFlashcardSaveSuccess {
+            get {
+                return ResourceManager.GetString("MssgFlashcardSaveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Well done - you finished the deck!.
         /// </summary>
         internal static string MssgMotivationalMessage {
             get {
                 return ResourceManager.GetString("MssgMotivationalMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error saving flashcard!.
+        /// </summary>
+        internal static string MssgSaveFlashcardError {
+            get {
+                return ResourceManager.GetString("MssgSaveFlashcardError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation Error!.
+        /// </summary>
+        internal static string MssgValidationError {
+            get {
+                return ResourceManager.GetString("MssgValidationError", resourceCulture);
             }
         }
         

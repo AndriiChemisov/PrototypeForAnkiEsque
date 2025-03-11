@@ -231,4 +231,22 @@
   <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
     <value>フラッシュカードを削除</value>
   </data>
+  <data name="MssgFlashcardBlankError" xml:space="preserve">
+    <value>フラッシュカードは空白の面を持つことはできません!</value>
+  </data>
+  <data name="MssgFlashcardDuplicateError" xml:space="preserve">
+    <value>このフラッシュカードは既に存在します!</value>
+  </data>
+  <data name="MsgDeleteFlashcardError" xml:space="preserve">
+    <value>フラッシュカードの削除エラー!</value>
+  </data>
+  <data name="MssgValidationError" xml:space="preserve">
+    <value>バリデーションエラー!</value>
+  </data>
+  <data name="MssgFlashcardSaveSuccess" xml:space="preserve">
+    <value>フラッシュカードが正常に保存されました!</value>
+  </data>
+  <data name="MssgSaveFlashcardError" xml:space="preserve">
+    <value>フラッシュカードの保存エラー!</value>
+  </data>
 </root>

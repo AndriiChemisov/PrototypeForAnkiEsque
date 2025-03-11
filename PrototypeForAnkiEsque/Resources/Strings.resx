@@ -231,4 +231,22 @@
   <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
     <value>Delete flashcard</value>
   </data>
+  <data name="MssgFlashcardBlankError" xml:space="preserve">
+    <value>The flashcard cannot have blank sides!</value>
+  </data>
+  <data name="MssgFlashcardDuplicateError" xml:space="preserve">
+    <value>This flashcard already exists!</value>
+  </data>
+  <data name="MsgDeleteFlashcardError" xml:space="preserve">
+    <value>Error deleting flashcard!</value>
+  </data>
+  <data name="MssgValidationError" xml:space="preserve">
+    <value>Validation Error!</value>
+  </data>
+  <data name="MssgFlashcardSaveSuccess" xml:space="preserve">
+    <value>Flashcard saved successfully!</value>
+  </data>
+  <data name="MssgSaveFlashcardError" xml:space="preserve">
+    <value>Error saving flashcard!</value>
+  </data>
 </root>
