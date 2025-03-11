@@ -33,6 +33,12 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _gridSelectHeaderContext;
         private string _gridFrontHeaderContext;
         private string _gridBackHeaderContext;
+        private string _deckNameBlankErrorContext;
+        private string _deckHasNoFlashcardsErrorContext;
+        private string _deckSaveSuccessTitleContext;
+        private string _deckSaveSuccessMessageContext;
+        private string _deckDuplicateErrorContext;
+        private string _validationErrorContext;
         #endregion
 
         #region CONSTRUCTOR
@@ -221,6 +227,66 @@ namespace PrototypeForAnkiEsque.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string DeckNameBlankErrorContext
+        {
+            get => _deckNameBlankErrorContext;
+            set
+            {
+                _deckNameBlankErrorContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeckHasNoFlashcardsErrorContext
+        {
+            get => _deckHasNoFlashcardsErrorContext;
+            set
+            {
+                _deckHasNoFlashcardsErrorContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeckSaveSuccessTitleContext
+        {
+            get => _deckSaveSuccessTitleContext;
+            set
+            {
+                _deckSaveSuccessTitleContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeckSaveSuccessMessageContext
+        {
+            get => _deckSaveSuccessMessageContext;
+            set
+            {
+                _deckSaveSuccessMessageContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ValidationErrorContext
+        {
+            get => _validationErrorContext;
+            set
+            {
+                _validationErrorContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeckDuplicateErrorContext
+        {
+            get => _deckDuplicateErrorContext;
+            set
+            {
+                _deckDuplicateErrorContext = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region COMMANDS
@@ -296,19 +362,19 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             if (string.IsNullOrWhiteSpace(DeckName))
             {
-                _messageService.ShowMessage("The Deck name cannot be blank!", "Validation Error", MessageBoxImage.Warning);
+                _messageService.ShowMessage(DeckNameBlankErrorContext, ValidationErrorContext, MessageBoxImage.Warning);
                 return;
             }
 
             if (!SelectedFlashcards.Any())
             {
-                _messageService.ShowMessage("The Deck must contain at least one flashcard!", "Validation Error", MessageBoxImage.Warning);
+                _messageService.ShowMessage(DeckHasNoFlashcardsErrorContext, ValidationErrorContext, MessageBoxImage.Warning);
                 return;
             }
 
             if (await _deckService.DeckExistsAsync(DeckName))
             {
-                _messageService.ShowMessage("A deck with that name already exists!", "Validation Error", MessageBoxImage.Warning);
+                _messageService.ShowMessage(DeckDuplicateErrorContext, ValidationErrorContext, MessageBoxImage.Warning);
                 return;
             }
 
@@ -321,7 +387,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             DeckName = string.Empty;
             AreChangesMade = false;
             await LoadFlashcardsAsync();
-            _messageService.ShowMessage("Deck successfully created!", "Success", MessageBoxImage.Information);
+            _messageService.ShowMessage(DeckSaveSuccessMessageContext, DeckSaveSuccessTitleContext, MessageBoxImage.Information);
         }
 
         private async Task OpenDeckSelectionAsync()
@@ -402,6 +468,12 @@ namespace PrototypeForAnkiEsque.ViewModels
             GridSelectHeaderContext = _localizationService.GetString("GrdHdrSelection");
             GridFrontHeaderContext = _localizationService.GetString("GrdHdrFront");
             GridBackHeaderContext = _localizationService.GetString("GrdHdrBack");
+            DeckNameBlankErrorContext = _localizationService.GetString("MssgDeckNameBlank");
+            DeckHasNoFlashcardsErrorContext = _localizationService.GetString("MssgDeckHasNoCards");
+            DeckSaveSuccessTitleContext = _localizationService.GetString("MssgSuccessTitle");
+            DeckSaveSuccessMessageContext = _localizationService.GetString("MssgDeckSaveSuccess");
+            ValidationErrorContext = _localizationService.GetString("MssgValidationError");
+            DeckDuplicateErrorContext = _localizationService.GetString("MssgDeckExistsError");
         }
         #endregion
     }
