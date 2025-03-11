@@ -59,7 +59,7 @@
         <Button Content="{Binding DeleteDeckButtonContent}" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
 
         <!-- Import and Export Deck Buttons -->
-        <Button Content="{Binding ImportDecks}" Command="{Binding ImportDecksCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="163,0,0,10" Height="35" Style="{DynamicResource StandartButton}" />
-        <Button Content="{Binding ExportDecks}" Command="{Binding ExportDecksCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding ImportDecksButtonContent}" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="163,0,0,10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding ExportDecksButtonContent}" Click="ExportDecks" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" Height="35" Style="{DynamicResource StandartButton}" />
     </Grid>
 </UserControl>
