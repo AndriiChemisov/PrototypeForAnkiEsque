@@ -358,11 +358,47 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A deck with that name already exists!.
+        /// </summary>
+        internal static string MssgDeckExistsError {
+            get {
+                return ResourceManager.GetString("MssgDeckExistsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deck must contain at least one flashcard!.
+        /// </summary>
+        internal static string MssgDeckHasNoCards {
+            get {
+                return ResourceManager.GetString("MssgDeckHasNoCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error loading decks!.
         /// </summary>
         internal static string MssgDeckLoadError {
             get {
                 return ResourceManager.GetString("MssgDeckLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deck name field cannot be blank!.
+        /// </summary>
+        internal static string MssgDeckNameBlank {
+            get {
+                return ResourceManager.GetString("MssgDeckNameBlank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck saved succesfully!.
+        /// </summary>
+        internal static string MssgDeckSaveSuccess {
+            get {
+                return ResourceManager.GetString("MssgDeckSaveSuccess", resourceCulture);
             }
         }
         
@@ -444,6 +480,15 @@ namespace PrototypeForAnkiEsque.Resources {
         internal static string MssgSaveFlashcardError {
             get {
                 return ResourceManager.GetString("MssgSaveFlashcardError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string MssgSuccessTitle {
+            get {
+                return ResourceManager.GetString("MssgSuccessTitle", resourceCulture);
             }
         }
         

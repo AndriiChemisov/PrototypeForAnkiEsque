@@ -258,4 +258,19 @@
   <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
     <value>Are you sure you want to delete this deck?</value>
   </data>
+  <data name="MssgDeckNameBlank" xml:space="preserve">
+    <value>The deck name field cannot be blank!</value>
+  </data>
+  <data name="MssgDeckHasNoCards" xml:space="preserve">
+    <value>The deck must contain at least one flashcard!</value>
+  </data>
+  <data name="MssgDeckSaveSuccess" xml:space="preserve">
+    <value>Deck saved succesfully!</value>
+  </data>
+  <data name="MssgSuccessTitle" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="MssgDeckExistsError" xml:space="preserve">
+    <value>A deck with that name already exists!</value>
+  </data>
 </root>

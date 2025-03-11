@@ -258,4 +258,19 @@
   <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
     <value>Вы уверены, что хотите удалить эту колоду?</value>
   </data>
+  <data name="MssgDeckNameBlank" xml:space="preserve">
+    <value>Поле названия колоды не может быть пустым!</value>
+  </data>
+  <data name="MssgDeckHasNoCards" xml:space="preserve">
+    <value>В колоде должна быть хотя бы одна карточка!</value>
+  </data>
+  <data name="MssgDeckSaveSuccess" xml:space="preserve">
+    <value>Колода была успешно сохранена!</value>
+  </data>
+  <data name="MssgSuccessTitle" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="MssgDeckExistsError" xml:space="preserve">
+    <value>Колода с таким названием уже существует!</value>
+  </data>
 </root>

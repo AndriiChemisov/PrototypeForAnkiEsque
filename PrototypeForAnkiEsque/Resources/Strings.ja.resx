@@ -258,4 +258,19 @@
   <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
     <value>このデッキを削除してもよろしいですか？</value>
   </data>
+  <data name="MssgDeckNameBlank" xml:space="preserve">
+    <value>デッキ名を空白にすることはできません！</value>
+  </data>
+  <data name="MssgDeckHasNoCards" xml:space="preserve">
+    <value>デッキには少なくとも1枚のフラッシュカードが必要です！</value>
+  </data>
+  <data name="MssgDeckSaveSuccess" xml:space="preserve">
+    <value>デッキが正常に保存されました！</value>
+  </data>
+  <data name="MssgSuccessTitle" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="MssgDeckExistsError" xml:space="preserve">
+    <value>その名前のデッキはすでに存在します！</value>
+  </data>
 </root>
