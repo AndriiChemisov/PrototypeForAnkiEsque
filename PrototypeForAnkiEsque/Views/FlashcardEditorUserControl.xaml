@@ -7,26 +7,26 @@
             <DoubleAnimation
             Storyboard.TargetName="SavedMessageText"
             Storyboard.TargetProperty="Opacity"
-            From="1" To="0" Duration="0:0:2" />
+            From="1" To="0" Duration="0:0:5" />
         </Storyboard>
     </UserControl.Resources>
 
     <Grid>
-        <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,177,0,243">Enter Front</TextBlock>
+        <TextBlock Name="FrontTextBoxLabel" HorizontalAlignment="Center" Margin="0,177,0,243" Text="{Binding EnterFrontTextBoxContext}"/>
         <TextBox Name="FrontTextBox" IsReadOnly="False" Focusable="True" IsEnabled="True" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,207,0,0" FontSize="16"
                  Text="{Binding EditableFront, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Style="{DynamicResource StyledTextBox}"/>
 
-        <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Left" Margin="371,242,0,185">Enter Back</TextBlock>
+        <TextBlock Name="BackTextBoxLabel" HorizontalAlignment="Center" Margin="0,247,0,185" Text="{Binding EnterBackTextBoxContext}" />
         <TextBox Name="BackTextBox" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,270,0,0" FontSize="16"
                  Text="{Binding EditableBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   Style="{DynamicResource StyledTextBox}"/>
 
-        <Button Content="Save changes" Width="150" Height="35" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"
+        <Button Content="{Binding SaveButtonContext}" Width="150" Height="35" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"
                 Command="{Binding SaveFlashcardCommand}" 
                 Style="{DynamicResource StandartButton}"/>
 
-        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="75" Height="35" Command="{Binding BackCommand}" Style="{DynamicResource StandartButton}"/>
+        <Button Content="{Binding BackButtonContext}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="75" Height="35" Command="{Binding BackCommand}" Style="{DynamicResource StandartButton}"/>
 
         <TextBlock Name="SavedMessageText" Text="{Binding SavedMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 60, 0, 10"
            FontSize="16" Foreground="Green" Visibility="{Binding IsSavedMessageVisible}" />

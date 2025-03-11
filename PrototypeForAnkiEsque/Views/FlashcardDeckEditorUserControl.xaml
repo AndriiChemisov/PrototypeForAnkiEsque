@@ -10,17 +10,17 @@
     </UserControl.Resources>
 
     <Grid>
-        <!-- Navigation Button -->
-        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Margin="10" Width="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" 
+        <Button Content="{Binding BackButtonContext}" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                Margin="10" MinWidth="75" Height="35" Command="{Binding OpenDeckSelectionCommand}" 
                 Style="{DynamicResource StandartButton}"/>
-        <TextBlock Text="Deck Name" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+        <TextBlock Text="{Binding DeckNameTextBlockContext}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <TextBox Text="{Binding DeckName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                  Margin="0,20,0,10" Width="200" Height="30"
+                 Margin="0,20,0,10" Width="200" Height="30"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top"
-                  Style="{DynamicResource StyledTextBox}"/>
-        <!-- Grid with Column Definitions -->
+                 Style="{DynamicResource StyledTextBox}"/>
+
         <Grid Margin="10,30,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -28,27 +28,27 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Margin="0,50,0,39">
-                <!-- Search Available Flashcards-->
-                <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
+            <StackPanel Grid.Column="0" Margin="0,50,0,41">
+                <TextBlock Text="{Binding SearchFlashcardsTextBlockContext}" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="30" Margin="0,0,0,5"
                          Text="{Binding SearchAvailableText, UpdateSourceTrigger=PropertyChanged}"
-                          Style="{DynamicResource StyledTextBox}"/>
-                <!-- Available Flashcards -->
-                <DataGrid ItemsSource="{Binding FilteredAvailableFlashcards }" 
-                      AutoGenerateColumns="False" 
-                      SelectionMode="Extended" 
-                      Grid.Column="0"
-                      IsReadOnly="True" Margin="0,10,0,42"
-                      Style="{DynamicResource StyledGrid}">
-
+                         Style="{DynamicResource StyledTextBox}"/>
+                <DataGrid ItemsSource="{Binding FilteredAvailableFlashcards}"
+                          AutoGenerateColumns="False" 
+                          SelectionMode="Extended" 
+                          IsReadOnly="True" Margin="0,5,0,20"
+                          Style="{DynamicResource StyledGrid}">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Select" Width="Auto">
+                        <DataGridTemplateColumn Width="Auto">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GridSelectHeaderContext}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                         Path=DataContext.ToggleAvailableFlashcardSelectionCommand}"
-                                          CommandParameter="{Binding Front}">
+                                    <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ToggleAvailableFlashcardSelectionCommand}"
+                                              CommandParameter="{Binding Front}">
                                         <CheckBox.IsChecked>
                                             <MultiBinding Converter="{StaticResource BooleanToDictionaryValueMultiConverter}">
                                                 <Binding Path="DataContext.SelectedAvailableFlashcards" RelativeSource="{RelativeSource AncestorType=UserControl}" />
@@ -59,45 +59,67 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Flashcard front" Binding="{Binding Front}" Width="*" />
-                        <DataGridTextColumn Header="Flashcard back" Binding="{Binding Back}" Width="*" />
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GridFrontHeaderContext}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Front}" TextAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GridBackHeaderContext}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Back}" TextAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
 
-            <!-- Add/Remove Buttons -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
-                <Button Content="&lt;-" Width="50" Height="30" Margin="5"
+                <Button Content="⇐" Width="50" Height="30" Margin="5"
                         Command="{Binding RemoveFlashcardsCommand}" 
                         IsEnabled="{Binding IsRemoveButtonEnabled}" 
                         Style="{DynamicResource StandartButton}"/>
 
-                <Button Content="-&gt;" Width="50" Height="30" Margin="5"
+                <Button Content="⇒" Width="50" Height="30" Margin="5"
                         Command="{Binding AddFlashcardsCommand}" 
                         IsEnabled="{Binding IsAddButtonEnabled}" 
                         Style="{DynamicResource StandartButton}"/>
             </StackPanel>
 
-            <!-- Selected Flashcards (Deck) -->
-
-            <StackPanel Grid.Column="2" Margin="0,48,0,38">
-                <!-- Search Deck Flashcards -->
-                <TextBlock Text="Search Flashcards:" HorizontalAlignment="Center"/>
+            <StackPanel Grid.Column="2" Margin="0,50,0,41">
+                <TextBlock Text="{Binding SearchFlashcardsTextBlockContext}" HorizontalAlignment="Center"/>
                 <TextBox Width="200" Height="30" Margin="0,0,0,5"
-                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}"
-                          Style="{DynamicResource StyledTextBox}"/>
-                <!-- DataGrid for Deck Flashcards -->
-                <DataGrid ItemsSource="{Binding FilteredSelectedFlashcards}" 
+                         Text="{Binding SearchSelectedText, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{DynamicResource StyledTextBox}"/>
+                <DataGrid ItemsSource="{Binding FilteredSelectedFlashcards}"
                           AutoGenerateColumns="False" 
                           SelectionMode="Extended" 
-                          IsReadOnly="True" Margin="0,10,0,27"
-                           Style="{DynamicResource StyledGrid}">
+                          IsReadOnly="True"
+                          Margin="0, 5, 0, 20"
+                          Style="{DynamicResource StyledGrid}">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Select" Width="Auto">
+                        <DataGridTemplateColumn Width="Auto">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GridSelectHeaderContext}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                                         Path=DataContext.ToggleDeckFlashcardSelectionCommand}"
+                                    <CheckBox Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ToggleDeckFlashcardSelectionCommand}"
                                               CommandParameter="{Binding Front}">
                                         <CheckBox.IsChecked>
                                             <MultiBinding Converter="{StaticResource BooleanToDictionaryValueMultiConverter}">
@@ -109,17 +131,37 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Flashcard front" Binding="{Binding Front}" Width="*" />
-                        <DataGridTextColumn Header="Flashcard back" Binding="{Binding Back}" Width="*" />
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GridFrontHeaderContext}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Front}" TextAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GridBackHeaderContext}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Back}" TextAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
-
         </Grid>
 
-        <!-- Save Deck Button -->
-        <Button Content="Save Deck" Command="{Binding SaveDeckCommand}"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="75" Height="35"
+        <Button Content="{Binding SaveButtonContext}" Command="{Binding SaveDeckCommand}"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" MinWidth="75" Height="35"
                 IsEnabled="{Binding IsSaveButtonEnabled}" 
                 Style="{DynamicResource StandartButton}"/>
     </Grid>

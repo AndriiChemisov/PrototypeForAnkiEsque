@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BttnAllFlashcards" xml:space="preserve">
+    <value>フラッシュカード</value>
+  </data>
+  <data name="BttnBack" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="BttnDelete" xml:space="preserve">
+    <value>消す</value>
+  </data>
+  <data name="BttnDeleteDeck" xml:space="preserve">
+    <value>デッキを削除</value>
+  </data>
+  <data name="BttnEaseEasy" xml:space="preserve">
+    <value>簡単</value>
+  </data>
+  <data name="BttnEaseGood" xml:space="preserve">
+    <value>普通</value>
+  </data>
+  <data name="BttnEaseHard" xml:space="preserve">
+    <value>難しい</value>
+  </data>
+  <data name="BttnEdit" xml:space="preserve">
+    <value>編集する</value>
+  </data>
+  <data name="BttnEditDeck" xml:space="preserve">
+    <value>デッキを編集する</value>
+  </data>
+  <data name="BttnExportDeck" xml:space="preserve">
+    <value>デッキをエクスポートする</value>
+  </data>
+  <data name="BttnExportFlashcards" xml:space="preserve">
+    <value>カードをエクスポートする</value>
+  </data>
+  <data name="BttnFlip" xml:space="preserve">
+    <value>カードをめくる</value>
+  </data>
+  <data name="BttnImportDeck" xml:space="preserve">
+    <value>デッキをインポートする</value>
+  </data>
+  <data name="BttnImportFlashcards" xml:space="preserve">
+    <value>カードをインポートする</value>
+  </data>
+  <data name="BttnMainMenu" xml:space="preserve">
+    <value>メインメニュー</value>
+  </data>
+  <data name="BttnNewDeck" xml:space="preserve">
+    <value>デッキを追加</value>
+  </data>
+  <data name="BttnNewFlashcard" xml:space="preserve">
+    <value>フラッシュカードを作る</value>
+  </data>
+  <data name="BttnNext" xml:space="preserve">
+    <value>次</value>
+  </data>
+  <data name="BttnNextPage" xml:space="preserve">
+    <value>次のページ</value>
+  </data>
+  <data name="BttnPreviousPage" xml:space="preserve">
+    <value>前のページ</value>
+  </data>
+  <data name="BttnReview" xml:space="preserve">
+    <value>デッキを復習</value>
+  </data>
+  <data name="BttnSave" xml:space="preserve">
+    <value>保存する</value>
+  </data>
+  <data name="BttnSelectDeck" xml:space="preserve">
+    <value>デッキ</value>
+  </data>
+  <data name="GrdHdrBack" xml:space="preserve">
+    <value>裏面</value>
+  </data>
+  <data name="GrdHdrProgress" xml:space="preserve">
+    <value>進捗</value>
+  </data>
+  <data name="GrdHdrDeckName" xml:space="preserve">
+    <value>デッキ名</value>
+  </data>
+  <data name="GrdHdrEase" xml:space="preserve">
+    <value>簡単評価</value>
+  </data>
+  <data name="GrdHdrFront" xml:space="preserve">
+    <value>表面</value>
+  </data>
+  <data name="TxtBlkEnterBack" xml:space="preserve">
+    <value>カード裏面をご入力ください:</value>
+  </data>
+  <data name="TxtBlkEnterFront" xml:space="preserve">
+    <value>カード表面をご入力ください:</value>
+  </data>
+  <data name="TxtBlkSearch" xml:space="preserve">
+    <value>サーチ:</value>
+  </data>
+  <data name="GrdHdrSelection" xml:space="preserve">
+    <value>選ぶ</value>
+  </data>
+  <data name="MssgMotivationalMessage" xml:space="preserve">
+    <value>よくやったーデッキを確認できた！</value>
+  </data>
+  <data name="MssgEaseButtonEasy" xml:space="preserve">
+    <value>素晴らしい！このカードをマスターしていますね。</value>
+  </data>
+  <data name="MssgEaseButtonGood" xml:space="preserve">
+    <value>良いですね！順調です。</value>
+  </data>
+  <data name="MssgEaseButtonHard" xml:space="preserve">
+    <value>その調子！すぐにできるようになりますよ。</value>
+  </data>
+  <data name="MsgDeleteFlashcard" xml:space="preserve">
+    <value>このフラッシュカードを削除してもよろしいですか？</value>
+  </data>
+  <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
+    <value>フラッシュカードを削除</value>
+  </data>
+  <data name="MssgFlashcardBlankError" xml:space="preserve">
+    <value>フラッシュカードは空白の面を持つことはできません!</value>
+  </data>
+  <data name="MssgFlashcardDuplicateError" xml:space="preserve">
+    <value>このフラッシュカードは既に存在します!</value>
+  </data>
+  <data name="MsgDeleteFlashcardError" xml:space="preserve">
+    <value>フラッシュカードの削除エラー!</value>
+  </data>
+  <data name="MssgValidationError" xml:space="preserve">
+    <value>バリデーションエラー!</value>
+  </data>
+  <data name="MssgFlashcardSaveSuccess" xml:space="preserve">
+    <value>フラッシュカードが正常に保存されました!</value>
+  </data>
+  <data name="MssgSaveFlashcardError" xml:space="preserve">
+    <value>フラッシュカードの保存エラー!</value>
+  </data>
+  <data name="MssgFlashcardMissingError" xml:space="preserve">
+    <value>保存するフラッシュカードがありません!</value>
+  </data>
+  <data name="MssgDeckLoadError" xml:space="preserve">
+    <value>デッキの読み込みエラー！</value>
+  </data>
+  <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
+    <value>このデッキを削除してもよろしいですか？</value>
+  </data>
+  <data name="MssgDeckNameBlank" xml:space="preserve">
+    <value>デッキ名を空白にすることはできません！</value>
+  </data>
+  <data name="MssgDeckHasNoCards" xml:space="preserve">
+    <value>デッキには少なくとも1枚のフラッシュカードが必要です！</value>
+  </data>
+  <data name="MssgDeckSaveSuccess" xml:space="preserve">
+    <value>デッキが正常に保存されました！</value>
+  </data>
+  <data name="MssgSuccessTitle" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="MssgDeckExistsError" xml:space="preserve">
+    <value>その名前のデッキはすでに存在します！</value>
+  </data>
+  <data name="WndwTitleMainWindow" xml:space="preserve">
+    <value>メインウィンドウ</value>
+  </data>
+  <data name="WndwTitleMainMenu" xml:space="preserve">
+    <value>メインメニュー</value>
+  </data>
+  <data name="WndwTitleFlashcardDatabase" xml:space="preserve">
+    <value>すべてのフラッシュカード</value>
+  </data>
+  <data name="WndwTitleFlashcardEntry" xml:space="preserve">
+    <value>フラッシュカードを追加</value>
+  </data>
+  <data name="WndwTitleFlashcardEditor" xml:space="preserve">
+    <value>フラッシュカードを編集</value>
+  </data>
+  <data name="WndwTitleFlashcardView" xml:space="preserve">
+    <value>デッキレビュー</value>
+  </data>
+  <data name="WndwTitleDeckSelection" xml:space="preserve">
+    <value>すべてのデッキ</value>
+  </data>
+  <data name="WndwTitleDeckCreator" xml:space="preserve">
+    <value>デッキを追加</value>
+  </data>
+  <data name="WndwTitleDeckEditor" xml:space="preserve">
+    <value>デッキを編集</value>
+  </data>
+</root>

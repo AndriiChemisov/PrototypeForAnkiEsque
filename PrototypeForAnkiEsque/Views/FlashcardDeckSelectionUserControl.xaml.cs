@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.ViewModels;
 // This file is used to define the FlashcardDeckSelectionUserControl class. This class
 // is used to define the code-behind logic for the FlashcardDeckSelectionUserControl.xaml file.
@@ -17,6 +18,7 @@ namespace PrototypeForAnkiEsque.Views
         {
             InitializeComponent();
             DataContext = App.ServiceProvider.GetRequiredService<FlashcardDeckSelectionViewModel>();
+            var localizationService = App.ServiceProvider.GetRequiredService<ILocalizationService>();
         }
 
         private async void ExportDecks(object sender, RoutedEventArgs e)
@@ -47,5 +49,7 @@ namespace PrototypeForAnkiEsque.Views
                 await viewmodel.ImportDecksAsync(openFileDialog.FileName);
             }
         }
+
+
     }
 }

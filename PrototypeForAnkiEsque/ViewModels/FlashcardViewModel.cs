@@ -1,6 +1,7 @@
 ﻿using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
+using PrototypeForAnkiEsque.Resources;
 using System.Windows.Input;
 // This file is used to define the FlashcardViewModel class, which inherits from the BaseViewModel class.
 // The FlashcardViewModel class defines a constructor that takes instances of the IFlashcardService, IMainMenuNavigationService, IDeckNavigationService, and IDeckService interfaces as parameters.
@@ -25,6 +26,16 @@ namespace PrototypeForAnkiEsque.ViewModels
         private bool _isRatingClicked;
         private bool _isAnswerVisible = false;
         private bool _isGridVisible = true;
+        private bool _isMotivationalMessageVisible = false;
+        private string _backButtonContext;
+        private string _flipButtonContext;
+        private string _nextButtonContext;
+        private string _easeButtonEasyContext;
+        private string _easeButtonGoodContext;
+        private string _easeButtonHardContext;
+        private string _easeRatingEasyMessageContext;
+        private string _easeRatingGoodMessageContext;
+        private string _easeRatingHardMessageContext;
         #endregion
 
         #region CONSTRUCTOR
@@ -41,6 +52,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             _flashcards = new List<Flashcard>(); // Initialize as empty
             _currentCardIndex = 0;
+            LoadLocalizedTexts();
         }
         #endregion
 
@@ -93,6 +105,11 @@ namespace PrototypeForAnkiEsque.ViewModels
             set => SetProperty(ref _isGridVisible, value);
         }
 
+        public bool IsMotivationalMessageVisible
+        {
+            get => _isMotivationalMessageVisible;
+            set => SetProperty(ref _isMotivationalMessageVisible, value);
+        }
         public string FormattedBack
         {
             get => _formattedBack;
@@ -104,6 +121,60 @@ namespace PrototypeForAnkiEsque.ViewModels
                     OnPropertyChanged(nameof(FormattedBack));  // Notify property changed
                 }
             }
+        }
+
+        public string BackButtonContext
+        {
+            get => _backButtonContext;
+            set => SetProperty(ref _backButtonContext, value);
+        }
+
+        public string NextButtonContext
+        {
+            get => _nextButtonContext;
+            set => SetProperty(ref _nextButtonContext, value);
+        }
+
+        public string FlipButtonContext
+        {
+            get => _flipButtonContext;
+            set => SetProperty(ref _flipButtonContext, value);
+        }
+
+        public string EaseButtonEasyContext
+        {
+            get => _easeButtonEasyContext;
+            set => SetProperty(ref _easeButtonEasyContext, value);
+        }
+
+        public string EaseButtonGoodContext
+        {
+            get => _easeButtonGoodContext;
+            set => SetProperty(ref _easeButtonGoodContext, value);
+        }
+
+        public string EaseButtonHardContext
+        {
+            get => _easeButtonHardContext;
+            set => SetProperty(ref _easeButtonHardContext, value);
+        }
+
+        public string EaseRatingEasyMessageContext
+        {
+            get => _easeRatingEasyMessageContext;
+            set => SetProperty(ref _easeRatingEasyMessageContext, value);
+        }
+
+        public string EaseRatingGoodMessageContext
+        {
+            get => _easeRatingGoodMessageContext;
+            set => SetProperty(ref _easeRatingGoodMessageContext, value);
+        }
+
+        public string EaseRatingHardMessageContext
+        {
+            get => _easeRatingHardMessageContext;
+            set => SetProperty(ref _easeRatingHardMessageContext, value);
         }
         #endregion
 
@@ -131,7 +202,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 SelectedDeck.EaseRating = await _deckService.CalculateEaseRatingAsync(SelectedDeck.FlashcardFronts);
                 await _deckService.UpdateDeckAsync(SelectedDeck);
 
-                MotivationalMessage = "Well done - you finished the deck!";
+                IsMotivationalMessageVisible = true;
                 TriggerFadeOutAnimationForMotivationalMessage();
                 await Task.Delay(2000);
                 await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
@@ -181,10 +252,10 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             RatingMessage = ease switch
             {
-                0 => "Great! You're mastering this card.",
-                1 => "Good! You're doing well.",
-                2 => "Keep going! You'll get it soon.",
-                _ => "Keep practicing!",
+                0 => EaseRatingEasyMessageContext,
+                1 => EaseRatingGoodMessageContext,
+                2 => EaseRatingHardMessageContext,
+                _ => "Error - no value received"
             };
 
             IsRatingClicked = true;
@@ -212,6 +283,20 @@ namespace PrototypeForAnkiEsque.ViewModels
         public void SetSelectedDeck(FlashcardDeck selectedDeck)
         {
             SelectedDeck = selectedDeck;
+        }
+
+        private void LoadLocalizedTexts()
+        {
+            BackButtonContext = Strings.BttnBack;
+            NextButtonContext = Strings.BttnNext;
+            FlipButtonContext = Strings.BttnFlip;
+            EaseButtonEasyContext = Strings.BttnEaseEasy;
+            EaseButtonGoodContext = Strings.BttnEaseGood;
+            EaseButtonHardContext = Strings.BttnEaseHard;
+            MotivationalMessage = Strings.MssgMotivationalMessage;
+            EaseRatingEasyMessageContext = Strings.MssgEaseButtonEasy;
+            EaseRatingGoodMessageContext = Strings.MssgEaseButtonGood;
+            EaseRatingHardMessageContext = Strings.MssgEaseButtonHard;
         }
         #endregion
     }

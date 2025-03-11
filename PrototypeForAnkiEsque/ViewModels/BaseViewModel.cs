@@ -24,5 +24,10 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void RefreshLocalization()
+        {
+            OnPropertyChanged(null); // Notify all properties changed
+        }
     }
 }

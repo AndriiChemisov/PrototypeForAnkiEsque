@@ -1,45 +1,80 @@
-﻿using System.Windows.Input;
+﻿using PrototypeForAnkiEsque.Commands;
 using PrototypeForAnkiEsque.Services;
-using PrototypeForAnkiEsque.Commands;
-// This file is used to define the MainMenuViewModel class, which inherits from the BaseViewModel class.
-// The MainMenuViewModel class is used to define the view model for the main menu view.
-// This class, mainly, exists to be a starting point of the applications and to navigate to the most prominent views in the application.
-// Simple explanation: This class is used to define the view model for the main menu view.
-namespace PrototypeForAnkiEsque.ViewModels
+using PrototypeForAnkiEsque.ViewModels;
+using PrototypeForAnkiEsque.Resources;
+using System.Windows.Input;
+
+public class MainMenuViewModel : BaseViewModel
 {
-    public class MainMenuViewModel : BaseViewModel
+    #region FIELD DECLARATIONS
+    private readonly IFlashcardNavigationService _flashcardNavigationService;
+    private readonly IDeckNavigationService _deckNavigationService;
+    private readonly ILocalizationService _localizationService;
+    private string _allFlashcardsButtonContent;
+    private string _selectDeckButtonContent;
+
+    #endregion
+
+    #region CONSTRUCTOR
+    public MainMenuViewModel(IFlashcardNavigationService flashcardNavigationService,
+                             IDeckNavigationService deckNavigationService,
+                             ILocalizationService localizationService)
     {
-        #region FIELD DECLARATIONS
-        private readonly IFlashcardNavigationService _flashcardNavigationService;
-        private readonly IDeckNavigationService _deckNavigationService;
-        #endregion
+        _flashcardNavigationService = flashcardNavigationService;
+        _deckNavigationService = deckNavigationService;
+        _localizationService = localizationService;
 
-        #region CONSTUCTOR
-        public MainMenuViewModel(IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService)
-        {
-            _flashcardNavigationService = flashcardNavigationService;
-            _deckNavigationService = deckNavigationService;
-
-            OpenFlashcardDatabaseViewCommand = new AsyncRelayCommand(OpenFlashcardDatabaseViewAsync);
-            OpenFlashcardDeckSelectionViewCommand = new AsyncRelayCommand(OpenFlashcardDeckSelectionViewAsync);
-        }
-        #endregion
-
-        #region COMMANDS
-        public ICommand OpenFlashcardDatabaseViewCommand { get; }
-        public ICommand OpenFlashcardDeckSelectionViewCommand { get; }
-        #endregion
-
-        #region METHODS
-        private async Task OpenFlashcardDatabaseViewAsync()
-        {
-            await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
-        }
-
-        private async Task OpenFlashcardDeckSelectionViewAsync()
-        {
-            await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
-        }
-        #endregion
+        OpenFlashcardDatabaseViewCommand = new AsyncRelayCommand(OpenFlashcardDatabaseViewAsync);
+        OpenFlashcardDeckSelectionViewCommand = new AsyncRelayCommand(OpenFlashcardDeckSelectionViewAsync);
+        ChangeLanguageCommand = new AsyncRelayCommand<string>(culture => Task.Run(() => ChangeLanguage(culture)));
+        UpdateLocalizedTexts();
     }
+    #endregion
+
+    #region COMMANDS
+    public ICommand OpenFlashcardDatabaseViewCommand { get; }
+    public ICommand OpenFlashcardDeckSelectionViewCommand { get; }
+
+    // Commands for language change
+    public ICommand ChangeLanguageCommand { get; }  // Add command to change language
+    #endregion
+
+    #region PROPERTIES
+    public string AllFlashcardsButtonContent
+    {
+        get => _allFlashcardsButtonContent;
+        set => SetProperty(ref _allFlashcardsButtonContent, value);
+    }
+
+    public string SelectDeckButtonContent
+    {
+        get => _selectDeckButtonContent;
+        set => SetProperty(ref _selectDeckButtonContent, value);
+    }
+    #endregion
+
+    #region METHODS
+    private async Task OpenFlashcardDatabaseViewAsync()
+    {
+        await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
+    }
+
+    private async Task OpenFlashcardDeckSelectionViewAsync()
+    {
+        await _deckNavigationService.GetFlashcardDeckSelectionViewAsync();
+    }
+
+    // Language changing method
+    private void ChangeLanguage(string culture)
+    {
+        _localizationService.ChangeLanguage(culture);
+        UpdateLocalizedTexts();
+    }
+
+    private void UpdateLocalizedTexts()
+    {
+        AllFlashcardsButtonContent = Strings.BttnAllFlashcards;
+        SelectDeckButtonContent = Strings.BttnSelectDeck;
+    }
+    #endregion
 }

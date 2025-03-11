@@ -1,16 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using System.IO;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
-using System.Linq;
-using System.Threading.Tasks;
+using PrototypeForAnkiEsque.Resources;
+using System.IO;
 using System.Windows;
-// This file is used to define the FlashcardDeckSelectionViewModel class. The FlashcardDeckSelectionViewModel class is used to handle the logic for the FlashcardDeckSelectionView.
-// The FlashcardDeckSelectionViewModel class defines the properties, commands, and methods that are used to interact with the FlashcardDeckSelectionView.
-// Simple explanation: This class is used to handle the logic for the FlashcardDeckSelectionView.
+
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckSelectionViewModel : BaseViewModel
@@ -20,24 +19,50 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly IMainMenuNavigationService _mainMenuNavigationService;
         private readonly IFlashcardNavigationService _flashcardNavigationService;
         private readonly IDeckNavigationService _deckNavigationService;
+        private readonly ILocalizationService _localizationService;
         private readonly IMessageService _messageService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
         private string _searchText;
+
+        private string _mainMenuButtonContent;
+        private string _deckCreatorButtonContent;
+        private string _importDecksButtonContent;
+        private string _exportDecksButtonContent;
+        private string _reviewDeckButtonContent;
+        private string _editDeckButtonContent;
+        private string _deleteDeckButtonContent;
+        private string _searchTextBoxContext;
+        private string _gridDeckNameHeaderContext;
+        private string _gridProgressHeaderContext;
+        private string _loadDecksErrorContext;
+        private string _validationErrorContext;
+        private string _deleteDeckConfirmationContext;
+        private string _deleteDeckConfirmationTitleContext;
+
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardDeckSelectionViewModel(IDeckService deckService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService, IMessageService messageService)
+        public FlashcardDeckSelectionViewModel(
+            IDeckService deckService,
+            IMainMenuNavigationService mainMenuNavigationService,
+            IFlashcardNavigationService flashcardNavigationService,
+            IDeckNavigationService deckNavigationService,
+            IMessageService messageService,
+            ILocalizationService localizationService)
         {
             _deckService = deckService;
             _mainMenuNavigationService = mainMenuNavigationService;
             _flashcardNavigationService = flashcardNavigationService;
             _deckNavigationService = deckNavigationService;
             _messageService = messageService;
+            _localizationService = localizationService;
+
+            _localizationService.LanguageChanged += OnLanguageChanged;
 
             ReviewDeckCommand = new AsyncRelayCommand(ReviewDeckAsync);
-            EditDeckCommand = new AsyncRelayCommand(EditDeckAsync);
-            DeleteDeckCommand = new AsyncRelayCommand(DeleteDeckAsync);
+            EditDeckCommand = new AsyncRelayCommand(EditDeckAsync, CanEditDeck);
+            DeleteDeckCommand = new AsyncRelayCommand(DeleteDeckAsync, CanDeleteDeck);
             OpenMainMenuCommand = new AsyncRelayCommand(OpenMainMenuAsync);
             OpenDeckCreatorCommand = new AsyncRelayCommand(OpenDeckCreatorAsync);
             ImportDecksCommand = new AsyncRelayCommand<string>(ImportDecksAsync);
@@ -50,6 +75,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         #region PROPERTIES
         public ObservableCollection<FlashcardDeck> Decks { get; private set; } = new();
         public ObservableCollection<FlashcardDeck> FilteredDecks { get; private set; } = new();
+
         public FlashcardDeck SelectedDeck
         {
             get => _selectedDeck;
@@ -59,7 +85,12 @@ namespace PrototypeForAnkiEsque.ViewModels
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            set
+            {
+                SetProperty(ref _errorMessage, value);
+                (EditDeckCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+                (DeleteDeckCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+            }
         }
 
         public string SearchText
@@ -75,6 +106,90 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
             }
         }
+
+        public string MainMenuButtonContent
+        {
+            get => _mainMenuButtonContent;
+            set => SetProperty(ref _mainMenuButtonContent, value);
+        }
+
+        public string DeckCreatorButtonContent
+        {
+            get => _deckCreatorButtonContent;
+            set => SetProperty(ref _deckCreatorButtonContent, value);
+        }
+
+        public string ImportDecksButtonContent
+        {
+            get => _importDecksButtonContent;
+            set => SetProperty(ref _importDecksButtonContent, value);
+        }
+
+        public string ExportDecksButtonContent
+        {
+            get => _exportDecksButtonContent;
+            set => SetProperty(ref _exportDecksButtonContent, value);
+        }
+
+        public string ReviewDeckButtonContent
+        {
+            get => _reviewDeckButtonContent;
+            set => SetProperty(ref _reviewDeckButtonContent, value);
+        }
+
+        public string EditDeckButtonContent
+        {
+            get => _editDeckButtonContent;
+            set => SetProperty(ref _editDeckButtonContent, value);
+        }
+
+        public string DeleteDeckButtonContent
+        {
+            get => _deleteDeckButtonContent;
+            set => SetProperty(ref _deleteDeckButtonContent, value);
+        }
+
+        public string SearchTextBoxContext
+        {
+            get => _searchTextBoxContext;
+            set => SetProperty(ref _searchTextBoxContext, value);
+        }
+
+        public string GridDeckNameHeaderContext
+        {
+            get => _gridDeckNameHeaderContext;
+            set => SetProperty(ref _gridDeckNameHeaderContext, value);
+        }
+
+        public string GridProgressHeaderContext
+        {
+            get => _gridProgressHeaderContext;
+            set => SetProperty(ref _gridProgressHeaderContext, value);
+        }
+
+        public string LoadDecksErrorContext
+        {
+            get => _loadDecksErrorContext;
+            set => SetProperty(ref _loadDecksErrorContext, value);
+        }
+
+        public string ValidationErrorContext
+        {
+            get => _validationErrorContext;
+            set => SetProperty(ref _validationErrorContext, value);
+        }
+
+        public string DeleteDeckConfirmationContext
+        {
+            get => _deleteDeckConfirmationContext;
+            set => SetProperty(ref _deleteDeckConfirmationContext, value);
+        }
+
+        public string DeleteDeckConfirmationTitleContext
+        {
+            get => _deleteDeckConfirmationTitleContext;
+            set => SetProperty(ref _deleteDeckConfirmationTitleContext, value);
+        }
         #endregion
 
         #region COMMANDS
@@ -88,6 +203,18 @@ namespace PrototypeForAnkiEsque.ViewModels
         #endregion
 
         #region METHODS
+        // Check if a deck can be edited (based on whether a deck is selected)
+        private bool CanEditDeck()
+        {
+            return SelectedDeck != null;
+        }
+
+        // Check if a deck can be deleted (based on whether a deck is selected)
+        private bool CanDeleteDeck()
+        {
+            return SelectedDeck != null;
+        }
+
         private async void LoadDecksAsync()
         {
             try
@@ -95,10 +222,11 @@ namespace PrototypeForAnkiEsque.ViewModels
                 var decks = await _deckService.GetPagedDecksAsync(1, int.MaxValue);
                 Decks = new ObservableCollection<FlashcardDeck>(decks);
                 UpdateFilteredDecks();
+                LoadLocalizedTexts();
             }
             catch (Exception ex)
             {
-                _messageService.ShowMessage($"An error occurred while loading decks: {ex.Message}", "Error", MessageBoxImage.Error);
+                _messageService.ShowMessage(LoadDecksErrorContext + $" {ex.Message}", ValidationErrorContext, MessageBoxImage.Error);
             }
         }
 
@@ -113,43 +241,25 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         private async Task ReviewDeckAsync()
         {
-            if (SelectedDeck == null)
-            {
-                _messageService.ShowMessage("Please select a deck to review.", "Warning", MessageBoxImage.Warning);
-                return;
-            }
-
             await _flashcardNavigationService.GetFlashcardViewAsync(SelectedDeck);
         }
 
         private async Task EditDeckAsync()
         {
-            if (SelectedDeck == null)
-            {
-                _messageService.ShowMessage("Please select a deck to edit.", "Warning", MessageBoxImage.Warning);
-                return;
-            }
-
             await _deckNavigationService.GetFlashcardDeckEditorViewAsync(SelectedDeck);
         }
 
         private async Task DeleteDeckAsync()
         {
-            if (SelectedDeck == null)
-            {
-                _messageService.ShowMessage("Please select a deck to delete.", "Warning", MessageBoxImage.Warning);
-                return;
-            }
 
-            var result = _messageService.ShowMessageWithButton("Are you sure you want to delete this deck?", "Confirm Deletion", MessageBoxImage.Question, MessageBoxButton.YesNo);
+            var result = _messageService.ShowMessageWithButton(DeleteDeckConfirmationContext, DeleteDeckConfirmationTitleContext, MessageBoxImage.Question, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 await _deckService.DeleteDeckAsync(SelectedDeck.Id);
-                Decks.Remove(SelectedDeck); // Remove the deck from the Decks collection
-                UpdateFilteredDecks(); // Update the filtered decks after deletion
+                Decks.Remove(SelectedDeck);
+                UpdateFilteredDecks();
             }
         }
-
 
         private async Task OpenMainMenuAsync()
         {
@@ -170,7 +280,6 @@ namespace PrototypeForAnkiEsque.ViewModels
                 Flashcards = d.FlashcardFronts.Select(f => new FlashcardDto { Front = f, Back = "" }).ToList(),
                 EaseRating = d.EaseRating
             }).ToList();
-
 
             var json = JsonSerializer.Serialize(deckDtos);
             await File.WriteAllTextAsync(filePath, json);
@@ -200,6 +309,29 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
                 LoadDecksAsync();
             }
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LoadLocalizedTexts();  // Refresh localized texts when language changes
+        }
+
+        private void LoadLocalizedTexts()
+        {
+            MainMenuButtonContent = _localizationService.GetString("BttnMainMenu");
+            DeckCreatorButtonContent = _localizationService.GetString("BttnNewDeck");
+            ImportDecksButtonContent = _localizationService.GetString("BttnImportDeck");
+            ExportDecksButtonContent = _localizationService.GetString("BttnExportDeck");
+            ReviewDeckButtonContent = _localizationService.GetString("BttnReview");
+            EditDeckButtonContent = _localizationService.GetString("BttnEdit");
+            DeleteDeckButtonContent = _localizationService.GetString("BttnDelete");
+            SearchTextBoxContext = _localizationService.GetString("TxtBlkSearch");
+            GridDeckNameHeaderContext = _localizationService.GetString("GrdHdrDeckName");
+            GridProgressHeaderContext = _localizationService.GetString("GrdHdrProgress");
+            LoadDecksErrorContext = _localizationService.GetString("MssgDeckLoadError");
+            ValidationErrorContext = _localizationService.GetString("MssgValidationError");
+            DeleteDeckConfirmationContext = _localizationService.GetString("MssgDeckDeletionConfirmation");
+            DeleteDeckConfirmationTitleContext = _localizationService.GetString("BttnDeleteDeck");
         }
         #endregion
     }

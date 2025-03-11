@@ -1,4 +1,4 @@
-<UserControl x:Class="PrototypeForAnkiEsque.Views.MainMenuUserControl"
+﻿<UserControl x:Class="PrototypeForAnkiEsque.Views.MainMenuUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="200" Width="400">
@@ -7,17 +7,97 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
 
             <!-- All Flashcards Button -->
-            <Button Content="All Flashcards" 
+            <Button Content="{Binding AllFlashcardsButtonContent}" 
                     HorizontalAlignment="Stretch" 
                     Command="{Binding OpenFlashcardDatabaseViewCommand}" 
                     Margin="0,0,0,10" 
                     Style="{DynamicResource StandartButton}"/>
 
-            <Button Content="Select Deck" 
+            <!-- Select Deck Button -->
+            <Button Content="{Binding SelectDeckButtonContent}" 
                     HorizontalAlignment="Stretch" 
                     Command="{Binding OpenFlashcardDeckSelectionViewCommand}" 
                     Margin="0,0,0,10" 
                     Style="{DynamicResource StandartButton}"/>
         </StackPanel>
+
+        <Border BorderBrush="#515ff9" BorderThickness="2" CornerRadius="15" Height="35" 
+                HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Separator -->
+                    <ColumnDefinition Width="2"/>
+                    <!-- Language Switch Button 1 (English) -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Separator -->
+                    <ColumnDefinition Width="2"/>
+                    <!-- Language Switch Button 2 (Ukrainian) -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Separator -->
+                    <ColumnDefinition Width="2"/>
+                    <!-- Language Switch Button 3 (Japanese) -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Separator -->
+                    <ColumnDefinition Width="2"/>
+                    <!-- Language Switch Button 4 (Russian) -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Language Switch Buttons (Hardcoded) -->
+                <Button Grid.Column="0" Content="English" Width="75" Command="{Binding ChangeLanguageCommand}" 
+                        CommandParameter="en" Style="{DynamicResource EaseButton}" Panel.ZIndex="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="15,0,0,15">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Vertical Separator -->
+                <Rectangle Grid.Column="1" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
+
+                <Button Grid.Column="2" Content="Українська" Width="75" Command="{Binding ChangeLanguageCommand}" 
+                        CommandParameter="uk" Style="{DynamicResource EaseButton}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" BorderThickness="0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Vertical Separator -->
+                <Rectangle Grid.Column="3" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
+
+                <!-- Corrected Grid.Column for Japanese -->
+                <Button Grid.Column="4" Content="日本語" Width="75" Command="{Binding ChangeLanguageCommand}" 
+                        CommandParameter="ja" Style="{DynamicResource EaseButton}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" BorderThickness="0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Vertical Separator -->
+                <Rectangle Grid.Column="5" Width="2" Fill="#515ff9" VerticalAlignment="Stretch"/>
+
+                <Button Grid.Column="6" Content="Русский" Width="75" Command="{Binding ChangeLanguageCommand}" 
+                        CommandParameter="ru" Style="{DynamicResource EaseButton}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="0,15,15,0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

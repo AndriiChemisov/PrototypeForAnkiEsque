@@ -3,6 +3,7 @@ using PrototypeForAnkiEsque.Data;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
+using PrototypeForAnkiEsque.Resources;
 using Microsoft.EntityFrameworkCore;
 // This file is used to define the FlashcardEntryViewModel class. The FlashcardEntryViewModel class is used to handle the logic for the FlashcardEntryUserControl view.
 // The FlashcardEntryViewModel class defines properties for the front and back of the flashcard, as well as a saved message and a boolean to determine if the saved message is visible.
@@ -20,6 +21,15 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _back;
         private string _savedMessage;
         private bool _isSavedMessageVisible;
+        private string _backButtonContext;
+        private string _saveButtonContext;
+        private string _enterFrontTextBoxContext;
+        private string _enterBackTextBoxContext;
+        private string _validationErrorContext;
+        private string _flashcardExistsErrorContext;
+        private string _flashcardBlankErrorContext;
+        private string _flashcardSavedMessageContext;
+        private string _flashcardSaveErrorContext;
         #endregion
 
         #region CONSTRUCTOR
@@ -31,6 +41,7 @@ namespace PrototypeForAnkiEsque.ViewModels
             SaveFlashcardCommand = new AsyncRelayCommand(SaveFlashcardAsync);
             OpenFlashcardDatabaseCommand = new AsyncRelayCommand(OpenFlashcardDatabaseAsync);
             IsSavedMessageVisible = false;
+            LoadLocalizedTexts();
         }
         #endregion
 
@@ -79,6 +90,60 @@ namespace PrototypeForAnkiEsque.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string BackButtonContext
+        {
+            get => _backButtonContext;
+            set => SetProperty(ref _backButtonContext, value);
+        }
+
+        public string SaveButtonContext
+        {
+            get => _saveButtonContext;
+            set => SetProperty(ref _saveButtonContext, value);
+        }
+
+        public string EnterFrontTextBoxContext
+        {
+            get => _enterFrontTextBoxContext;
+            set => SetProperty(ref _enterFrontTextBoxContext, value);
+        }
+
+        public string EnterBackTextBoxContext
+        {
+            get => _enterBackTextBoxContext;
+            set => SetProperty(ref _enterBackTextBoxContext, value);
+        }
+
+        public string ValidationErrorContext
+        {
+            get => _validationErrorContext;
+            set => SetProperty(ref _validationErrorContext, value);
+        }
+
+        public string FlashcardExistsErrorContext
+        {
+            get => _flashcardExistsErrorContext;
+            set => SetProperty(ref _flashcardExistsErrorContext, value);
+        }
+
+        public string FlashcardBlankErrorContext
+        {
+            get => _flashcardBlankErrorContext;
+            set => SetProperty(ref _flashcardBlankErrorContext, value);
+        }
+
+        public string FlashcardSavedMessageContext
+        {
+            get => _flashcardSavedMessageContext;
+            set => SetProperty(ref _flashcardSavedMessageContext, value);
+        }
+
+        public string FlashcardSaveErrorContext
+        {
+            get => _flashcardSaveErrorContext;
+            set => SetProperty(ref _flashcardSaveErrorContext, value);
+        }
         #endregion
 
         #region COMMANDS
@@ -91,7 +156,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Front) || string.IsNullOrWhiteSpace(Back))
             {
-                _messageService.ShowMessage("The flashcard cannot have blank sides!", "Validation Error!", System.Windows.MessageBoxImage.Error);
+                _messageService.ShowMessage(FlashcardBlankErrorContext, ValidationErrorContext, System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -100,7 +165,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             if (existingFlashcard != null)
             {
-                _messageService.ShowMessage("This flashcard already exists!", "Validation Error!", System.Windows.MessageBoxImage.Error);
+                _messageService.ShowMessage(FlashcardExistsErrorContext, ValidationErrorContext, System.Windows.MessageBoxImage.Error);
                 return;
             }
 
@@ -120,7 +185,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 Front = string.Empty;
                 Back = string.Empty;
 
-                SavedMessage = "Flashcard saved successfully!";
+                SavedMessage = FlashcardSavedMessageContext;
                 IsSavedMessageVisible = true;
 
                 TriggerFadeOutAnimation();
@@ -128,7 +193,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             catch (Exception ex)
             {
-                _messageService.ShowMessage($"An error occurred while saving the flashcard: {ex.Message}", "Validation Error!", System.Windows.MessageBoxImage.Error);
+                _messageService.ShowMessage( ex.Message, FlashcardSaveErrorContext, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -142,6 +207,21 @@ namespace PrototypeForAnkiEsque.ViewModels
         {
             await _flashcardNavigationService.GetFlashcardDatabaseViewAsync();
         }
+
+        private void LoadLocalizedTexts()
+        {
+            BackButtonContext = Strings.BttnBack;
+            SaveButtonContext = Strings.BttnSave;
+            EnterFrontTextBoxContext = Strings.TxtBlkEnterFront;
+            EnterBackTextBoxContext = Strings.TxtBlkEnterBack;
+            ValidationErrorContext = Strings.MssgValidationError;
+            FlashcardExistsErrorContext = Strings.MssgFlashcardDuplicateError;
+            FlashcardBlankErrorContext = Strings.MssgFlashcardBlankError;
+            FlashcardSavedMessageContext = Strings.MssgFlashcardSaveSuccess;
+            FlashcardSaveErrorContext = Strings.MssgSaveFlashcardError;
+
+        }
+
         #endregion
     }
 }
