@@ -249,4 +249,7 @@
   <data name="MssgSaveFlashcardError" xml:space="preserve">
     <value>Error saving flashcard!</value>
   </data>
+  <data name="MssgFlashcardMissingError" xml:space="preserve">
+    <value>No Flashcard to save!</value>
+  </data>
 </root>

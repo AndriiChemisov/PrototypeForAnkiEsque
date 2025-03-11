@@ -249,4 +249,7 @@
   <data name="MssgSaveFlashcardError" xml:space="preserve">
     <value>Ошибка при сохранении карточки!</value>
   </data>
+  <data name="MssgFlashcardMissingError" xml:space="preserve">
+    <value>Нет карточки для сохранения!</value>
+  </data>
 </root>

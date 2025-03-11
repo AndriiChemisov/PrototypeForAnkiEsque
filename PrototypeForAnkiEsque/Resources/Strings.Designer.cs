@@ -394,6 +394,15 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Flashcard to save!.
+        /// </summary>
+        internal static string MssgFlashcardMissingError {
+            get {
+                return ResourceManager.GetString("MssgFlashcardMissingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flashcard saved successfully!.
         /// </summary>
         internal static string MssgFlashcardSaveSuccess {
