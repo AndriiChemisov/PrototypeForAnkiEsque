@@ -118,7 +118,10 @@
             <TextBlock x:Name="RatingMessageTextBlock" Text="{Binding RatingMessage}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="60" FontSize="27" Foreground="Green"/>
         </Grid>
         <!--Motivational message -->
-        <TextBlock x:Name="MotivationalMessageBlock" Text="{Binding MotivationalMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" FontSize="27" Foreground="Green"/>
+        <TextBlock x:Name="MotivationalMessageBlock" Text="{Binding MotivationalMessage}" 
+           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" 
+           FontSize="27" Foreground="Green"
+           Visibility="{Binding IsMotivationalMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </Grid>
 </UserControl>
 

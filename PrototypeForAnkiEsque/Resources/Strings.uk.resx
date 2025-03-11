@@ -213,4 +213,16 @@
   <data name="GrdHdrSelection" xml:space="preserve">
     <value>Обрати</value>
   </data>
+  <data name="MssgMotivationalMessage" xml:space="preserve">
+    <value>Молодець - ти переглянув колоду!</value>
+  </data>
+  <data name="MssgEaseButtonEasy" xml:space="preserve">
+    <value>Чудово! Ти згодом опануєш цю карту.</value>
+  </data>
+  <data name="MssgEaseButtonGood" xml:space="preserve">
+    <value>Добре! Продовжуй у тому ж дусі.</value>
+  </data>
+  <data name="MssgEaseButtonHard" xml:space="preserve">
+    <value>Не здавайся! В тебе все вийде.</value>
+  </data>
 </root>

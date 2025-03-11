@@ -322,6 +322,42 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Great! You&apos;re mastering this card..
+        /// </summary>
+        internal static string MssgEaseButtonEasy {
+            get {
+                return ResourceManager.GetString("MssgEaseButtonEasy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Good! You&apos;re doing well..
+        /// </summary>
+        internal static string MssgEaseButtonGood {
+            get {
+                return ResourceManager.GetString("MssgEaseButtonGood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep going! You&apos;ll get it soon..
+        /// </summary>
+        internal static string MssgEaseButtonHard {
+            get {
+                return ResourceManager.GetString("MssgEaseButtonHard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Well done - you finished the deck!.
+        /// </summary>
+        internal static string MssgMotivationalMessage {
+            get {
+                return ResourceManager.GetString("MssgMotivationalMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter back:.
         /// </summary>
         internal static string TxtBlkEnterBack {

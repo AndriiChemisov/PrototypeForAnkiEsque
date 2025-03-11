@@ -213,4 +213,16 @@
   <data name="GrdHdrSelection" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="MssgMotivationalMessage" xml:space="preserve">
+    <value>Well done - you finished the deck!</value>
+  </data>
+  <data name="MssgEaseButtonEasy" xml:space="preserve">
+    <value>Great! You're mastering this card.</value>
+  </data>
+  <data name="MssgEaseButtonGood" xml:space="preserve">
+    <value>Good! You're doing well.</value>
+  </data>
+  <data name="MssgEaseButtonHard" xml:space="preserve">
+    <value>Keep going! You'll get it soon.</value>
+  </data>
 </root>

@@ -213,4 +213,16 @@
   <data name="GrdHdrSelection" xml:space="preserve">
     <value>選ぶ</value>
   </data>
+  <data name="MssgMotivationalMessage" xml:space="preserve">
+    <value>よくやったーデッキを確認できた！</value>
+  </data>
+  <data name="MssgEaseButtonEasy" xml:space="preserve">
+    <value>素晴らしい！このカードをマスターしていますね。</value>
+  </data>
+  <data name="MssgEaseButtonGood" xml:space="preserve">
+    <value>良いですね！順調です。</value>
+  </data>
+  <data name="MssgEaseButtonHard" xml:space="preserve">
+    <value>その調子！すぐにできるようになりますよ。</value>
+  </data>
 </root>
