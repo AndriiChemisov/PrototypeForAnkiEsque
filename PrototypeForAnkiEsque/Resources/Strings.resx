@@ -225,4 +225,10 @@
   <data name="MssgEaseButtonHard" xml:space="preserve">
     <value>Keep going! You'll get it soon.</value>
   </data>
+  <data name="MsgDeleteFlashcard" xml:space="preserve">
+    <value>Are you sure you want to delete this flashcard?</value>
+  </data>
+  <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
+    <value>Delete flashcard</value>
+  </data>
 </root>

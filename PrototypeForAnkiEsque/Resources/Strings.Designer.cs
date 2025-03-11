@@ -322,6 +322,24 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this flashcard?.
+        /// </summary>
+        internal static string MsgDeleteFlashcard {
+            get {
+                return ResourceManager.GetString("MsgDeleteFlashcard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete flashcard.
+        /// </summary>
+        internal static string MsgDeleteFlashcardConfirmation {
+            get {
+                return ResourceManager.GetString("MsgDeleteFlashcardConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Great! You&apos;re mastering this card..
         /// </summary>
         internal static string MssgEaseButtonEasy {

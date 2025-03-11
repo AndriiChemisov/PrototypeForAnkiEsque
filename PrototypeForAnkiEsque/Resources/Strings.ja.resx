@@ -225,4 +225,10 @@
   <data name="MssgEaseButtonHard" xml:space="preserve">
     <value>その調子！すぐにできるようになりますよ。</value>
   </data>
+  <data name="MsgDeleteFlashcard" xml:space="preserve">
+    <value>このフラッシュカードを削除してもよろしいですか？</value>
+  </data>
+  <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
+    <value>フラッシュカードを削除</value>
+  </data>
 </root>

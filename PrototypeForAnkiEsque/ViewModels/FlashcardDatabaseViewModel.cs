@@ -36,6 +36,8 @@ namespace PrototypeForAnkiEsque.ViewModels
         private string _gridHeaderFrontContext;
         private string _gridHeaderBackContext;
         private string _gridHeaderEaseContext;
+        private string _deleteFlashcardMessageContext;
+        private string _deleteFlashcardConfirmationCOntext;
 
         private const int PageSize = 15;
         private int _currentPage = 1;
@@ -191,6 +193,18 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
             }
         }
+
+        public string DeleteFlashcardMessageContext
+        {
+            get => _deleteFlashcardMessageContext;
+            set => SetProperty(ref _deleteFlashcardMessageContext, value);
+        }
+
+        public string DeleteFlashcardConfirmationContext
+        {
+            get => _deleteFlashcardConfirmationCOntext;
+            set => SetProperty(ref _deleteFlashcardConfirmationCOntext, value);
+        }
         #endregion
 
         #region COMMANDS
@@ -254,7 +268,7 @@ namespace PrototypeForAnkiEsque.ViewModels
 
         public async Task DeleteFlashcardAsync()
         {
-            var result = _messageService.ShowMessageWithButton("Are you sure you want to delete this flashcard?", "Delete Flashcard", MessageBoxImage.Question, MessageBoxButton.YesNo);
+            var result = _messageService.ShowMessageWithButton(DeleteFlashcardMessageContext, DeleteFlashcardConfirmationContext, MessageBoxImage.Question, MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -372,6 +386,8 @@ namespace PrototypeForAnkiEsque.ViewModels
             GridHeaderFrontContext = Strings.GrdHdrFront;
             GridHeaderBackContext = Strings.GrdHdrBack;
             GridHeaderEaseContext = Strings.GrdHdrEase;
+            DeleteFlashcardMessageContext = Strings.MsgDeleteFlashcard;
+            DeleteFlashcardConfirmationContext = Strings.MsgDeleteFlashcardConfirmation;
         }
             #endregion
     }

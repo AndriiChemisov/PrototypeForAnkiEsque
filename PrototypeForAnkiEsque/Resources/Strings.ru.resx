@@ -225,4 +225,10 @@
   <data name="MssgEaseButtonHard" xml:space="preserve">
     <value>Не сдавайся! У тебя всё выйдет.</value>
   </data>
+  <data name="MsgDeleteFlashcard" xml:space="preserve">
+    <value>Вы уверены,что хотите удалить эту карту?</value>
+  </data>
+  <data name="MsgDeleteFlashcardConfirmation" xml:space="preserve">
+    <value>Удалить карту</value>
+  </data>
 </root>
