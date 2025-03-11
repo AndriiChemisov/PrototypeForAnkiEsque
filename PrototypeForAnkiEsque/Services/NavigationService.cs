@@ -64,15 +64,16 @@ namespace PrototypeForAnkiEsque.Services
 
         public async Task GetFlashcardDeckSelectionViewAsync()
         {
-            // Create a fresh instance instead of reusing one from the DI container
-            var flashcardDeckSelectionView = new FlashcardDeckSelectionUserControl();
-            var viewModel = _serviceProvider.GetRequiredService<FlashcardDeckSelectionViewModel>();
-
-            flashcardDeckSelectionView.DataContext = viewModel;
+            // Ensure a fresh ViewModel is created instead of reusing the DI container's instance
+            var viewModel = App.ServiceProvider.GetRequiredService<FlashcardDeckSelectionViewModel>();
+            var flashcardDeckSelectionView = new FlashcardDeckSelectionUserControl
+            {
+                DataContext = viewModel
+            };
 
             await NavigateAsync(flashcardDeckSelectionView, "Deck Selection");
-            viewModel.RefreshLocalization();
         }
+
 
 
         public async Task GetFlashcardDeckEditorViewAsync(FlashcardDeck selectedDeck)
@@ -96,16 +97,9 @@ namespace PrototypeForAnkiEsque.Services
                 // Ensure language is changed immediately
                 localizationService.ChangeLanguage(savedLanguage);
 
-                // Force the language to be reflected in the UI elements before the navigation
-                userControl.Language = System.Windows.Markup.XmlLanguage.GetLanguage(savedLanguage);
-                userControl.UpdateLayout(); // Force layout update to apply language
-
                 // Update window title
                 Application.Current.MainWindow.Title = title;
-
-                // Set the content of the main window
-                Application.Current.MainWindow.Content = null; // Hide UI
-                Application.Current.MainWindow.Content = userControl; // Show UI again
+                Application.Current.MainWindow.Content = userControl; // Show UI 
                 _lastNavigatedView = userControl;
             });
         }

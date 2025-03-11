@@ -54,17 +54,12 @@ namespace PrototypeForAnkiEsque.Services
 
         public void ChangeLanguage(string culture)
         {
-            // Set the culture synchronously to avoid any lag
+            _settingsManager.SaveLanguageSetting(culture); // Save first
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
 
-            // Reload resources for the new culture
             _resourceManager = new ResourceManager(ResourceBaseName, typeof(Strings).Assembly);
 
-            // Save the selected language to settings
-            _settingsManager.SaveLanguageSetting(culture);
-
-            // Notify listeners about the language change
             OnLanguageChanged();
         }
 

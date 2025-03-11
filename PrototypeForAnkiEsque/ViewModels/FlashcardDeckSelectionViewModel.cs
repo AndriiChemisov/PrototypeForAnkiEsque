@@ -19,6 +19,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         private readonly IMainMenuNavigationService _mainMenuNavigationService;
         private readonly IFlashcardNavigationService _flashcardNavigationService;
         private readonly IDeckNavigationService _deckNavigationService;
+        private readonly ILocalizationService _localizationService;
         private readonly IMessageService _messageService;
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
@@ -41,13 +42,17 @@ namespace PrototypeForAnkiEsque.ViewModels
             IMainMenuNavigationService mainMenuNavigationService,
             IFlashcardNavigationService flashcardNavigationService,
             IDeckNavigationService deckNavigationService,
-            IMessageService messageService)
+            IMessageService messageService,
+            ILocalizationService localizationService)
         {
             _deckService = deckService;
             _mainMenuNavigationService = mainMenuNavigationService;
             _flashcardNavigationService = flashcardNavigationService;
             _deckNavigationService = deckNavigationService;
             _messageService = messageService;
+            _localizationService = localizationService;
+
+            _localizationService.LanguageChanged += OnLanguageChanged;
 
             ReviewDeckCommand = new AsyncRelayCommand(ReviewDeckAsync);
             EditDeckCommand = new AsyncRelayCommand(EditDeckAsync);
@@ -56,6 +61,9 @@ namespace PrototypeForAnkiEsque.ViewModels
             OpenDeckCreatorCommand = new AsyncRelayCommand(OpenDeckCreatorAsync);
             ImportDecksCommand = new AsyncRelayCommand<string>(ImportDecksAsync);
             ExportDecksCommand = new AsyncRelayCommand<string>(ExportDecksAsync);
+
+            LoadLocalizedTexts();
+
 
             LoadDecksAsync();
         }
@@ -276,18 +284,23 @@ namespace PrototypeForAnkiEsque.ViewModels
             }
         }
 
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LoadLocalizedTexts();  // Refresh localized texts when language changes
+        }
+
         private void LoadLocalizedTexts()
         {
-            MainMenuButtonContent = Strings.BttnMainMenu;
-            DeckCreatorButtonContent = Strings.BttnNewDeck;
-            ImportDecksButtonContent = Strings.BttnImportDeck;
-            ExportDecksButtonContent = Strings.BttnExportDeck;
-            ReviewDeckButtonContent = Strings.BttnReview;
-            EditDeckButtonContent = Strings.BttnEdit;
-            DeleteDeckButtonContent = Strings.BttnDelete;
-            SearchTextBoxContext = Strings.TxtBlkSearch;
-            GridDeckNameHeaderContext = Strings.GrdHdrDeckName;
-            GridProgressHeaderContext = Strings.GrdHdrProgress;
+            MainMenuButtonContent = _localizationService.GetString("BttnMainMenu");
+            DeckCreatorButtonContent = _localizationService.GetString("BttnNewDeck");
+            ImportDecksButtonContent = _localizationService.GetString("BttnImportDeck");
+            ExportDecksButtonContent = _localizationService.GetString("BttnExportDeck");
+            ReviewDeckButtonContent = _localizationService.GetString("BttnReview");
+            EditDeckButtonContent = _localizationService.GetString("BttnEdit");
+            DeleteDeckButtonContent = _localizationService.GetString("BttnDelete");
+            SearchTextBoxContext = _localizationService.GetString("TxtBlkSearch");
+            GridDeckNameHeaderContext = _localizationService.GetString("GrdHdrDeckName");
+            GridProgressHeaderContext = _localizationService.GetString("GrdHdrProgress");
         }
         #endregion
     }
