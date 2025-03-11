@@ -273,4 +273,31 @@
   <data name="MssgDeckExistsError" xml:space="preserve">
     <value>その名前のデッキはすでに存在します！</value>
   </data>
+  <data name="WndwTitleMainWindow" xml:space="preserve">
+    <value>メインウィンドウ</value>
+  </data>
+  <data name="WndwTitleMainMenu" xml:space="preserve">
+    <value>メインメニュー</value>
+  </data>
+  <data name="WndwTitleFlashcardDatabase" xml:space="preserve">
+    <value>すべてのフラッシュカード</value>
+  </data>
+  <data name="WndwTitleFlashcardEntry" xml:space="preserve">
+    <value>フラッシュカードを追加</value>
+  </data>
+  <data name="WndwTitleFlashcardEditor" xml:space="preserve">
+    <value>フラッシュカードを編集</value>
+  </data>
+  <data name="WndwTitleFlashcardView" xml:space="preserve">
+    <value>デッキレビュー</value>
+  </data>
+  <data name="WndwTitleDeckSelection" xml:space="preserve">
+    <value>すべてのデッキ</value>
+  </data>
+  <data name="WndwTitleDeckCreator" xml:space="preserve">
+    <value>デッキを追加</value>
+  </data>
+  <data name="WndwTitleDeckEditor" xml:space="preserve">
+    <value>デッキを編集</value>
+  </data>
 </root>

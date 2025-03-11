@@ -527,5 +527,86 @@ namespace PrototypeForAnkiEsque.Resources {
                 return ResourceManager.GetString("TxtBlkSearch", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add deck.
+        /// </summary>
+        internal static string WndwTitleDeckCreator {
+            get {
+                return ResourceManager.GetString("WndwTitleDeckCreator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit deck.
+        /// </summary>
+        internal static string WndwTitleDeckEditor {
+            get {
+                return ResourceManager.GetString("WndwTitleDeckEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All decks.
+        /// </summary>
+        internal static string WndwTitleDeckSelection {
+            get {
+                return ResourceManager.GetString("WndwTitleDeckSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All flashcards.
+        /// </summary>
+        internal static string WndwTitleFlashcardDatabase {
+            get {
+                return ResourceManager.GetString("WndwTitleFlashcardDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit flashcard.
+        /// </summary>
+        internal static string WndwTitleFlashcardEditor {
+            get {
+                return ResourceManager.GetString("WndwTitleFlashcardEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add flashcard.
+        /// </summary>
+        internal static string WndwTitleFlashcardEntry {
+            get {
+                return ResourceManager.GetString("WndwTitleFlashcardEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deck review.
+        /// </summary>
+        internal static string WndwTitleFlashcardView {
+            get {
+                return ResourceManager.GetString("WndwTitleFlashcardView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main menu.
+        /// </summary>
+        internal static string WndwTitleMainMenu {
+            get {
+                return ResourceManager.GetString("WndwTitleMainMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main window.
+        /// </summary>
+        internal static string WndwTitleMainWindow {
+            get {
+                return ResourceManager.GetString("WndwTitleMainWindow", resourceCulture);
+            }
+        }
     }
 }

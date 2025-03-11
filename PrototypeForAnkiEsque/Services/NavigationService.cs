@@ -13,18 +13,90 @@ namespace PrototypeForAnkiEsque.Services
 {
     public class NavigationService : IMainMenuNavigationService, IFlashcardNavigationService, IDeckNavigationService, ILastNavigatedViewService
     {
-        private readonly IServiceProvider _serviceProvider;
+        private IServiceProvider _serviceProvider;
+        private ILocalizationService _localizationService;
         private UserControl _lastNavigatedView;
 
-        public NavigationService(IServiceProvider serviceProvider)
+        private string _mainWindowTitleContext;
+        private string _mainMenuTitleContext;
+        private string _flashcardDatabaseTitleContext;
+        private string _flashcardEntryTitleContext;
+        private string _flashcardEditorTitleContext;
+        private string _flashcardViewTitleContext;
+        private string _flashcardDeckSelectionTitleContext;
+        private string _flashcardDeckCreatorTitleContext;
+        private string _flashcardDeckEditorTitleContext;
+
+        public NavigationService(IServiceProvider serviceProvider, ILocalizationService localizationService)
         {
             _serviceProvider = serviceProvider;
+            _localizationService = localizationService;
+
+            _localizationService.LanguageChanged += OnLanguageChanged;
+            LoadLocalizedTitles();
         }
 
+        #region PROPERTIES
+        public string MainWindowTitleContext
+        {
+            get => _mainWindowTitleContext;
+            set => _mainWindowTitleContext = value;
+        }
+
+        public string MainMenuTitleContext
+        {
+            get => _mainMenuTitleContext;
+            set => _mainMenuTitleContext = value;
+        }
+
+        public string FlashcardDatabaseTitleContext
+        {
+            get => _flashcardDatabaseTitleContext;
+            set => _flashcardDatabaseTitleContext = value;
+        }
+
+        public string FlashcardEntryTitleContext
+        {
+            get => _flashcardEntryTitleContext;
+            set => _flashcardEntryTitleContext = value;
+        }
+
+        public string FlashcardEditorTitleContext
+        {
+            get => _flashcardEditorTitleContext;
+            set => _flashcardEditorTitleContext = value;
+        }
+
+        public string FlashcardViewTitleContext
+        {
+            get => _flashcardViewTitleContext;
+            set => _flashcardViewTitleContext = value;
+        }
+
+        public string FlashcardDeckSelectionTitleContext
+        {
+            get => _flashcardDeckSelectionTitleContext;
+            set => _flashcardDeckSelectionTitleContext = value;
+        }
+
+        public string FlashcardDeckCreatorTitleContext
+        {
+            get => _flashcardDeckCreatorTitleContext;
+            set => _flashcardDeckCreatorTitleContext = value;
+        }
+
+        public string FlashcardDeckEditorTitleContext
+        {
+            get => _flashcardDeckEditorTitleContext;
+            set => _flashcardDeckEditorTitleContext = value;
+        }
+
+
+        #endregion
         public async Task GetMainMenuViewAsync()
         {
             var mainMenuView = _serviceProvider.GetRequiredService<MainMenuUserControl>();
-            await NavigateAsync(mainMenuView, "Main Menu");
+            await NavigateAsync(mainMenuView, _mainMenuTitleContext);
         }
 
         public async Task GetFlashcardViewAsync(FlashcardDeck selectedDeck)
@@ -32,19 +104,19 @@ namespace PrototypeForAnkiEsque.Services
             var flashcardView = _serviceProvider.GetRequiredService<FlashcardViewUserControl>();
             var viewModel = (FlashcardViewModel)flashcardView.DataContext;
             viewModel.SetSelectedDeck(selectedDeck);
-            await NavigateAsync(flashcardView, "Flashcard View");
+            await NavigateAsync(flashcardView, _flashcardViewTitleContext);
         }
 
         public async Task GetFlashcardEntryViewAsync()
         {
             var flashcardEntryView = _serviceProvider.GetRequiredService<FlashcardEntryUserControl>();
-            await NavigateAsync(flashcardEntryView, "Flashcard Entry");
+            await NavigateAsync(flashcardEntryView, _flashcardEntryTitleContext);
         }
 
         public async Task GetFlashcardDatabaseViewAsync()
         {
             var flashcardDatabaseView = _serviceProvider.GetRequiredService<FlashcardDatabaseUserControl>();
-            await NavigateAsync(flashcardDatabaseView, "Flashcard Database");
+            await NavigateAsync(flashcardDatabaseView, _flashcardDatabaseTitleContext);
         }
 
         public async Task GetFlashcardEditorViewAsync(Flashcard flashcard)
@@ -53,13 +125,13 @@ namespace PrototypeForAnkiEsque.Services
             var viewModel = _serviceProvider.GetRequiredService<FlashcardEditorViewModel>();
             viewModel.Initialize(flashcard);
             flashcardEditorView.DataContext = viewModel;
-            await NavigateAsync(flashcardEditorView, "Flashcard Editor");
+            await NavigateAsync(flashcardEditorView, _flashcardEditorTitleContext);
         }
 
         public async Task GetFlashcardDeckCreatorViewAsync()
         {
             var flashcardDeckCreatorView = _serviceProvider.GetRequiredService<FlashcardDeckCreatorUserControl>();
-            await NavigateAsync(flashcardDeckCreatorView, "Deck Creator");
+            await NavigateAsync(flashcardDeckCreatorView, _flashcardDeckCreatorTitleContext);
         }
 
         public async Task GetFlashcardDeckSelectionViewAsync()
@@ -71,7 +143,7 @@ namespace PrototypeForAnkiEsque.Services
                 DataContext = viewModel
             };
 
-            await NavigateAsync(flashcardDeckSelectionView, "Deck Selection");
+            await NavigateAsync(flashcardDeckSelectionView, _flashcardDeckSelectionTitleContext);
         }
 
 
@@ -82,7 +154,7 @@ namespace PrototypeForAnkiEsque.Services
             var viewModel = _serviceProvider.GetRequiredService<FlashcardDeckEditorViewModel>();
             viewModel.Initialize(selectedDeck);
             flashcardDeckEditorView.DataContext = viewModel;
-            await NavigateAsync(flashcardDeckEditorView, "Deck Editor");
+            await NavigateAsync(flashcardDeckEditorView, _flashcardDeckEditorTitleContext);
         }
 
         private async Task NavigateAsync(UserControl userControl, string title)
@@ -102,6 +174,28 @@ namespace PrototypeForAnkiEsque.Services
                 Application.Current.MainWindow.Content = userControl; // Show UI 
                 _lastNavigatedView = userControl;
             });
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LoadLocalizedTitles();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Application.Current.MainWindow.Title = _mainMenuTitleContext;
+            });
+        }
+
+        private void LoadLocalizedTitles()
+        {
+            _mainWindowTitleContext = _localizationService.GetString("WndwTitleMainWindow");
+            _mainMenuTitleContext = _localizationService.GetString("WndwTitleMainMenu");
+            _flashcardDatabaseTitleContext = _localizationService.GetString("WndwTitleFlashcardDatabase");
+            _flashcardEntryTitleContext = _localizationService.GetString("WndwTitleFlashcardEntry");
+            _flashcardEditorTitleContext = _localizationService.GetString("WndwTitleFlashcardEditor");
+            _flashcardViewTitleContext = _localizationService.GetString("WndwTitleFlashcardView");
+            _flashcardDeckSelectionTitleContext = _localizationService.GetString("WndwTitleDeckSelection");
+            _flashcardDeckCreatorTitleContext = _localizationService.GetString("WndwTitleDeckCreator");
+            _flashcardDeckEditorTitleContext = _localizationService.GetString("WndwTitleDeckEditor");
         }
 
         public UserControl LastNavigatedView => _lastNavigatedView;

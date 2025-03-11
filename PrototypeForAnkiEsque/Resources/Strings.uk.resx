@@ -273,4 +273,31 @@
   <data name="MssgDeckExistsError" xml:space="preserve">
     <value>Колода з такою назвою вже існує!</value>
   </data>
+  <data name="WndwTitleMainWindow" xml:space="preserve">
+    <value>Головне меню</value>
+  </data>
+  <data name="WndwTitleMainMenu" xml:space="preserve">
+    <value>Головне меню</value>
+  </data>
+  <data name="WndwTitleFlashcardDatabase" xml:space="preserve">
+    <value>Всі картки</value>
+  </data>
+  <data name="WndwTitleFlashcardEntry" xml:space="preserve">
+    <value>Додати картку</value>
+  </data>
+  <data name="WndwTitleFlashcardEditor" xml:space="preserve">
+    <value>Редагувати картку</value>
+  </data>
+  <data name="WndwTitleFlashcardView" xml:space="preserve">
+    <value>Перегляд колоди</value>
+  </data>
+  <data name="WndwTitleDeckSelection" xml:space="preserve">
+    <value>Всі колоди</value>
+  </data>
+  <data name="WndwTitleDeckCreator" xml:space="preserve">
+    <value>Додати колоду</value>
+  </data>
+  <data name="WndwTitleDeckEditor" xml:space="preserve">
+    <value>Редагувати колоду</value>
+  </data>
 </root>
