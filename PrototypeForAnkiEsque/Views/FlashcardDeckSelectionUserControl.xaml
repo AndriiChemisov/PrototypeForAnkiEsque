@@ -3,31 +3,63 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="450" Width="800">
 
+    <UserControl.Resources>
+        <!-- Resources like converters can be defined here if needed -->
+    </UserControl.Resources>
+
     <Grid>
-        <Button Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="75" Height="35" Command="{Binding OpenMainMenuCommand}" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Create a new Deck" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20"  Height="35" Command="{Binding OpenDeckCreatorCommand}" Style="{DynamicResource StandartButton}"/>
-        <!-- Search TextBox -->
-        <TextBlock Text="Search Decks:" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" />
+        <!-- Main Menu Button -->
+        <Button Content="{Binding MainMenuButtonContent}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" MinWidth="75" Height="35" Command="{Binding OpenMainMenuCommand}" Style="{DynamicResource StandartButton}" />
+
+        <!-- Deck Creator Button -->
+        <Button Content="{Binding DeckCreatorButtonContent}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Height="35" Command="{Binding OpenDeckCreatorCommand}" Style="{DynamicResource StandartButton}" />
+
+        <!-- Search Box -->
+        <TextBlock Text="{Binding SearchTextBoxContext}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" />
         <TextBox Width="200" Height="30" Margin="20,20,20,0" VerticalAlignment="Top" HorizontalAlignment="Center"
-                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.526,-0.763"  
-                  Style="{DynamicResource StyledTextBox}"/>
-        <!-- Define the DataGrid -->
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.526,-0.763" Style="{DynamicResource StyledTextBox}" />
+
+        <!-- DataGrid for Decks -->
         <DataGrid ItemsSource="{Binding FilteredDecks}" SelectedItem="{Binding SelectedDeck}" IsReadOnly="True" AutoGenerateColumns="False" Margin="10,60,10,50"
                   Style="{DynamicResource StyledGrid}">
-            <!-- Define Columns -->
             <DataGrid.Columns>
-                <!-- Column for Deck Name -->
-                <DataGridTextColumn Header="Deck Name" Binding="{Binding Name}" Width="*"/>
+                <!-- Column for Deck Name using DataGridTemplateColumn -->
+                <DataGridTemplateColumn Width="*" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.GridDeckNameHeaderContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                <!-- Column for Ease Rating -->
-                <DataGridTextColumn Header="Current progress" Binding="{Binding EaseRating}" Width="2*"/>
+                <!-- Column for Ease Rating using DataGridTemplateColumn -->
+                <DataGridTemplateColumn Width="2*" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.GridProgressHeaderContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding EaseRating}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="Review Deck" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"  Height="35" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Edit Deck" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10"  Height="35" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Delete Deck" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"  Height="35" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Import Decks" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,10"  Height="35" Style="{DynamicResource StandartButton}"/>
-        <Button Content="Export Decks" Click="ExportDecks" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10"  Height="35" Style="{DynamicResource StandartButton}"/>
+        <!-- Deck Action Buttons -->
+        <Button Content="{Binding ReviewDeckButtonContent}" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding EditDeckButtonContent}" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding DeleteDeckButtonContent}" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
+
+        <!-- Import and Export Deck Buttons -->
+        <Button Content="{Binding ImportDecksButtonContent}" Command="{Binding ImportDecksCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="163,0,0,10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding ExportDecksButtonContent}" Command="{Binding ExportDecksCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" Height="35" Style="{DynamicResource StandartButton}" />
     </Grid>
 </UserControl>

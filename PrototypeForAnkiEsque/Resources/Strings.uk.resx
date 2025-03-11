@@ -154,7 +154,7 @@
     <value>Перевернути картку</value>
   </data>
   <data name="BttnImportDeck" xml:space="preserve">
-    <value>Імпортувати колоду</value>
+    <value>Імпортувати колоди</value>
   </data>
   <data name="BttnImportFlashcards" xml:space="preserve">
     <value>Імпортувати картки</value>
@@ -189,6 +189,12 @@
   <data name="GrdHdrBack" xml:space="preserve">
     <value>Зворотна сторона</value>
   </data>
+  <data name="GrdHdrProgress" xml:space="preserve">
+    <value>Прогрес</value>
+  </data>
+  <data name="GrdHdrDeckName" xml:space="preserve">
+    <value>Назва колоди</value>
+  </data>
   <data name="GrdHdrEase" xml:space="preserve">
     <value>Складність</value>
   </data>
@@ -196,12 +202,12 @@
     <value>Лицьова сторона</value>
   </data>
   <data name="TxtBlkEnterBack" xml:space="preserve">
-    <value>Введіть зворотну сторону</value>
+    <value>Введіть зворотну сторону:</value>
   </data>
   <data name="TxtBlkEnterFront" xml:space="preserve">
-    <value>Введіть лицьову сторону</value>
+    <value>Введіть лицьову сторону:</value>
   </data>
   <data name="TxtBlkSearch" xml:space="preserve">
-    <value>Пошук</value>
+    <value>Пошук:</value>
   </data>
 </root>

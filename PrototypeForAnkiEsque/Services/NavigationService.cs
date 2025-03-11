@@ -64,9 +64,16 @@ namespace PrototypeForAnkiEsque.Services
 
         public async Task GetFlashcardDeckSelectionViewAsync()
         {
-            var flashcardDeckSelectionView = _serviceProvider.GetRequiredService<FlashcardDeckSelectionUserControl>();
+            // Create a fresh instance instead of reusing one from the DI container
+            var flashcardDeckSelectionView = new FlashcardDeckSelectionUserControl();
+            var viewModel = _serviceProvider.GetRequiredService<FlashcardDeckSelectionViewModel>();
+
+            flashcardDeckSelectionView.DataContext = viewModel;
+
             await NavigateAsync(flashcardDeckSelectionView, "Deck Selection");
+            viewModel.RefreshLocalization();
         }
+
 
         public async Task GetFlashcardDeckEditorViewAsync(FlashcardDeck selectedDeck)
         {
@@ -97,7 +104,8 @@ namespace PrototypeForAnkiEsque.Services
                 Application.Current.MainWindow.Title = title;
 
                 // Set the content of the main window
-                Application.Current.MainWindow.Content = userControl;
+                Application.Current.MainWindow.Content = null; // Hide UI
+                Application.Current.MainWindow.Content = userControl; // Show UI again
                 _lastNavigatedView = userControl;
             });
         }

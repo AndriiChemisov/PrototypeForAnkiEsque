@@ -189,6 +189,12 @@
   <data name="GrdHdrBack" xml:space="preserve">
     <value>裏面</value>
   </data>
+  <data name="GrdHdrProgress" xml:space="preserve">
+    <value>進捗</value>
+  </data>
+  <data name="GrdHdrDeckName" xml:space="preserve">
+    <value>デッキ名</value>
+  </data>
   <data name="GrdHdrEase" xml:space="preserve">
     <value>簡単評価</value>
   </data>
@@ -196,12 +202,12 @@
     <value>表面</value>
   </data>
   <data name="TxtBlkEnterBack" xml:space="preserve">
-    <value>カード裏面をご入力ください</value>
+    <value>カード裏面をご入力ください:</value>
   </data>
   <data name="TxtBlkEnterFront" xml:space="preserve">
-    <value>カード表面をご入力ください</value>
+    <value>カード表面をご入力ください:</value>
   </data>
   <data name="TxtBlkSearch" xml:space="preserve">
-    <value>サーチ</value>
+    <value>サーチ:</value>
   </data>
 </root>

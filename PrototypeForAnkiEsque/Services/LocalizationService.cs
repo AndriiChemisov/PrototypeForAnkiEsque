@@ -6,7 +6,9 @@ using System.Threading;
 using PrototypeForAnkiEsque.Resources;
 using System;
 using System.Diagnostics;
-
+// This is the file that handles the localization service for the application. It is used to change the language of the application and notify subscribers of the change.
+// The LocalizationService class implements the ILocalizationService interface and provides methods to change the language and get localized strings.
+// The main way it changes the language is by changing the culture of the current thread to the new culture, which we get from the settings.
 namespace PrototypeForAnkiEsque.Services
 {
     public class LocalizationService : ILocalizationService

@@ -1,16 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using System.IO;
 using PrototypeForAnkiEsque.Models;
 using PrototypeForAnkiEsque.Services;
 using PrototypeForAnkiEsque.Commands;
-using System.Linq;
-using System.Threading.Tasks;
+using PrototypeForAnkiEsque.Resources;
+using System.IO;
 using System.Windows;
-// This file is used to define the FlashcardDeckSelectionViewModel class. The FlashcardDeckSelectionViewModel class is used to handle the logic for the FlashcardDeckSelectionView.
-// The FlashcardDeckSelectionViewModel class defines the properties, commands, and methods that are used to interact with the FlashcardDeckSelectionView.
-// Simple explanation: This class is used to handle the logic for the FlashcardDeckSelectionView.
+
 namespace PrototypeForAnkiEsque.ViewModels
 {
     public class FlashcardDeckSelectionViewModel : BaseViewModel
@@ -24,10 +23,25 @@ namespace PrototypeForAnkiEsque.ViewModels
         private FlashcardDeck _selectedDeck;
         private string _errorMessage;
         private string _searchText;
+        private string _mainMenuButtonContent;
+        private string _deckCreatorButtonContent;
+        private string _importDecksButtonContent;
+        private string _exportDecksButtonContent;
+        private string _reviewDeckButtonContent;
+        private string _editDeckButtonContent;
+        private string _deleteDeckButtonContent;
+        private string _searchTextBoxContext;
+        private string _gridDeckNameHeaderContext;
+        private string _gridProgressHeaderContext;
         #endregion
 
         #region CONSTRUCTOR
-        public FlashcardDeckSelectionViewModel(IDeckService deckService, IMainMenuNavigationService mainMenuNavigationService, IFlashcardNavigationService flashcardNavigationService, IDeckNavigationService deckNavigationService, IMessageService messageService)
+        public FlashcardDeckSelectionViewModel(
+            IDeckService deckService,
+            IMainMenuNavigationService mainMenuNavigationService,
+            IFlashcardNavigationService flashcardNavigationService,
+            IDeckNavigationService deckNavigationService,
+            IMessageService messageService)
         {
             _deckService = deckService;
             _mainMenuNavigationService = mainMenuNavigationService;
@@ -50,6 +64,7 @@ namespace PrototypeForAnkiEsque.ViewModels
         #region PROPERTIES
         public ObservableCollection<FlashcardDeck> Decks { get; private set; } = new();
         public ObservableCollection<FlashcardDeck> FilteredDecks { get; private set; } = new();
+
         public FlashcardDeck SelectedDeck
         {
             get => _selectedDeck;
@@ -75,6 +90,66 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
             }
         }
+
+        public string MainMenuButtonContent
+        {
+            get => _mainMenuButtonContent;
+            set => SetProperty(ref _mainMenuButtonContent, value);
+        }
+
+        public string DeckCreatorButtonContent
+        {
+            get => _deckCreatorButtonContent;
+            set => SetProperty(ref _deckCreatorButtonContent, value);
+        }
+
+        public string ImportDecksButtonContent
+        {
+            get => _importDecksButtonContent;
+            set => SetProperty(ref _importDecksButtonContent, value);
+        }
+
+        public string ExportDecksButtonContent
+        {
+            get => _exportDecksButtonContent;
+            set => SetProperty(ref _exportDecksButtonContent, value);
+        }
+
+        public string ReviewDeckButtonContent
+        {
+            get => _reviewDeckButtonContent;
+            set => SetProperty(ref _reviewDeckButtonContent, value);
+        }
+
+        public string EditDeckButtonContent
+        {
+            get => _editDeckButtonContent;
+            set => SetProperty(ref _editDeckButtonContent, value);
+        }
+
+        public string DeleteDeckButtonContent
+        {
+            get => _deleteDeckButtonContent;
+            set => SetProperty(ref _deleteDeckButtonContent, value);
+        }
+
+        public string SearchTextBoxContext
+        {
+            get => _searchTextBoxContext;
+            set => SetProperty(ref _searchTextBoxContext, value);
+        }
+
+        public string GridDeckNameHeaderContext
+        {
+            get => _gridDeckNameHeaderContext;
+            set => SetProperty(ref _gridDeckNameHeaderContext, value);
+        }
+
+        public string GridProgressHeaderContext
+        {
+            get => _gridProgressHeaderContext;
+            set => SetProperty(ref _gridProgressHeaderContext, value);
+        }
         #endregion
 
         #region COMMANDS
@@ -95,6 +170,7 @@ namespace PrototypeForAnkiEsque.ViewModels
                 var decks = await _deckService.GetPagedDecksAsync(1, int.MaxValue);
                 Decks = new ObservableCollection<FlashcardDeck>(decks);
                 UpdateFilteredDecks();
+                LoadLocalizedTexts();
             }
             catch (Exception ex)
             {
@@ -145,11 +221,10 @@ namespace PrototypeForAnkiEsque.ViewModels
             if (result == MessageBoxResult.Yes)
             {
                 await _deckService.DeleteDeckAsync(SelectedDeck.Id);
-                Decks.Remove(SelectedDeck); // Remove the deck from the Decks collection
-                UpdateFilteredDecks(); // Update the filtered decks after deletion
+                Decks.Remove(SelectedDeck);
+                UpdateFilteredDecks();
             }
         }
-
 
         private async Task OpenMainMenuAsync()
         {
@@ -170,7 +245,6 @@ namespace PrototypeForAnkiEsque.ViewModels
                 Flashcards = d.FlashcardFronts.Select(f => new FlashcardDto { Front = f, Back = "" }).ToList(),
                 EaseRating = d.EaseRating
             }).ToList();
-
 
             var json = JsonSerializer.Serialize(deckDtos);
             await File.WriteAllTextAsync(filePath, json);
@@ -200,6 +274,20 @@ namespace PrototypeForAnkiEsque.ViewModels
                 }
                 LoadDecksAsync();
             }
+        }
+
+        private void LoadLocalizedTexts()
+        {
+            MainMenuButtonContent = Strings.BttnMainMenu;
+            DeckCreatorButtonContent = Strings.BttnNewDeck;
+            ImportDecksButtonContent = Strings.BttnImportDeck;
+            ExportDecksButtonContent = Strings.BttnExportDeck;
+            ReviewDeckButtonContent = Strings.BttnReview;
+            EditDeckButtonContent = Strings.BttnEdit;
+            DeleteDeckButtonContent = Strings.BttnDelete;
+            SearchTextBoxContext = Strings.TxtBlkSearch;
+            GridDeckNameHeaderContext = Strings.GrdHdrDeckName;
+            GridProgressHeaderContext = Strings.GrdHdrProgress;
         }
         #endregion
     }

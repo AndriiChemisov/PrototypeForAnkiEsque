@@ -169,7 +169,7 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import Deck.
+        ///   Looks up a localized string similar to Import Decks.
         /// </summary>
         internal static string BttnImportDeck {
             get {
@@ -277,6 +277,15 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deck name.
+        /// </summary>
+        internal static string GrdHdrDeckName {
+            get {
+                return ResourceManager.GetString("GrdHdrDeckName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ease rating.
         /// </summary>
         internal static string GrdHdrEase {
@@ -295,7 +304,16 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter back.
+        ///   Looks up a localized string similar to Progress.
+        /// </summary>
+        internal static string GrdHdrProgress {
+            get {
+                return ResourceManager.GetString("GrdHdrProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter back:.
         /// </summary>
         internal static string TxtBlkEnterBack {
             get {
@@ -304,7 +322,7 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter front.
+        ///   Looks up a localized string similar to Enter front:.
         /// </summary>
         internal static string TxtBlkEnterFront {
             get {
@@ -313,7 +331,7 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Search:.
         /// </summary>
         internal static string TxtBlkSearch {
             get {

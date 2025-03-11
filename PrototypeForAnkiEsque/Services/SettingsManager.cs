@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 
-
+//This is a file for the LocalizationService to handle the settings of the application in appsettings.json and save the language setting, as well as update it in real time
 namespace PrototypeForAnkiEsque.Services
 {
     // Implementation of settings manager for JSON file

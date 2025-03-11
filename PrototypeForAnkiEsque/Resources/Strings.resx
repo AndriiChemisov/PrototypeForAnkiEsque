@@ -154,7 +154,7 @@
     <value>Flip card</value>
   </data>
   <data name="BttnImportDeck" xml:space="preserve">
-    <value>Import Deck</value>
+    <value>Import Decks</value>
   </data>
   <data name="BttnImportFlashcards" xml:space="preserve">
     <value>Import Flaschards</value>
@@ -189,6 +189,12 @@
   <data name="GrdHdrBack" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="GrdHdrProgress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="GrdHdrDeckName" xml:space="preserve">
+    <value>Deck name</value>
+  </data>
   <data name="GrdHdrEase" xml:space="preserve">
     <value>Ease rating</value>
   </data>
@@ -196,12 +202,12 @@
     <value>Front</value>
   </data>
   <data name="TxtBlkEnterBack" xml:space="preserve">
-    <value>Enter back</value>
+    <value>Enter back:</value>
   </data>
   <data name="TxtBlkEnterFront" xml:space="preserve">
-    <value>Enter front</value>
+    <value>Enter front:</value>
   </data>
   <data name="TxtBlkSearch" xml:space="preserve">
-    <value>Search</value>
+    <value>Search:</value>
   </data>
 </root>
