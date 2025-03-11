@@ -252,4 +252,10 @@
   <data name="MssgFlashcardMissingError" xml:space="preserve">
     <value>保存するフラッシュカードがありません!</value>
   </data>
+  <data name="MssgDeckLoadError" xml:space="preserve">
+    <value>デッキの読み込みエラー！</value>
+  </data>
+  <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
+    <value>このデッキを削除してもよろしいですか？</value>
+  </data>
 </root>

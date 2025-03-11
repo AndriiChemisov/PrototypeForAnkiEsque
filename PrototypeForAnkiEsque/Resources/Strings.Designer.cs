@@ -349,6 +349,24 @@ namespace PrototypeForAnkiEsque.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this deck?.
+        /// </summary>
+        internal static string MssgDeckDeletionConfirmation {
+            get {
+                return ResourceManager.GetString("MssgDeckDeletionConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading decks!.
+        /// </summary>
+        internal static string MssgDeckLoadError {
+            get {
+                return ResourceManager.GetString("MssgDeckLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Great! You&apos;re mastering this card..
         /// </summary>
         internal static string MssgEaseButtonEasy {

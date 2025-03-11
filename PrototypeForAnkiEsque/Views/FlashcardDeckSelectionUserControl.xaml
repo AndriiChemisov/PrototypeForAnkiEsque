@@ -54,12 +54,12 @@
         </DataGrid>
 
         <!-- Deck Action Buttons -->
-        <Button Content="{Binding ReviewDeckButtonContent}" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
-        <Button Content="{Binding EditDeckButtonContent}" Command="{Binding EditDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
-        <Button Content="{Binding DeleteDeckButtonContent}" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding ReviewDeckButtonContent}" Command="{Binding ReviewDeckCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding EditDeckButtonContent}" Command="{Binding EditDeckCommand}" HorizontalAlignment="right" VerticalAlignment="Bottom" Margin="0, 0, 150, 10" Height="35" Style="{DynamicResource StandartButton}" IsEnabled="{Binding CanDeleteDeck}" />
+        <Button Content="{Binding DeleteDeckButtonContent}" Command="{Binding DeleteDeckCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Height="35" Style="{DynamicResource StandartButton}" IsEnabled="{Binding CanDeleteDeck}"/>
 
         <!-- Import and Export Deck Buttons -->
-        <Button Content="{Binding ImportDecksButtonContent}" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="163,0,0,10" Height="35" Style="{DynamicResource StandartButton}" />
-        <Button Content="{Binding ExportDecksButtonContent}" Click="ExportDecks" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding ImportDecksButtonContent}" Click="ImportDecks" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10" Height="35" Style="{DynamicResource StandartButton}" />
+        <Button Content="{Binding ExportDecksButtonContent}" Click="ExportDecks" HorizontalAlignment="left" VerticalAlignment="Bottom" Margin="170,0,0,10" Height="35" Style="{DynamicResource StandartButton}" />
     </Grid>
 </UserControl>

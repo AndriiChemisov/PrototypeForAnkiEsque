@@ -7,7 +7,7 @@
             <DoubleAnimation
             Storyboard.TargetName="SavedMessageText"
             Storyboard.TargetProperty="Opacity"
-            From="1" To="0" Duration="0:0:2" />
+            From="1" To="0" Duration="0:0:5" />
         </Storyboard>
     </UserControl.Resources>
 

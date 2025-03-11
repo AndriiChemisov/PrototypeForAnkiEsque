@@ -252,4 +252,10 @@
   <data name="MssgFlashcardMissingError" xml:space="preserve">
     <value>Немає картки для збереження!</value>
   </data>
+  <data name="MssgDeckLoadError" xml:space="preserve">
+    <value>Помилка при завантаженні колод!</value>
+  </data>
+  <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
+    <value>Ви впевнені, що хочете видалити цю колоду?</value>
+  </data>
 </root>

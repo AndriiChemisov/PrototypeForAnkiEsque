@@ -252,4 +252,10 @@
   <data name="MssgFlashcardMissingError" xml:space="preserve">
     <value>No Flashcard to save!</value>
   </data>
+  <data name="MssgDeckLoadError" xml:space="preserve">
+    <value>Error loading decks!</value>
+  </data>
+  <data name="MssgDeckDeletionConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete this deck?</value>
+  </data>
 </root>

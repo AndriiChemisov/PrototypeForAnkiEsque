@@ -252,9 +252,9 @@ namespace PrototypeForAnkiEsque.ViewModels
 
             RatingMessage = ease switch
             {
-                0 => EaseButtonEasyContext,
-                1 => EaseButtonGoodContext,
-                2 => EaseButtonHardContext,
+                0 => EaseRatingEasyMessageContext,
+                1 => EaseRatingGoodMessageContext,
+                2 => EaseRatingHardMessageContext,
                 _ => "Error - no value received"
             };
 
@@ -294,6 +294,9 @@ namespace PrototypeForAnkiEsque.ViewModels
             EaseButtonGoodContext = Strings.BttnEaseGood;
             EaseButtonHardContext = Strings.BttnEaseHard;
             MotivationalMessage = Strings.MssgMotivationalMessage;
+            EaseRatingEasyMessageContext = Strings.MssgEaseButtonEasy;
+            EaseRatingGoodMessageContext = Strings.MssgEaseButtonGood;
+            EaseRatingHardMessageContext = Strings.MssgEaseButtonHard;
         }
         #endregion
     }
