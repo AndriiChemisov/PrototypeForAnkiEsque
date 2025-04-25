@@ -18,7 +18,7 @@ using PrototypeForAnkiEsque.ViewModels;
 // Simple explanation: This class is the entry point for the application. It is used to configure the services and set up the dependency injection container.
 // Side note: ensure that whenever anything changes in the project, this file is updated to reflect those changes.
 
-//Testing sonarcloud
+//Testing sonarcloud 1
 namespace PrototypeForAnkiEsque
 {
     public partial class App : Application
