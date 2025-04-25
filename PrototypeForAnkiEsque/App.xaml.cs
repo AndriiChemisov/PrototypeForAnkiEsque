@@ -17,6 +17,8 @@ using PrototypeForAnkiEsque.ViewModels;
 // The OnStartup method is overridden to create the main window, ensure that the database is created and seeded, and show the main window.
 // Simple explanation: This class is the entry point for the application. It is used to configure the services and set up the dependency injection container.
 // Side note: ensure that whenever anything changes in the project, this file is updated to reflect those changes.
+
+//Testing sonarcloud
 namespace PrototypeForAnkiEsque
 {
     public partial class App : Application
